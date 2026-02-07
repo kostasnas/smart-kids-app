@@ -55,7 +55,10 @@
             border-bottom-color: #667eea;
             background: white;
         }
-        .content { padding: 20px; max-height: 600px; overflow-y: auto; }
+        .content { 
+            padding: 20px; 
+            min-height: 500px; 
+        }
 
         .child-profile {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
@@ -63,6 +66,8 @@
             padding: 20px;
             color: white;
             margin-bottom: 20px;
+            max-height: 400px;
+            overflow-y: auto;
         }
         .profile-header { display: flex; align-items: center; margin-bottom: 16px; }
         .profile-avatar {
@@ -217,12 +222,12 @@
                                             className={`home-profile-item ${child.id === selectedChildId ? 'selected' : ''}`}
                                             onClick={() => setSelectedChildId(child.id)}
                                         >
-                                            <div className="home-profile-avatar" style={{backgroundImage: `url(${child.avatarBase64})`}}>
+                                            <div className="home-profile-avatar" style={{backgroundImage: `url(${child.avatarBase64 || ''})`}}>
                                                 {!child.avatarBase64 && '👧'}
                                             </div>
                                             <div>
-                                                <div style={{fontWeight: 'bold'}}>{child.name}</div>
-                                                <div style={{fontSize: '14px'}}>{child.age} ετών • {child.gender}</div>
+                                                <div style={{fontWeight: 'bold'}}>{child.name || 'Χωρίς όνομα'}</div>
+                                                <div style={{fontSize: '14px'}}>{child.age || '?'} ετών • {child.gender || '?'}</div>
                                             </div>
                                         </div>
                                     ))}
@@ -242,7 +247,9 @@
                             </div>
                         )}
 
-                        {activeTab === 'profile' && <ProfileTab selectedChild={selectedChild} onUpdate={updateChild} />}
+                        {activeTab === 'profile' && (
+                            <ProfileTab selectedChild={selectedChild} onUpdate={updateChild} />
+                        )}
 
                         {activeTab === 'deals' && <DealsTab />}
                     </div>
@@ -257,7 +264,10 @@
             });
 
             useEffect(() => {
-                if (selectedChild) setForm(selectedChild);
+                if (selectedChild) {
+                    setForm(selectedChild);
+                    setEditing(false);
+                }
             }, [selectedChild]);
 
             const handleChange = (e) => {
@@ -294,26 +304,26 @@
                 return (
                     <div className="empty-state">
                         <div className="empty-state-icon">👶</div>
-                        <p>Δεν έχει επιλεγεί παιδί</p>
+                        <p>Επίλεξε ένα παιδί από την αρχική οθόνη</p>
                     </div>
                 );
             }
 
             if (editing) {
                 return (
-                    <div>
+                    <div style={{background: 'white', padding: '20px', borderRadius: '16px'}}>
                         <div className="section-title">Επεξεργασία Προφίλ</div>
                         <div className="edit-form">
                             <div style={{textAlign: 'center'}}>
-                                <div className="photo-preview" style={{backgroundImage: `url(${form.avatarBase64})`}}></div>
+                                <div className="photo-preview" style={{backgroundImage: `url(${form.avatarBase64 || ''})`}}></div>
                                 <input type="file" accept="image/*" onChange={handlePhoto} />
                             </div>
-                            <input name="name" className="edit-input" placeholder="Όνομα" value={form.name} onChange={handleChange} />
-                            <input name="age" type="number" className="edit-input" placeholder="Ηλικία" value={form.age} onChange={handleChange} />
-                            <input name="gender" className="edit-input" placeholder="Φύλο" value={form.gender} onChange={handleChange} />
-                            <input name="clothingSize" className="edit-input" placeholder="Μέγεθος ρούχων" value={form.clothingSize} onChange={handleChange} />
-                            <input name="shoeSize" className="edit-input" placeholder="Μέγεθος παπουτσιών" value={form.shoeSize} onChange={handleChange} />
-                            <input name="favoriteColors" className="edit-input" placeholder="Αγαπημένα χρώματα (κόμμα)" value={form.favoriteColors.join(', ')} onChange={handleChange} />
+                            <input name="name" className="edit-input" placeholder="Όνομα" value={form.name || ''} onChange={handleChange} />
+                            <input name="age" type="number" className="edit-input" placeholder="Ηλικία" value={form.age || ''} onChange={handleChange} />
+                            <input name="gender" className="edit-input" placeholder="Φύλο" value={form.gender || ''} onChange={handleChange} />
+                            <input name="clothingSize" className="edit-input" placeholder="Μέγεθος ρούχων" value={form.clothingSize || ''} onChange={handleChange} />
+                            <input name="shoeSize" className="edit-input" placeholder="Μέγεθος παπουτσιών" value={form.shoeSize || ''} onChange={handleChange} />
+                            <input name="favoriteColors" className="edit-input" placeholder="Αγαπημένα χρώματα (κόμμα)" value={(form.favoriteColors || []).join(', ')} onChange={handleChange} />
                             <div style={{display: 'flex', gap: '10px', marginTop: '20px'}}>
                                 <button className="btn-primary" onClick={save}>Αποθήκευση</button>
                                 <button className="btn-secondary" onClick={cancel}>Άκυρο</button>
@@ -324,16 +334,16 @@
             }
 
             return (
-                <div>
+                <div style={{background: 'white', padding: '20px', borderRadius: '16px'}}>
                     <div className="section-title">Προφίλ Παιδιού</div>
                     <div className="child-profile">
                         <div className="profile-header">
-                            <div className="profile-avatar" style={{backgroundImage: `url(${selectedChild.avatarBase64})`}}>
+                            <div className="profile-avatar" style={{backgroundImage: `url(${selectedChild.avatarBase64 || ''})`}}>
                                 {!selectedChild.avatarBase64 && '👧'}
                             </div>
                             <div className="profile-info">
-                                <h2>{selectedChild.name}</h2>
-                                <p>{selectedChild.age} ετών • {selectedChild.gender}</p>
+                                <h2>{selectedChild.name || 'Χωρίς όνομα'}</h2>
+                                <p>{selectedChild.age || '?'} ετών • {selectedChild.gender || '?'}</p>
                             </div>
                         </div>
                         <div className="profile-details">
@@ -347,12 +357,12 @@
                             </div>
                             <div className="detail-item">
                                 <div className="detail-label">Χρώματα</div>
-                                <div className="detail-value">{selectedChild.favoriteColors.join(', ') || '-'}</div>
+                                <div className="detail-value">{(selectedChild.favoriteColors || []).join(', ') || '-'}</div>
                             </div>
                         </div>
                     </div>
                     <button className="btn-primary" onClick={() => setEditing(true)} style={{marginTop: '16px'}}>
-                        ✏️ Επεξεργασία
+                        ✏️ Επεξεργασία Προφίλ
                     </button>
                 </div>
             );
@@ -363,7 +373,7 @@
                 <div>
                     <div className="section-title">Πραγματικές Προσφορές Τώρα</div>
                     <p style={{color: '#666', marginBottom: '20px'}}>
-                        Πάτα για να δεις live τιμές & εκπτώσεις σε παιδικά
+                        Πάτα για να δεις live εκπτώσεις σε παιδικά ρούχα & παιχνίδια
                     </p>
 
                     <div className="shop-card">
