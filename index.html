@@ -148,501 +148,501 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect } = React;
+       const { useState, useEffect } = React;
 
-        const occasions = [
-            { name: "Απόκριες", date: "2026-02-19", icon: "🎭" },
-            { name: "Καθαρά Δευτέρα", date: "2026-03-02", icon: "🪁" },
-            { name: "Πάσχα", date: "2026-04-19", icon: "🕯️" },
-        ];
+const occasions = [
+    { name: "Απόκριες", date: "2026-02-19", icon: "🎭" },
+    { name: "Καθαρά Δευτέρα", date: "2026-03-02", icon: "🪁" },
+    { name: "Πάσχα", date: "2026-04-19", icon: "🕯️" },
+];
 
-        function calculateDaysUntil(dateStr) {
-            const now = new Date();
-            const event = new Date(dateStr);
-            const diff = event - now;
-            return Math.ceil(diff / (1000 * 60 * 60 * 24));
-        }
+function calculateDaysUntil(dateStr) {
+    const now = new Date();
+    const event = new Date(dateStr);
+    const diff = event - now;
+    return Math.ceil(diff / (1000 * 60 * 60 * 24));
+}
 
-        function App() {
-            const [activeTab, setActiveTab] = useState('home');
-            const [children, setChildren] = useState([]);
-            const [selectedChildId, setSelectedChildId] = useState(null);
-            const [savedNeeds, setSavedNeeds] = useState([]);
+function App() {
+    const [activeTab, setActiveTab] = useState('home');
+    const [children, setChildren] = useState([]);
+    const [selectedChildId, setSelectedChildId] = useState(null);
+    const [savedNeeds, setSavedNeeds] = useState([]);
 
-            useEffect(() => {
-                const saved = localStorage.getItem('kidsShoppingChildren');
-                const initial = saved ? JSON.parse(saved) : [{
-                    id: 1,
-                    name: "Σοφία",
-                    age: 5,
-                    gender: "Κορίτσι",
-                    clothingSize: "110cm (5-6 ετών)",
-                    shoeSize: "28",
-                    favoriteColors: ["Ροζ", "Μωβ"],
-                    avatarBase64: null
-                }];
-                setChildren(initial);
-                setSelectedChildId(initial[0]?.id || null);
+    useEffect(() => {
+        const saved = localStorage.getItem('kidsShoppingChildren');
+        const initial = saved ? JSON.parse(saved) : [{
+            id: 1,
+            name: "Σοφία",
+            age: 5,
+            gender: "Κορίτσι",
+            clothingSize: "110cm (5-6 ετών)",
+            shoeSize: "28",
+            favoriteColors: ["Ροζ", "Μωβ"],
+            avatarBase64: null
+        }];
+        setChildren(initial);
+        setSelectedChildId(initial[0]?.id || null);
 
-                const savedN = localStorage.getItem('savedNeeds');
-                if (savedN) setSavedNeeds(JSON.parse(savedN));
-            }, []);
+        const savedN = localStorage.getItem('savedNeeds');
+        if (savedN) setSavedNeeds(JSON.parse(savedN));
+    }, []);
 
-            useEffect(() => {
-                localStorage.setItem('kidsShoppingChildren', JSON.stringify(children));
-            }, [children]);
+    useEffect(() => {
+        localStorage.setItem('kidsShoppingChildren', JSON.stringify(children));
+    }, [children]);
 
-            useEffect(() => {
-                localStorage.setItem('savedNeeds', JSON.stringify(savedNeeds));
-            }, [savedNeeds]);
+    useEffect(() => {
+        localStorage.setItem('savedNeeds', JSON.stringify(savedNeeds));
+    }, [savedNeeds]);
 
-            const selectedChild = children.find(c => c.id === selectedChildId);
+    const selectedChild = children.find(c => c.id === selectedChildId);
 
-            const updateChild = (updated) => {
-                setChildren(prev => prev.map(c => c.id === updated.id ? updated : c));
-            };
+    const updateChild = (updated) => {
+        setChildren(prev => prev.map(c => c.id === updated.id ? updated : c));
+    };
 
-            const upcoming = occasions
-                .map(o => ({ ...o, daysUntil: calculateDaysUntil(o.date) }))
-                .filter(o => o.daysUntil > 0 && o.daysUntil <= 30)
-                .sort((a, b) => a.daysUntil - b.daysUntil);
+    const upcoming = occasions
+        .map(o => ({ ...o, daysUntil: calculateDaysUntil(o.date) }))
+        .filter(o => o.daysUntil > 0 && o.daysUntil <= 30)
+        .sort((a, b) => a.daysUntil - b.daysUntil);
 
-            return (
-                <div className="app-container">
-                    <div className="header">
-                        <h1>👶 Smart Kids Shopping</h1>
-                        <p>Ο έξυπνος σύμβουλος αγορών για γονείς</p>
-                    </div>
+    return (
+        <div className="app-container">
+            <div className="header">
+                <h1>👶 Smart Kids Shopping</h1>
+                <p>Ο έξυπνος σύμβουλος αγορών για γονείς</p>
+            </div>
 
-                    <div className="nav-tabs">
-                        <button className={`nav-tab ${activeTab === 'home' ? 'active' : ''}`} onClick={() => setActiveTab('home')}>🏠 Αρχική</button>
-                        <button className={`nav-tab ${activeTab === 'profile' ? 'active' : ''}`} onClick={() => setActiveTab('profile')}>👤 Προφίλ</button>
-                        <button className={`nav-tab ${activeTab === 'needs' ? 'active' : ''}`} onClick={() => setActiveTab('needs')}>🛒 Ανάγκη</button>
-                        <button className={`nav-tab ${activeTab === 'ai' ? 'active' : ''}`} onClick={() => setActiveTab('ai')}>🤖 AI Σύμβουλος</button>
-                        <button className={`nav-tab ${activeTab === 'deals' ? 'active' : ''}`} onClick={() => setActiveTab('deals')}>🔥 Προσφορές</button>
-                    </div>
+            <div className="nav-tabs">
+                <button className={`nav-tab ${activeTab === 'home' ? 'active' : ''}`} onClick={() => setActiveTab('home')}>🏠 Αρχική</button>
+                <button className={`nav-tab ${activeTab === 'profile' ? 'active' : ''}`} onClick={() => setActiveTab('profile')}>👤 Προφίλ</button>
+                <button className={`nav-tab ${activeTab === 'needs' ? 'active' : ''}`} onClick={() => setActiveTab('needs')}>🛒 Ανάγκη</button>
+                <button className={`nav-tab ${activeTab === 'ai' ? 'active' : ''}`} onClick={() => setActiveTab('ai')}>🤖 AI Σύμβουλος</button>
+                <button className={`nav-tab ${activeTab === 'deals' ? 'active' : ''}`} onClick={() => setActiveTab('deals')}>🔥 Προσφορές</button>
+            </div>
 
-                    <div className="content">
-                        {activeTab === 'home' && (
-                            <div>
-                                <div className="section-title">Τα Παιδιά μου</div>
-                                <div className="home-profile-list">
-                                    {children.map(child => (
-                                        <div key={child.id} className={`home-profile-item ${child.id === selectedChildId ? 'selected' : ''}`} onClick={() => setSelectedChildId(child.id)}>
-                                            <div className="home-profile-avatar" style={{backgroundImage: `url(${child.avatarBase64 || ''})`}}>
-                                                {!child.avatarBase64 && '👧'}
-                                            </div>
-                                            <div>
-                                                <div style={{fontWeight: 'bold'}}>{child.name}</div>
-                                                <div style={{fontSize: '14px'}}>{child.age} ετών • {child.gender}</div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-
-                                {upcoming.length > 0 && (
-                                    <div className="notification-section">
-                                        <div className="section-title">Άμεσες Περιστάσεις (τις επόμενες 30 μέρες)</div>
-                                        {upcoming.map(o => (
-                                            <div key={o.name} className="notification-card">
-                                                <strong>{o.icon} {o.name}</strong> – σε {o.daysUntil} μέρες
-                                            </div>
-                                        ))}
+            <div className="content">
+                {activeTab === 'home' && (
+                    <div>
+                        <div className="section-title">Τα Παιδιά μου</div>
+                        <div className="home-profile-list">
+                            {children.map(child => (
+                                <div key={child.id} className={`home-profile-item ${child.id === selectedChildId ? 'selected' : ''}`} onClick={() => setSelectedChildId(child.id)}>
+                                    <div className="home-profile-avatar" style={{backgroundImage: `url(${child.avatarBase64 || ''})`}}>
+                                        {!child.avatarBase64 && '👧'}
                                     </div>
-                                )}
+                                    <div>
+                                        <div style={{fontWeight: 'bold'}}>{child.name}</div>
+                                        <div style={{fontSize: '14px'}}>{child.age} ετών • {child.gender}</div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {upcoming.length > 0 && (
+                            <div className="notification-section">
+                                <div className="section-title">Άμεσες Περιστάσεις (τις επόμενες 30 μέρες)</div>
+                                {upcoming.map(o => (
+                                    <div key={o.name} className="notification-card">
+                                        <strong>{o.icon} {o.name}</strong> – σε {o.daysUntil} μέρες
+                                    </div>
+                                ))}
                             </div>
                         )}
+                    </div>
+                )}
 
-                        {activeTab === 'profile' && <ProfileTab selectedChild={selectedChild} onUpdate={updateChild} />}
+                {activeTab === 'profile' && <ProfileTab selectedChild={selectedChild} onUpdate={updateChild} />}
 
-                        {activeTab === 'needs' && <NeedsTab selectedChild={selectedChild} savedNeeds={savedNeeds} setSavedNeeds={setSavedNeeds} />}
+                {activeTab === 'needs' && <NeedsTab selectedChild={selectedChild} savedNeeds={savedNeeds} setSavedNeeds={setSavedNeeds} />}
 
-                        {activeTab === 'ai' && <AITab selectedChild={selectedChild} />}
+                {activeTab === 'ai' && <AITab selectedChild={selectedChild} />}
 
-                        {activeTab === 'deals' && <DealsTab />}
+                {activeTab === 'deals' && <DealsTab />}
+            </div>
+        </div>
+    );
+}
+
+function ProfileTab({ selectedChild, onUpdate }) {
+    const [editing, setEditing] = useState(false);
+    const [form, setForm] = useState(() => selectedChild || {
+        name: '', age: '', gender: '', clothingSize: '', shoeSize: '', favoriteColors: [], avatarBase64: null
+    });
+
+    useEffect(() => {
+        if (selectedChild) {
+            setForm(selectedChild);
+            setEditing(false);
+        }
+    }, [selectedChild]);
+
+    if (!selectedChild) {
+        return (
+            <div className="empty-state">
+                <div className="empty-state-icon">👶</div>
+                <p>Επίλεξε ένα παιδί από την αρχική οθόνη</p>
+            </div>
+        );
+    }
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        if (name === 'favoriteColors') {
+            setForm(prev => ({ ...prev, favoriteColors: value.split(',').map(s => s.trim()) }));
+        } else {
+            setForm(prev => ({ ...prev, [name]: value }));
+        }
+    };
+
+    const handlePhoto = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = ev => {
+                setForm(prev => ({ ...prev, avatarBase64: ev.target.result }));
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const save = () => {
+        onUpdate(form);
+        setEditing(false);
+    };
+
+    const cancel = () => {
+        setForm(selectedChild);
+        setEditing(false);
+    };
+
+    if (editing) {
+        return (
+            <div className="child-profile-wrapper">
+                <div className="section-title">Επεξεργασία Προφίλ</div>
+                <div className="edit-form">
+                    <div style={{textAlign: 'center'}}>
+                        <div className="photo-preview" style={{backgroundImage: `url(${form.avatarBase64 || ''})`}}></div>
+                        <div className="photo-upload">
+                            <input type="file" accept="image/*" onChange={handlePhoto} />
+                        </div>
+                    </div>
+
+                    <div className="edit-field">
+                        <label className="edit-label">Όνομα</label>
+                        <input name="name" className="edit-input" value={form.name || ''} onChange={handleChange} />
+                    </div>
+
+                    <div className="edit-field">
+                        <label className="edit-label">Ηλικία</label>
+                        <input name="age" type="number" className="edit-input" value={form.age || ''} onChange={handleChange} />
+                    </div>
+
+                    <div className="edit-field">
+                        <label className="edit-label">Φύλο</label>
+                        <input name="gender" className="edit-input" value={form.gender || ''} onChange={handleChange} />
+                    </div>
+
+                    <div className="edit-field">
+                        <label className="edit-label">Μέγεθος ρούχων</label>
+                        <input name="clothingSize" className="edit-input" value={form.clothingSize || ''} onChange={handleChange} />
+                    </div>
+
+                    <div className="edit-field">
+                        <label className="edit-label">Μέγεθος παπουτσιών</label>
+                        <input name="shoeSize" className="edit-input" value={form.shoeSize || ''} onChange={handleChange} />
+                    </div>
+
+                    <div className="edit-field">
+                        <label className="edit-label">Αγαπημένα χρώματα (χωρισμένα με κόμμα)</label>
+                        <input name="favoriteColors" className="edit-input" value={Array.isArray(form.favoriteColors) ? form.favoriteColors.join(', ') : ''} onChange={handleChange} />
+                    </div>
+
+                    <div style={{display: 'flex', gap: '12px', marginTop: '24px'}}>
+                        <button className="btn-primary" onClick={save}>Αποθήκευση</button>
+                        <button className="btn-secondary" onClick={cancel}>Άκυρο</button>
                     </div>
                 </div>
-            );
-        }
+            </div>
+        );
+    }
 
-        function ProfileTab({ selectedChild, onUpdate }) {
-            const [editing, setEditing] = useState(false);
-            const [form, setForm] = useState(() => selectedChild || {
-                name: '', age: '', gender: '', clothingSize: '', shoeSize: '', favoriteColors: [], avatarBase64: null
-            });
-
-            useEffect(() => {
-                if (selectedChild) {
-                    setForm(selectedChild);
-                    setEditing(false);
-                }
-            }, [selectedChild]);
-
-            if (!selectedChild) {
-                return (
-                    <div className="empty-state">
-                        <div className="empty-state-icon">👶</div>
-                        <p>Επίλεξε ένα παιδί από την αρχική οθόνη</p>
+    return (
+        <div className="child-profile-wrapper">
+            <div className="section-title">Προφίλ Παιδιού</div>
+            <div className="child-profile">
+                <div className="profile-header">
+                    <div className="profile-avatar" style={{backgroundImage: `url(${selectedChild.avatarBase64 || ''})`}}>
+                        {!selectedChild.avatarBase64 && '👧'}
                     </div>
-                );
-            }
-
-            const handleChange = (e) => {
-                const { name, value } = e.target;
-                if (name === 'favoriteColors') {
-                    setForm(prev => ({ ...prev, favoriteColors: value.split(',').map(s => s.trim()) }));
-                } else {
-                    setForm(prev => ({ ...prev, [name]: value }));
-                }
-            };
-
-            const handlePhoto = (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = ev => {
-                        setForm(prev => ({ ...prev, avatarBase64: ev.target.result }));
-                    };
-                    reader.readAsDataURL(file);
-                }
-            };
-
-            const save = () => {
-                onUpdate(form);
-                setEditing(false);
-            };
-
-            const cancel = () => {
-                setForm(selectedChild);
-                setEditing(false);
-            };
-
-            if (editing) {
-                return (
-                    <div className="child-profile-wrapper">
-                        <div className="section-title">Επεξεργασία Προφίλ</div>
-                        <div className="edit-form">
-                            <div style={{textAlign: 'center'}}>
-                                <div className="photo-preview" style={{backgroundImage: `url(${form.avatarBase64 || ''})`}}></div>
-                                <div className="photo-upload">
-                                    <input type="file" accept="image/*" onChange={handlePhoto} />
-                                </div>
-                            </div>
-
-                            <div className="edit-field">
-                                <label className="edit-label">Όνομα</label>
-                                <input name="name" className="edit-input" value={form.name || ''} onChange={handleChange} />
-                            </div>
-
-                            <div className="edit-field">
-                                <label className="edit-label">Ηλικία</label>
-                                <input name="age" type="number" className="edit-input" value={form.age || ''} onChange={handleChange} />
-                            </div>
-
-                            <div className="edit-field">
-                                <label className="edit-label">Φύλο</label>
-                                <input name="gender" className="edit-input" value={form.gender || ''} onChange={handleChange} />
-                            </div>
-
-                            <div className="edit-field">
-                                <label className="edit-label">Μέγεθος ρούχων</label>
-                                <input name="clothingSize" className="edit-input" value={form.clothingSize || ''} onChange={handleChange} />
-                            </div>
-
-                            <div className="edit-field">
-                                <label className="edit-label">Μέγεθος παπουτσιών</label>
-                                <input name="shoeSize" className="edit-input" value={form.shoeSize || ''} onChange={handleChange} />
-                            </div>
-
-                            <div className="edit-field">
-                                <label className="edit-label">Αγαπημένα χρώματα (χωρισμένα με κόμμα)</label>
-                                <input name="favoriteColors" className="edit-input" value={Array.isArray(form.favoriteColors) ? form.favoriteColors.join(', ') : ''} onChange={handleChange} />
-                            </div>
-
-                            <div style={{display: 'flex', gap: '12px', marginTop: '24px'}}>
-                                <button className="btn-primary" onClick={save}>Αποθήκευση</button>
-                                <button className="btn-secondary" onClick={cancel}>Άκυρο</button>
-                            </div>
-                        </div>
+                    <div className="profile-info">
+                        <h2>{selectedChild.name || 'Χωρίς όνομα'}</h2>
+                        <p>{selectedChild.age || '?'} ετών • {selectedChild.gender || '?'}</p>
                     </div>
-                );
-            }
-
-            return (
-                <div className="child-profile-wrapper">
-                    <div className="section-title">Προφίλ Παιδιού</div>
-                    <div className="child-profile">
-                        <div className="profile-header">
-                            <div className="profile-avatar" style={{backgroundImage: `url(${selectedChild.avatarBase64 || ''})`}}>
-                                {!selectedChild.avatarBase64 && '👧'}
-                            </div>
-                            <div className="profile-info">
-                                <h2>{selectedChild.name || 'Χωρίς όνομα'}</h2>
-                                <p>{selectedChild.age || '?'} ετών • {selectedChild.gender || '?'}</p>
-                            </div>
-                        </div>
-                        <div className="profile-details">
-                            <div className="detail-item">
-                                <div className="detail-label">Ρούχα</div>
-                                <div className="detail-value">{selectedChild.clothingSize || '-'}</div>
-                            </div>
-                            <div className="detail-item">
-                                <div className="detail-label">Παπούτσια</div>
-                                <div className="detail-value">{selectedChild.shoeSize || '-'}</div>
-                            </div>
-                            <div className="detail-item">
-                                <div className="detail-label">Χρώματα</div>
-                                <div className="detail-value">{Array.isArray(selectedChild.favoriteColors) ? selectedChild.favoriteColors.join(', ') : '-'}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <button className="btn-primary" onClick={() => setEditing(true)} style={{marginTop: '16px'}}>
-                        ✏️ Επεξεργασία Προφίλ
-                    </button>
                 </div>
-            );
+                <div className="profile-details">
+                    <div className="detail-item">
+                        <div className="detail-label">Ρούχα</div>
+                        <div className="detail-value">{selectedChild.clothingSize || '-'}</div>
+                    </div>
+                    <div className="detail-item">
+                        <div className="detail-label">Παπούτσια</div>
+                        <div className="detail-value">{selectedChild.shoeSize || '-'}</div>
+                    </div>
+                    <div className="detail-item">
+                        <div className="detail-label">Χρώματα</div>
+                        <div className="detail-value">{Array.isArray(selectedChild.favoriteColors) ? selectedChild.favoriteColors.join(', ') : '-'}</div>
+                    </div>
+                </div>
+            </div>
+            <button className="btn-primary" onClick={() => setEditing(true)} style={{marginTop: '16px'}}>
+                ✏️ Επεξεργασία Προφίλ
+            </button>
+        </div>
+    );
+}
+
+function NeedsTab({ selectedChild, savedNeeds, setSavedNeeds }) {
+    const [search, setSearch] = useState('');
+
+    const addNeed = () => {
+        if (search.trim()) {
+            setSavedNeeds(prev => [...prev, search.trim()]);
+            setSearch('');
         }
+    };
 
-        function NeedsTab({ selectedChild, savedNeeds, setSavedNeeds }) {
-            const [search, setSearch] = useState('');
+    return (
+        <div>
+            <div className="section-title">Τι χρειάζεται {selectedChild?.name || 'το παιδί'};</div>
+            <div style={{display: 'flex', gap: '8px', marginBottom: '20px'}}>
+                <input 
+                    className="edit-input" 
+                    placeholder="π.χ. χειμερινό μπουφάν, παπούτσια 29, στολή απόκριες" 
+                    value={search} 
+                    onChange={e => setSearch(e.target.value)} 
+                    style={{flex: 1}}
+                />
+                <button className="btn-primary" onClick={addNeed} style={{width: 'auto', padding: '0 20px'}}>Προσθήκη</button>
+            </div>
 
-            const addNeed = () => {
-                if (search.trim()) {
-                    setSavedNeeds(prev => [...prev, search.trim()]);
-                    setSearch('');
-                }
-            };
-
-            return (
+            {savedNeeds.length > 0 ? (
                 <div>
-                    <div className="section-title">Τι χρειάζεται {selectedChild?.name || 'το παιδί'};</div>
-                    <div style={{display: 'flex', gap: '8px', marginBottom: '20px'}}>
-                        <input 
-                            className="edit-input" 
-                            placeholder="π.χ. χειμερινό μπουφάν, παπούτσια 29, στολή απόκριες" 
-                            value={search} 
-                            onChange={e => setSearch(e.target.value)} 
-                            style={{flex: 1}}
-                        />
-                        <button className="btn-primary" onClick={addNeed} style={{width: 'auto', padding: '0 20px'}}>Προσθήκη</button>
-                    </div>
-
-                    {savedNeeds.length > 0 ? (
-                        <div>
-                            <div className="section-title">Αποθηκευμένες ανάγκες</div>
-                            {savedNeeds.map((need, i) => (
-                                <div key={i} className="need-item">
-                                    {need}
-                                </div>
-                            ))}
+                    <div className="section-title">Αποθηκευμένες ανάγκες</div>
+                    {savedNeeds.map((need, i) => (
+                        <div key={i} className="need-item">
+                            {need}
                         </div>
-                    ) : (
-                        <p style={{color: '#666'}}>Πρόσθεσε την πρώτη σου ανάγκη παραπάνω</p>
-                    )}
-
-                    <div className="section-title" style={{marginTop: '24px'}}>Γρήγορα links αναζήτησης</div>
-                    <div className="shop-card">
-                        <h3>Shein Παιδικά</h3>
-                        <a href="https://eur.shein.com/Kids-c-2031.html" target="_blank">Ψάξε στο Shein</a>
-                    </div>
-                    <div className="shop-card">
-                        <h3>Skroutz</h3>
-                        <a href="https://www.skroutz.gr/" target="_blank">Ψάξε στο Skroutz</a>
-                    </div>
+                    ))}
                 </div>
-            );
+            ) : (
+                <p style={{color: '#666'}}>Πρόσθεσε την πρώτη σου ανάγκη παραπάνω</p>
+            )}
+
+            <div className="section-title" style={{marginTop: '24px'}}>Γρήγορα links αναζήτησης</div>
+            <div className="shop-card">
+                <h3>Shein Παιδικά</h3>
+                <a href="https://eur.shein.com/Kids-c-2031.html" target="_blank">Ψάξε στο Shein</a>
+            </div>
+            <div className="shop-card">
+                <h3>Skroutz</h3>
+                <a href="https://www.skroutz.gr/" target="_blank">Ψάξε στο Skroutz</a>
+            </div>
+        </div>
+    );
+}
+
+function AITab({ selectedChild }) {
+    const [question, setQuestion] = useState('');
+    const [answer, setAnswer] = useState('');
+
+    const askAI = () => {
+        if (!question.trim()) {
+            setAnswer("Γράψε κάτι στο πεδίο για να σε βοηθήσω! 😊");
+            return;
         }
 
-        function AITab({ selectedChild }) {
-            const [question, setQuestion] = useState('');
-            const [answer, setAnswer] = useState('');
+        const q = question.toLowerCase().trim();
+        const name = selectedChild?.name || 'το παιδί';
+        const age = selectedChild?.age || 'μικρό παιδί';
+        const gender = selectedChild?.gender?.toLowerCase() || '';
+        const colors = selectedChild?.favoriteColors?.join(', ') || 'χρώματα που του/της αρέσουν';
+        const size = selectedChild?.clothingSize || 'κατάλληλο μέγεθος';
+        const shoe = selectedChild?.shoeSize || 'κατάλληλο νούμερο';
 
-            const askAI = () => {
-                if (!question.trim()) {
-                    setAnswer("Γράψε κάτι στο πεδίο για να σε βοηθήσω! 😊");
-                    return;
-                }
+        let response = `Γεια σου! Βλέπω ότι μιλάμε για ${name}, ${age} ετών ${gender}.`;
 
-                const q = question.toLowerCase().trim();
-                const name = selectedChild?.name || 'το παιδί';
-                const age = selectedChild?.age || 'μικρό παιδί';
-                const gender = selectedChild?.gender?.toLowerCase() || '';
-                const colors = selectedChild?.favoriteColors?.join(', ') || 'χρώματα που του/της αρέσουν';
-                const size = selectedChild?.clothingSize || 'κατάλληλο μέγεθος';
-                const shoe = selectedChild?.shoeSize || 'κατάλληλο νούμερο';
+        if (q.includes('μπουφάν') || q.includes('πανωφόρι') || q.includes('ζεστό') || q.includes('χειμώνα')) {
+            response += `\n\nΠροτείνω **αντιανεμικό/αδιάβροχο μπουφάν** με fleece ή γούνα εσωτερικά.`;
+            response += `\nΜέγεθος: ${size} ή 1-2 νούμερα μεγαλύτερο για να κρατήσει και του χρόνου.`;
+            response += `\nΤιμές τώρα: 20-45€ στο Shein ή Skroutz (πολλές εκπτώσεις χειμώνα).`;
+            response += `\nΙδανικά σε ${colors} για να του/της αρέσει!`;
+        } 
+        else if (q.includes('παπούτσια') || q.includes('μπότες') || q.includes('παπουτσ') || q.includes('sneakers')) {
+            response += `\n\nΓια ${age} ετών προτείνω **χειμερινές μπότες** ή αθλητικά με καλή σόλα και ζεστή φόδρα.`;
+            response += `\nΝούμερο: ${shoe} ή +1 για χοντρές κάλτσες.`;
+            response += `\nΚοίταξε στο Jumbo ή Public, έχουν πολλές επιλογές κάτω από 30-40€.`;
+        } 
+        else if (q.includes('δώρο') || q.includes('γενέθλια') || q.includes('christmas') || q.includes('δωρο')) {
+            response += `\n\nΚαλές ιδέες δώρων για ${age} ετών ${gender}:`;
+            response += `\n- Κούκλες, σετ δημιουργίας ή πριγκίπισσες (κορίτσι)`;
+            response += `\n- Lego, αυτοκινητάκια ή παιχνίδια δράσης (αγόρι)`;
+            response += `\n- Ρούχα ή αξεσουάρ σε ${colors}`;
+            response += `\nΨάξε Public, Jumbo ή Skroutz για προσφορές 15-60€.`;
+        } 
+        else if (q.includes('απόκρι') || q.includes('στολή') || q.includes('καρναβάλι') || q.includes('αποκριες')) {
+            response += `\n\nΕπειδή είναι κοντά Απόκριες, προτείνω **στολές** πριγκίπισσας, πειρατή, ζώου ή superhero.`;
+            response += `\nShein έχει πάρα πολύ φθηνές και όμορφες (10-25€).`;
+            response += `\nΠάρε μέγεθος ${size} ή λίγο μεγαλύτερο για άνεση.`;
+        } 
+        else if (q.includes('ρούχα') || q.includes('παντελόνι') || q.includes('φορεμα') || q.includes('φούστα')) {
+            response += `\n\nΓια ${age} ετών ${gender} προτείνω άνετα και ζεστά ρούχα χειμώνα.`;
+            response += `\nΠροτίμησε σετ φούτερ + παντελόνι ή φόρμες σε ${colors}.`;
+            response += `\nShein και H&M έχουν πολλές επιλογές κάτω από 20-30€.`;
+        } 
+        else {
+            response += `\n\nΔεν κατάλαβα ακριβώς τι ψάχνεις, αλλά μπορώ να σε βοηθήσω καλύτερα αν μου πεις συγκεκριμένα!`;
+            response += `\n\nΠαραδείγματα ερωτήσεων:`;
+            response += `\n- χειμερινό μπουφάν για κορίτσι`;
+            response += `\n- δώρο γενεθλίων 5 ετών`;
+            response += `\n- παπούτσια μέγεθος 29`;
+            response += `\n- στολή απόκριες budget 20€`;
+            response += `\n\nΔοκίμασε κάτι τέτοιο! 😊`;
+        }
 
-                let response = `Γεια σου! Βλέπω ότι μιλάμε για ${name}, ${age} ετών ${gender}.`;
+        setAnswer(response);
+        setQuestion('');
+    };
 
-                if (q.includes('μπουφάν') || q.includes('πανωφόρι') || q.includes('ζεστό') || q.includes('χειμώνα')) {
-                    response += `\n\nΠροτείνω **αντιανεμικό/αδιάβροχο μπουφάν** με fleece ή γούνα εσωτερικά.`;
-                    response += `\nΜέγεθος: ${size} ή 1-2 νούμερα μεγαλύτερο για να κρατήσει και του χρόνου.`;
-                    response += `\nΤιμές τώρα: 20-45€ στο Shein ή Skroutz (πολλές εκπτώσεις χειμώνα).`;
-                    response += `\nΙδανικά σε ${colors} για να του/της αρέσει!`;
-                } 
-                else if (q.includes('παπούτσια') || q.includes('μπότες') || q.includes('παπουτσ') || q.includes('sneakers')) {
-                    response += `\n\nΓια ${age} ετών προτείνω **χειμερινές μπότες** ή αθλητικά με καλή σόλα και ζεστή φόδρα.`;
-                    response += `\nΝούμερο: ${shoe} ή +1 για χοντρές κάλτσες.`;
-                    response += `\nΚοίταξε στο Jumbo ή Public, έχουν πολλές επιλογές κάτω από 30-40€.`;
-                } 
-                else if (q.includes('δώρο') || q.includes('γενέθλια') || q.includes('christmas') || q.includes('δωρο')) {
-                    response += `\n\nΚαλές ιδέες δώρων για ${age} ετών ${gender}:`;
-                    response += `\n- Κούκλες, σετ δημιουργίας ή πριγκίπισσες (κορίτσι)`;
-                    response += `\n- Lego, αυτοκινητάκια ή παιχνίδια δράσης (αγόρι)`;
-                    response += `\n- Ρούχα ή αξεσουάρ σε ${colors}`;
-                    response += `\nΨάξε Public, Jumbo ή Skroutz για προσφορές 15-60€.`;
-                } 
-                else if (q.includes('απόκρι') || q.includes('στολή') || q.includes('καρναβάλι') || q.includes('αποκριες')) {
-                    response += `\n\nΕπειδή είναι κοντά Απόκριες, προτείνω **στολές** πριγκίπισσας, πειρατή, ζώου ή superhero.`;
-                    response += `\nShein έχει πάρα πολύ φθηνές και όμορφες (10-25€).`;
-                    response += `\nΠάρε μέγεθος ${size} ή λίγο μεγαλύτερο για άνεση.`;
-                } 
-                else if (q.includes('ρούχα') || q.includes('παντελόνι') || q.includes('φορεμα') || q.includes('φούστα')) {
-                    response += `\n\nΓια ${age} ετών ${gender} προτείνω άνετα και ζεστά ρούχα χειμώνα.`;
-                    response += `\nΠροτίμησε σετ φούτερ + παντελόνι ή φόρμες σε ${colors}.`;
-                    response += `\nShein και H&M έχουν πολλές επιλογές κάτω από 20-30€.`;
-                } 
-                else {
-                    response += `\n\nΔεν κατάλαβα ακριβώς τι ψάχνεις, αλλά μπορώ να βοηθήσω καλύτερα αν μου πεις συγκεκριμένα!`;
-                    response += `\n\nΠαραδείγματα ερωτήσεων:`;
-                    response += `\n- χειμερινό μπουφάν για κορίτσι`;
-                    response += `\n- δώρο γενεθλίων 5 ετών`;
-                    response += `\n- παπούτσια μέγεθος 29`;
-                    response += `\n- στολή απόκριες budget 20€`;
-                    response += `\n\nΔοκίμασε κάτι τέτοιο! 😊`;
-                }
+    return (
+        <div>
+            <div className="section-title">AI Σύμβουλος Αγορών</div>
+            <p style={{color: '#666', marginBottom: '16px'}}>
+                Ρώτα για ρούχα, δώρα, μεγέθη, προτάσεις για {selectedChild?.name || 'το παιδί σου'}
+            </p>
 
-                setAnswer(response);
-                setQuestion('');
-            };
+            <textarea 
+                className="edit-input" 
+                placeholder="π.χ. χειμερινό μπουφάν, δώρο γενεθλίων, στολή απόκριες budget 20€" 
+                value={question} 
+                onChange={e => setQuestion(e.target.value)}
+                style={{width: '100%', height: '100px', resize: 'none', marginBottom: '12px'}}
+            />
 
-            return (
+            <button className="btn-primary" onClick={askAI}>Ρώτα τον Σύμβουλο</button>
+
+            {answer && (
+                <div className="ai-response">
+                    {answer}
+                </div>
+            )}
+        </div>
+    );
+}
+
+function NeedsTab({ selectedChild, savedNeeds, setSavedNeeds }) {
+    const [search, setSearch] = useState('');
+
+    const addNeed = () => {
+        if (search.trim()) {
+            setSavedNeeds(prev => [...prev, search.trim()]);
+            setSearch('');
+        }
+    };
+
+    return (
+        <div>
+            <div className="section-title">Τι χρειάζεται {selectedChild?.name || 'το παιδί'};</div>
+            <div style={{display: 'flex', gap: '8px', marginBottom: '20px'}}>
+                <input 
+                    className="edit-input" 
+                    placeholder="π.χ. χειμερινό μπουφάν, παπούτσια 29, στολή απόκριες" 
+                    value={search} 
+                    onChange={e => setSearch(e.target.value)} 
+                    style={{flex: 1}}
+                />
+                <button className="btn-primary" onClick={addNeed} style={{width: 'auto', padding: '0 20px'}}>Προσθήκη</button>
+            </div>
+
+            {savedNeeds.length > 0 ? (
                 <div>
-                    <div className="section-title">AI Σύμβουλος Αγορών</div>
-                    <p style={{color: '#666', marginBottom: '16px'}}>
-                        Ρώτα για ρούχα, δώρα, μεγέθη, προτάσεις για {selectedChild?.name || 'το παιδί σου'}
-                    </p>
-
-                    <textarea 
-                        className="edit-input" 
-                        placeholder="π.χ. χειμερινό μπουφάν, δώρο γενεθλίων, στολή απόκριες budget 20€" 
-                        value={question} 
-                        onChange={e => setQuestion(e.target.value)}
-                        style={{width: '100%', height: '100px', resize: 'none', marginBottom: '12px'}}
-                    />
-
-                    <button className="btn-primary" onClick={askAI}>Ρώτα τον Σύμβουλο</button>
-
-                    {answer && (
-                        <div className="ai-response">
-                            {answer}
+                    <div className="section-title">Αποθηκευμένες ανάγκες</div>
+                    {savedNeeds.map((need, i) => (
+                        <div key={i} className="need-item">
+                            {need}
                         </div>
-                    )}
+                    ))}
                 </div>
-            );
-        }
+            ) : (
+                <p style={{color: '#666'}}>Πρόσθεσε την πρώτη σου ανάγκη παραπάνω</p>
+            )}
 
-        function NeedsTab({ selectedChild, savedNeeds, setSavedNeeds }) {
-            const [search, setSearch] = useState('');
+            <div className="section-title" style={{marginTop: '24px'}}>Γρήγορα links αναζήτησης</div>
+            <div className="shop-card">
+                <h3>Shein Παιδικά</h3>
+                <a href="https://eur.shein.com/Kids-c-2031.html" target="_blank">Ψάξε στο Shein</a>
+            </div>
+            <div className="shop-card">
+                <h3>Skroutz</h3>
+                <a href="https://www.skroutz.gr/" target="_blank">Ψάξε στο Skroutz</a>
+            </div>
+        </div>
+    );
+}
 
-            const addNeed = () => {
-                if (search.trim()) {
-                    setSavedNeeds(prev => [...prev, search.trim()]);
-                    setSearch('');
-                }
-            };
+function DealsTab() {
+    return (
+        <div>
+            <div className="section-title">Πραγματικές Προσφορές Τώρα</div>
+            <p style={{color: '#666', marginBottom: '20px'}}>
+                Πάτα για να δεις live εκπτώσεις σε παιδικά ρούχα & παιχνίδια
+            </p>
 
-            return (
-                <div>
-                    <div className="section-title">Τι χρειάζεται {selectedChild?.name || 'το παιδί'};</div>
-                    <div style={{display: 'flex', gap: '8px', marginBottom: '20px'}}>
-                        <input 
-                            className="edit-input" 
-                            placeholder="π.χ. χειμερινό μπουφάν, παπούτσια 29, στολή απόκριες" 
-                            value={search} 
-                            onChange={e => setSearch(e.target.value)} 
-                            style={{flex: 1}}
-                        />
-                        <button className="btn-primary" onClick={addNeed} style={{width: 'auto', padding: '0 20px'}}>Προσθήκη</button>
-                    </div>
+            <div className="shop-card">
+                <h3>Shein Παιδικά</h3>
+                <p>Πολύ φθηνά ρούχα, συχνές προσφορές</p>
+                <a href="https://eur.shein.com/Kids-c-2031.html" target="_blank" rel="noopener noreferrer">
+                    Δες τώρα στο Shein →
+                </a>
+            </div>
 
-                    {savedNeeds.length > 0 ? (
-                        <div>
-                            <div className="section-title">Αποθηκευμένες ανάγκες</div>
-                            {savedNeeds.map((need, i) => (
-                                <div key={i} className="need-item">
-                                    {need}
-                                </div>
-                            ))}
-                        </div>
-                    ) : (
-                        <p style={{color: '#666'}}>Πρόσθεσε την πρώτη σου ανάγκη παραπάνω</p>
-                    )}
+            <div className="shop-card">
+                <h3>Skroutz Παιδικά Ρούχα</h3>
+                <p>Σύγκριση τιμών από πολλά καταστήματα</p>
+                <a href="https://www.skroutz.gr/c/380/paidika-rouxa.html?sort=price_asc" target="_blank" rel="noopener noreferrer">
+                    Δες φθηνότερα ρούχα →
+                </a>
+            </div>
 
-                    <div className="section-title" style={{marginTop: '24px'}}>Γρήγορα links αναζήτησης</div>
-                    <div className="shop-card">
-                        <h3>Shein Παιδικά</h3>
-                        <a href="https://eur.shein.com/Kids-c-2031.html" target="_blank">Ψάξε στο Shein</a>
-                    </div>
-                    <div className="shop-card">
-                        <h3>Skroutz</h3>
-                        <a href="https://www.skroutz.gr/" target="_blank">Ψάξε στο Skroutz</a>
-                    </div>
-                </div>
-            );
-        }
+            <div className="shop-card">
+                <h3>Jumbo Παιδικά</h3>
+                <p>Παιχνίδια, ρούχα & πολλές εκπτώσεις</p>
+                <a href="https://www.e-jumbo.gr/paichnidia/paidika-rouxa" target="_blank" rel="noopener noreferrer">
+                    Δες Jumbo →
+                </a>
+            </div>
 
-        function DealsTab() {
-            return (
-                <div>
-                    <div className="section-title">Πραγματικές Προσφορές Τώρα</div>
-                    <p style={{color: '#666', marginBottom: '20px'}}>
-                        Πάτα για να δεις live εκπτώσεις σε παιδικά ρούχα & παιχνίδια
-                    </p>
+            <div className="shop-card">
+                <h3>Public Παιχνίδια & Ρούχα</h3>
+                <p>Προσφορές σε LEGO, παιχνίδια κλπ</p>
+                <a href="https://www.public.gr/cat/paidika-paixnidia/paixnidia" target="_blank" rel="noopener noreferrer">
+                    Δες Public →
+                </a>
+            </div>
 
-                    <div className="shop-card">
-                        <h3>Shein Παιδικά</h3>
-                        <p>Πολύ φθηνά ρούχα, συχνές προσφορές</p>
-                        <a href="https://eur.shein.com/Kids-c-2031.html" target="_blank" rel="noopener noreferrer">
-                            Δες τώρα στο Shein →
-                        </a>
-                    </div>
+            <div className="shop-card">
+                <h3>H&M Kids</h3>
+                <p>Μοντέρνα ρούχα για παιδιά</p>
+                <a href="https://www2.hm.com/el_gr/kids.html" target="_blank" rel="noopener noreferrer">
+                    Δες H&M Kids →
+                </a>
+            </div>
+        </div>
+    );
+}
 
-                    <div className="shop-card">
-                        <h3>Skroutz Παιδικά Ρούχα</h3>
-                        <p>Σύγκριση τιμών από πολλά καταστήματα</p>
-                        <a href="https://www.skroutz.gr/c/380/paidika-rouxa.html?sort=price_asc" target="_blank" rel="noopener noreferrer">
-                            Δες φθηνότερα ρούχα →
-                        </a>
-                    </div>
-
-                    <div className="shop-card">
-                        <h3>Jumbo Παιδικά</h3>
-                        <p>Παιχνίδια, ρούχα & πολλές εκπτώσεις</p>
-                        <a href="https://www.e-jumbo.gr/paichnidia/paidika-rouxa" target="_blank" rel="noopener noreferrer">
-                            Δες Jumbo →
-                        </a>
-                    </div>
-
-                    <div className="shop-card">
-                        <h3>Public Παιχνίδια & Ρούχα</h3>
-                        <p>Προσφορές σε LEGO, παιχνίδια κλπ</p>
-                        <a href="https://www.public.gr/cat/paidika-paixnidia/paixnidia" target="_blank" rel="noopener noreferrer">
-                            Δες Public →
-                        </a>
-                    </div>
-
-                    <div className="shop-card">
-                        <h3>H&M Kids</h3>
-                        <p>Μοντέρνα ρούχα για παιδιά</p>
-                        <a href="https://www2.hm.com/el_gr/kids.html" target="_blank" rel="noopener noreferrer">
-                            Δες H&M Kids →
-                        </a>
-                    </div>
-                </div>
-            );
-        }
-
-        ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));
     </script>
 </body>
 </html>
