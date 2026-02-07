@@ -8,24 +8,121 @@
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
-        /* ... (ο ίδιος CSS που είχες πριν, τον κρατάμε ίδιο) ... */
-        .shop-card {
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .app-container {
+            max-width: 420px;
+            margin: 0 auto;
             background: white;
-            border: 1px solid #ddd;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 16px;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 24px;
             text-align: center;
         }
-        .shop-card a {
-            display: block;
-            margin-top: 12px;
-            background: #667eea;
+        .header h1 { font-size: 24px; margin-bottom: 8px; }
+        .header p { opacity: 0.9; font-size: 14px; }
+        .nav-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            overflow-x: auto;
+        }
+        .nav-tab {
+            flex: 1;
+            padding: 16px 12px;
+            background: none;
+            border: none;
+            font-size: 13px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+        }
+        .nav-tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            background: white;
+        }
+        .content { padding: 20px; max-height: 600px; overflow-y: auto; }
+
+        .child-profile {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 16px;
+            padding: 20px;
             color: white;
+            margin-bottom: 20px;
+        }
+        .profile-header { display: flex; align-items: center; margin-bottom: 16px; }
+        .profile-avatar {
+            width: 60px; height: 60px; border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 28px; margin-right: 16px;
+            background-size: cover; background-position: center;
+        }
+        .profile-info h2 { font-size: 20px; margin-bottom: 4px; }
+        .profile-info p { opacity: 0.9; font-size: 14px; }
+        .profile-details { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .detail-item {
+            background: rgba(255,255,255,0.2);
             padding: 12px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
+            border-radius: 12px;
+        }
+        .detail-label { font-size: 11px; opacity: 0.8; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .detail-value { font-size: 16px; font-weight: 600; }
+
+        .home-profile-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+        .home-profile-item {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 16px; padding: 16px; color: white;
+            display: flex; align-items: center; cursor: pointer;
+        }
+        .home-profile-item.selected { border: 3px solid #667eea; }
+        .home-profile-avatar { width: 40px; height: 40px; border-radius: 50%; background-size: cover; margin-right: 16px; }
+
+        .notification-section { margin-top: 24px; }
+        .notification-card {
+            background: #fee; border-radius: 12px; padding: 16px;
+            margin-bottom: 12px; color: #c00; border-left: 4px solid #c00;
+        }
+
+        .edit-form {
+            background: #f8f9fa; padding: 20px; border-radius: 16px;
+            margin: 16px 0; display: flex; flex-direction: column; gap: 14px;
+        }
+        .edit-input {
+            padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px;
+        }
+
+        .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: #333; }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; border: none; padding: 14px 24px;
+            border-radius: 12px; font-size: 15px; font-weight: 600;
+            cursor: pointer; width: 100%;
+        }
+        .empty-state { text-align: center; padding: 40px 20px; color: #999; }
+        .empty-state-icon { font-size: 48px; margin-bottom: 16px; }
+
+        .shop-card {
+            background: white; border: 1px solid #ddd; border-radius: 12px;
+            padding: 16px; margin-bottom: 16px; text-align: center;
+        }
+        .shop-card a {
+            display: block; margin-top: 12px; background: #667eea; color: white;
+            padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold;
         }
     </style>
 </head>
@@ -35,50 +132,185 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        // ... (όλος ο προηγούμενος κώδικας για App, ProfileTab, NeedsTab, AITab μένει ίδιος)
+        const initialOccasions = [
+            { id: 1, name: "Καθαρά Δευτέρα", date: "2026-03-02", icon: "🪁", alert: "" },
+            { id: 2, name: "Απόκριες", date: "2026-02-19", icon: "🎭", alert: "⚠️ ΕΠΕΙΓΟΝ!" },
+            { id: 3, name: "Πάσχα", date: "2026-04-19", icon: "🕯️", alert: "" },
+        ];
 
-        // Προσθέτουμε νέο content για tab Προσφορές
-        function DealsTab() {
+        function calculateDaysUntil(dateStr) {
+            const now = new Date();
+            const event = new Date(dateStr);
+            const diff = event - now;
+            return Math.ceil(diff / (1000 * 60 * 60 * 24));
+        }
+
+        function App() {
+            const [activeTab, setActiveTab] = useState('home');
+            const [children, setChildren] = useState([]);
+            const [selectedChildId, setSelectedChildId] = useState(null);
+
+            useEffect(() => {
+                const saved = localStorage.getItem('kidsShoppingChildren');
+                const initial = saved ? JSON.parse(saved) : [{
+                    id: 1,
+                    name: "Σοφία",
+                    age: 5,
+                    gender: "Κορίτσι",
+                    clothingSize: "110cm",
+                    shoeSize: "28",
+                    favoriteColors: ["Ροζ", "Μωβ"],
+                    avatarBase64: null
+                }];
+                setChildren(initial);
+                setSelectedChildId(initial[0]?.id || null);
+            }, []);
+
+            useEffect(() => {
+                if (children.length > 0) {
+                    localStorage.setItem('kidsShoppingChildren', JSON.stringify(children));
+                }
+            }, [children]);
+
+            const selectedChild = children.find(c => c.id === selectedChildId) || null;
+
+            const updateChild = (updated) => {
+                setChildren(prev => prev.map(c => c.id === updated.id ? updated : c));
+            };
+
+            const upcoming = initialOccasions
+                .map(o => ({ ...o, daysUntil: calculateDaysUntil(o.date) }))
+                .filter(o => o.daysUntil > 0 && o.daysUntil <= 31)
+                .sort((a, b) => a.daysUntil - b.daysUntil);
+
             return (
-                <div>
-                    <div className="section-title">Πραγματικές Προσφορές Τώρα</div>
-                    <p style={{color: '#666', marginBottom: '20px'}}>Πάτα στα καταστήματα για να δεις live εκπτώσεις σε παιδικά ρούχα & παιχνίδια</p>
-
-                    <div className="shop-card">
-                        <h3>Shein Παιδικά</h3>
-                        <p>Πολύ φθηνά ρούχα, συχνές εκπτώσεις</p>
-                        <a href="https://eur.shein.com/Kids-c-2031.html" target="_blank">Δες παιδικά στο Shein →</a>
+                <div className="app-container">
+                    <div className="header">
+                        <h1>👶 Smart Kids Shopping</h1>
+                        <p>Ο έξυπνος σύμβουλος αγορών για γονείς</p>
                     </div>
 
-                    <div className="shop-card">
-                        <h3>Skroutz Παιδικά Ρούχα</h3>
-                        <p>Σύγκριση τιμών από πολλά μαγαζιά</p>
-                        <a href="https://www.skroutz.gr/c/380/paidika-rouxa.html?sort=price_asc" target="_blank">Δες φθηνότερα ρούχα →</a>
+                    <div className="nav-tabs">
+                        <button className={`nav-tab ${activeTab === 'home' ? 'active' : ''}`} onClick={() => setActiveTab('home')}>🏠 Αρχική</button>
+                        <button className={`nav-tab ${activeTab === 'profile' ? 'active' : ''}`} onClick={() => setActiveTab('profile')}>👤 Προφίλ</button>
+                        <button className={`nav-tab ${activeTab === 'deals' ? 'active' : ''}`} onClick={() => setActiveTab('deals')}>🔥 Προσφορές</button>
                     </div>
 
-                    <div className="shop-card">
-                        <h3>Jumbo Παιδικά</h3>
-                        <p>Παιχνίδια & ρούχα με προσφορές</p>
-                        <a href="https://www.e-jumbo.gr/paichnidia/paidika-rouxa" target="_blank">Δες Jumbo παιδικά →</a>
-                    </div>
+                    <div className="content">
+                        {activeTab === 'home' && (
+                            <div>
+                                <div className="section-title">Τα Παιδιά μου</div>
+                                <div className="home-profile-list">
+                                    {children.map(child => (
+                                        <div
+                                            key={child.id}
+                                            className={`home-profile-item ${child.id === selectedChildId ? 'selected' : ''}`}
+                                            onClick={() => setSelectedChildId(child.id)}
+                                        >
+                                            <div className="home-profile-avatar" style={{backgroundImage: `url(${child.avatarBase64})`}}>
+                                                {!child.avatarBase64 && '👧'}
+                                            </div>
+                                            <div>
+                                                <div style={{fontWeight: 'bold'}}>{child.name}</div>
+                                                <div style={{fontSize: '14px'}}>{child.age} ετών • {child.gender}</div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                {upcoming.length > 0 && (
+                                    <div className="notification-section">
+                                        <div className="section-title">Άμεσες Ειδοποιήσεις</div>
+                                        {upcoming.map(o => (
+                                            <div key={o.id} className="notification-card">
+                                                <strong>{o.icon} {o.name}</strong><br />
+                                                Σε {o.daysUntil} μέρες
+                                                {o.alert && <div style={{marginTop: '6px'}}>{o.alert}</div>}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        )}
 
-                    <div className="shop-card">
-                        <h3>Public Παιχνίδια</h3>
-                        <p>Προσφορές σε LEGO, παιχνίδια κλπ</p>
-                        <a href="https://www.public.gr/cat/paidika-paixnidia/paixnidia" target="_blank">Δες Public παιχνίδια →</a>
+                        {activeTab === 'profile' && (
+                            <div>
+                                {selectedChild ? (
+                                    <div>
+                                        <div className="section-title">Προφίλ Παιδιού</div>
+                                        <div className="child-profile">
+                                            <div className="profile-header">
+                                                <div className="profile-avatar" style={{backgroundImage: `url(${selectedChild.avatarBase64})`}}>
+                                                    {!selectedChild.avatarBase64 && '👧'}
+                                                </div>
+                                                <div className="profile-info">
+                                                    <h2>{selectedChild.name}</h2>
+                                                    <p>{selectedChild.age} ετών • {selectedChild.gender}</p>
+                                                </div>
+                                            </div>
+                                            <div className="profile-details">
+                                                <div className="detail-item">
+                                                    <div className="detail-label">Ρούχα</div>
+                                                    <div className="detail-value">{selectedChild.clothingSize || '-'}</div>
+                                                </div>
+                                                <div className="detail-item">
+                                                    <div className="detail-label">Παπούτσια</div>
+                                                    <div className="detail-value">{selectedChild.shoeSize || '-'}</div>
+                                                </div>
+                                                <div className="detail-item">
+                                                    <div className="detail-label">Χρώματα</div>
+                                                    <div className="detail-value">{(selectedChild.favoriteColors || []).join(', ') || '-'}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button className="btn-primary" style={{marginTop: '16px'}}>
+                                            ✏️ Επεξεργασία (προσθήκη αργότερα)
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className="empty-state">
+                                        <div className="empty-state-icon">👶</div>
+                                        <p>Επίλεξε ή πρόσθεσε παιδί από την αρχική</p>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {activeTab === 'deals' && (
+                            <div>
+                                <div className="section-title">Πραγματικές Προσφορές Τώρα</div>
+                                <p style={{color: '#666', marginBottom: '20px'}}>
+                                    Πάτα για να δεις live εκπτώσεις σε παιδικά ρούχα & παιχνίδια
+                                </p>
+
+                                <div className="shop-card">
+                                    <h3>Shein Παιδικά</h3>
+                                    <p>Πολύ οικονομικά, πολλές επιλογές</p>
+                                    <a href="https://eur.shein.com/Kids-c-2031.html" target="_blank" rel="noopener noreferrer">
+                                        Δες τώρα στο Shein →
+                                    </a>
+                                </div>
+
+                                <div className="shop-card">
+                                    <h3>Skroutz Παιδικά Ρούχα</h3>
+                                    <p>Σύγκριση τιμών από πολλά μαγαζιά</p>
+                                    <a href="https://www.skroutz.gr/c/380/paidika-rouxa.html?sort=price_asc" target="_blank" rel="noopener noreferrer">
+                                        Δες φθηνότερα ρούχα →
+                                    </a>
+                                </div>
+
+                                <div className="shop-card">
+                                    <h3>Jumbo Παιδικά</h3>
+                                    <p>Παιχνίδια, ρούχα & προσφορές</p>
+                                    <a href="https://www.e-jumbo.gr/paichnidia/paidika-rouxa" target="_blank" rel="noopener noreferrer">
+                                        Δες Jumbo →
+                                    </a>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             );
         }
-
-        // Στο App function, πρόσθεσε το tab Deals
-        // Αντικατέστησε το παλιό DealsTab με το παραπάνω και πρόσθεσε στο nav-tabs:
-        // <button className={`nav-tab ${activeTab === 'deals' ? 'active' : ''}`} onClick={() => setActiveTab('deals')}>🔥 Προσφορές</button>
-
-        // Στο content:
-        {activeTab === 'deals' && <DealsTab />}
-
-        // ... υπόλοιπος κώδικας App ...
 
         ReactDOM.render(<App />, document.getElementById('root'));
     </script>
