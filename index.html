@@ -57,7 +57,6 @@
         }
         .content { padding: 20px; max-height: 600px; overflow-y: auto; }
 
-        /* Child Profile */
         .child-profile {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             border-radius: 16px;
@@ -86,7 +85,7 @@
         }
         .detail-value { font-size: 16px; font-weight: 600; }
 
-        /* Home screen extras */
+        /* Home extras */
         .home-profile-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
         .home-profile-item {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
@@ -95,14 +94,16 @@
         }
         .home-profile-item.selected { border: 3px solid #667eea; }
         .home-profile-avatar { font-size: 32px; margin-right: 16px; }
+
         .notification-section { margin-top: 24px; }
         .notification-card {
             background: #fee; border-radius: 12px; padding: 16px;
             margin-bottom: 12px; color: #c00; border-left: 4px solid #c00;
         }
+
         .edit-form {
             background: #f8f9fa; padding: 20px; border-radius: 16px;
-            margin: 16px 0; display: flex; flex-direction: column; gap: 12px;
+            margin: 16px 0; display: flex; flex-direction: column; gap: 14px;
         }
         .edit-input {
             padding: 12px; border: 1px solid #ddd; border-radius: 8px;
@@ -116,7 +117,12 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white; border: none; padding: 14px 24px;
             border-radius: 12px; font-size: 15px; font-weight: 600;
-            cursor: pointer; width: 100%; margin-top: 12px;
+            cursor: pointer; width: 100%;
+        }
+        .btn-secondary {
+            background: #e0e0e0; color: #333; border: none;
+            padding: 14px 24px; border-radius: 12px; font-size: 15px;
+            cursor: pointer; width: 100%;
         }
         .empty-state {
             text-align: center; padding: 40px 20px; color: #999;
@@ -130,7 +136,7 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        // Mock data (μπορείς να τα επεκτείνεις αργότερα)
+        // Mock occasions για ειδοποιήσεις
         const initialOccasions = [
             { id: 1, name: "Καθαρά Δευτέρα", date: "2026-03-02", icon: "🪁", alert: "" },
             { id: 2, name: "Απόκριες (Τσικνοπέμπτη)", date: "2026-02-19", icon: "🎭", alert: "⚠️ ΕΠΕΙΓΟΝ: Λίγες μέρες!" },
@@ -148,7 +154,6 @@
             const [activeTab, setActiveTab] = useState('home');
             const [children, setChildren] = useState([]);
             const [selectedChildId, setSelectedChildId] = useState(null);
-            const [editingChild, setEditingChild] = useState(null);
 
             useEffect(() => {
                 const saved = localStorage.getItem('kidsShoppingChildren');
@@ -162,7 +167,7 @@
                     favoriteColors: ["Ροζ", "Μωβ"]
                 }];
                 setChildren(initial);
-                if (!selectedChildId) setSelectedChildId(initial[0]?.id || null);
+                setSelectedChildId(initial[0]?.id || null);
             }, []);
 
             useEffect(() => {
@@ -173,15 +178,8 @@
 
             const selectedChild = children.find(c => c.id === selectedChildId) || null;
 
-            const saveChild = (data) => {
-                if (data.id) {
-                    setChildren(prev => prev.map(c => c.id === data.id ? { ...c, ...data } : c));
-                } else {
-                    const newId = Math.max(0, ...children.map(c => c.id || 0)) + 1;
-                    setChildren(prev => [...prev, { id: newId, ...data }]);
-                    setSelectedChildId(newId);
-                }
-                setEditingChild(null);
+            const updateChild = (updated) => {
+                setChildren(prev => prev.map(c => c.id === updated.id ? updated : c));
             };
 
             const upcoming = initialOccasions
@@ -224,146 +222,159 @@
                                     ))}
                                 </div>
 
-                                <button className="btn-primary" onClick={() => setEditingChild({})}>
-                                    + Προσθήκη Παιδιού
+                                <button className="btn-primary" onClick={() => setSelectedChildId(null)} style={{marginTop: '16px'}}>
+                                    + Προσθήκη νέου παιδιού
                                 </button>
-
-                                {editingChild && (
-                                    <div className="edit-form">
-                                        <input
-                                            className="edit-input"
-                                            placeholder="Όνομα"
-                                            value={editingChild.name || ''}
-                                            onChange={e => setEditingChild({...editingChild, name: e.target.value})}
-                                        />
-                                        <input
-                                            className="edit-input"
-                                            type="number"
-                                            placeholder="Ηλικία"
-                                            value={editingChild.age || ''}
-                                            onChange={e => setEditingChild({...editingChild, age: e.target.value ? Number(e.target.value) : ''})}
-                                        />
-                                        <input
-                                            className="edit-input"
-                                            placeholder="Φύλο (Κορίτσι / Αγόρι)"
-                                            value={editingChild.gender || ''}
-                                            onChange={e => setEditingChild({...editingChild, gender: e.target.value})}
-                                        />
-                                        <input
-                                            className="edit-input"
-                                            placeholder="Μέγεθος ρούχων"
-                                            value={editingChild.clothingSize || ''}
-                                            onChange={e => setEditingChild({...editingChild, clothingSize: e.target.value})}
-                                        />
-                                        <input
-                                            className="edit-input"
-                                            placeholder="Νούμερο παπουτσιού"
-                                            value={editingChild.shoeSize || ''}
-                                            onChange={e => setEditingChild({...editingChild, shoeSize: e.target.value})}
-                                        />
-                                        <input
-                                            className="edit-input"
-                                            placeholder="Αγαπημένα χρώματα (κόμμα)"
-                                            value={(editingChild.favoriteColors || []).join(', ')}
-                                            onChange={e => setEditingChild({...editingChild, favoriteColors: e.target.value.split(',').map(s => s.trim())})}
-                                        />
-                                        <div style={{display: 'flex', gap: '12px', marginTop: '16px'}}>
-                                            <button className="btn-primary" style={{flex:1}} onClick={() => saveChild(editingChild)}>
-                                                Αποθήκευση
-                                            </button>
-                                            <button style={{flex:1, background:'#ccc', color:'#333'}} onClick={() => setEditingChild(null)}>
-                                                Άκυρο
-                                            </button>
-                                        </div>
-                                    </div>
-                                )}
 
                                 {upcoming.length > 0 && (
                                     <div className="notification-section">
-                                        <div className="section-title">Άμεσες Ειδοποιήσεις (μέχρι 1 μήνα)</div>
+                                        <div className="section-title">Άμεσες Ειδοποιήσεις</div>
                                         {upcoming.map(o => (
                                             <div key={o.id} className="notification-card">
                                                 <strong>{o.icon} {o.name}</strong><br/>
-                                                Σε {o.daysUntil} μέρες<br/>
-                                                {o.alert && <strong>{o.alert}</strong>}
+                                                Σε {o.daysUntil} μέρες
+                                                {o.alert && <div style={{marginTop: '6px'}}>{o.alert}</div>}
                                             </div>
                                         ))}
-                                    </div>
-                                )}
-
-                                {upcoming.length === 0 && (
-                                    <div style={{textAlign:'center', color:'#666', marginTop:'30px'}}>
-                                        Δεν υπάρχουν άμεσες περιστάσεις αυτόν τον μήνα
                                     </div>
                                 )}
                             </div>
                         )}
 
-                        {activeTab === 'profile' && selectedChild ? (
-                            <div>
-                                <div className="section-title">Προφίλ Παιδιού</div>
-                                <div className="child-profile">
-                                    <div className="profile-header">
-                                        <div className="profile-avatar">👧</div>
-                                        <div className="profile-info">
-                                            <h2>{selectedChild.name}</h2>
-                                            <p>{selectedChild.age} ετών • {selectedChild.gender}</p>
-                                        </div>
-                                    </div>
-                                    <div className="profile-details">
-                                        <div className="detail-item">
-                                            <div className="detail-label">Ρούχα</div>
-                                            <div className="detail-value">{selectedChild.clothingSize || '-'}</div>
-                                        </div>
-                                        <div className="detail-item">
-                                            <div className="detail-label">Παπούτσια</div>
-                                            <div className="detail-value">{selectedChild.shoeSize || '-'}</div>
-                                        </div>
-                                        <div className="detail-item">
-                                            <div className="detail-label">Χρώματα</div>
-                                            <div className="detail-value">{(selectedChild.favoriteColors || []).join(', ') || '-'}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button className="btn-primary" onClick={() => setEditingChild({...selectedChild})}>
-                                    ✏️ Επεξεργασία
-                                </button>
-                            </div>
-                        ) : activeTab === 'profile' && (
+                        {activeTab === 'profile' && (
+                            <ProfileTab
+                                selectedChild={selectedChild}
+                                onUpdateChild={updateChild}
+                                onAddNew={() => setSelectedChildId(null)}
+                            />
+                        )}
+
+                        {['recommendations','deals','occasions'].includes(activeTab) && !selectedChild && (
                             <div className="empty-state">
                                 <div className="empty-state-icon">👶</div>
                                 <p>Επίλεξε ένα παιδί από την αρχική οθόνη</p>
                             </div>
                         )}
 
-                        {['recommendations','deals','occasions'].includes(activeTab) && !selectedChild && (
-                            <div className="empty-state">
-                                <div className="empty-state-icon">👶</div>
-                                <p>Επίλεξε ένα παιδί από την αρχική οθόνη για να δεις περιεχόμενο</p>
-                            </div>
-                        )}
-
                         {activeTab === 'recommendations' && selectedChild && (
                             <div>
                                 <div className="section-title">Προτάσεις για {selectedChild.name}</div>
-                                <p style={{color:'#666'}}>Εδώ θα μπουν προτάσεις ρούχων/παιχνιδιών αργότερα...</p>
+                                <p style={{color:'#666'}}>(Περιεχόμενο θα προστεθεί αργότερα)</p>
                             </div>
                         )}
 
                         {activeTab === 'deals' && (
                             <div>
                                 <div className="section-title">Προσφορές</div>
-                                <p style={{color:'#666'}}>Προσφορές από καταστήματα (mock)</p>
+                                <p style={{color:'#666'}}>(Προσφορές mock - θα συνδεθούν αργότερα)</p>
                             </div>
                         )}
 
                         {activeTab === 'occasions' && (
                             <div>
                                 <div className="section-title">Περιστάσεις</div>
-                                <p style={{color:'#666'}}>Λίστα με γενέθλια, γιορτές κλπ (θα επεκταθεί)</p>
+                                <p style={{color:'#666'}}>(Λίστα εορτών & εκδηλώσεων - θα επεκταθεί)</p>
                             </div>
                         )}
                     </div>
+                </div>
+            );
+        }
+
+        function ProfileTab({ selectedChild, onUpdateChild, onAddNew }) {
+            const [isEditing, setIsEditing] = useState(false);
+            const [formData, setFormData] = useState(selectedChild || {});
+
+            useEffect(() => {
+                if (selectedChild) {
+                    setFormData(selectedChild);
+                    setIsEditing(false);
+                }
+            }, [selectedChild]);
+
+            if (!selectedChild) {
+                return (
+                    <div>
+                        <div className="section-title">Προφίλ</div>
+                        <div className="empty-state">
+                            <div className="empty-state-icon">👶</div>
+                            <p>Δεν έχει επιλεγεί παιδί</p>
+                            <button className="btn-primary" onClick={onAddNew} style={{marginTop: '20px'}}>
+                                + Δημιουργία πρώτου προφίλ
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
+            const handleChange = (e) => {
+                const { name, value } = e.target;
+                if (name === 'favoriteColors') {
+                    setFormData(prev => ({ ...prev, favoriteColors: value.split(',').map(s => s.trim()) }));
+                } else {
+                    setFormData(prev => ({ ...prev, [name]: value }));
+                }
+            };
+
+            const handleSave = () => {
+                onUpdateChild(formData);
+                setIsEditing(false);
+            };
+
+            const handleCancel = () => {
+                setFormData(selectedChild);
+                setIsEditing(false);
+            };
+
+            if (isEditing) {
+                return (
+                    <div>
+                        <div className="section-title">Επεξεργασία Προφίλ - {selectedChild.name}</div>
+                        <div className="edit-form">
+                            <input name="name" className="edit-input" placeholder="Όνομα" value={formData.name || ''} onChange={handleChange} />
+                            <input name="age" type="number" className="edit-input" placeholder="Ηλικία" value={formData.age || ''} onChange={handleChange} />
+                            <input name="gender" className="edit-input" placeholder="Φύλο (Κορίτσι / Αγόρι)" value={formData.gender || ''} onChange={handleChange} />
+                            <input name="clothingSize" className="edit-input" placeholder="Μέγεθος ρούχων" value={formData.clothingSize || ''} onChange={handleChange} />
+                            <input name="shoeSize" className="edit-input" placeholder="Νούμερο παπουτσιού" value={formData.shoeSize || ''} onChange={handleChange} />
+                            <input name="favoriteColors" className="edit-input" placeholder="Αγαπημένα χρώματα (κόμμα)" value={(formData.favoriteColors || []).join(', ')} onChange={handleChange} />
+                            <div style={{display: 'flex', gap: '12px', marginTop: '20px'}}>
+                                <button className="btn-primary" onClick={handleSave}>Αποθήκευση</button>
+                                <button className="btn-secondary" onClick={handleCancel}>Άκυρο</button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div>
+                    <div className="section-title">Προφίλ Παιδιού</div>
+                    <div className="child-profile">
+                        <div className="profile-header">
+                            <div className="profile-avatar">👧</div>
+                            <div className="profile-info">
+                                <h2>{selectedChild.name}</h2>
+                                <p>{selectedChild.age} ετών • {selectedChild.gender}</p>
+                            </div>
+                        </div>
+                        <div className="profile-details">
+                            <div className="detail-item">
+                                <div className="detail-label">Ρούχα</div>
+                                <div className="detail-value">{selectedChild.clothingSize || '-'}</div>
+                            </div>
+                            <div className="detail-item">
+                                <div className="detail-label">Παπούτσια</div>
+                                <div className="detail-value">{selectedChild.shoeSize || '-'}</div>
+                            </div>
+                            <div className="detail-item">
+                                <div className="detail-label">Χρώματα</div>
+                                <div className="detail-value">{(selectedChild.favoriteColors || []).join(', ') || '-'}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button className="btn-primary" onClick={() => setIsEditing(true)}>
+                        ✏️ Επεξεργασία Προφίλ
+                    </button>
                 </div>
             );
         }
