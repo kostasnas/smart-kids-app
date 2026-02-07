@@ -66,14 +66,15 @@
         }
         .profile-header { display: flex; align-items: center; margin-bottom: 16px; }
         .profile-avatar {
-            width: 60px; height: 60px; border-radius: 50%;
+            width: 80px; height: 80px; border-radius: 50%;
             background: rgba(255,255,255,0.3);
             display: flex; align-items: center; justify-content: center;
-            font-size: 28px; margin-right: 16px;
+            font-size: 36px; margin-right: 16px;
             background-size: cover; background-position: center;
+            flex-shrink: 0;
         }
-        .profile-info h2 { font-size: 20px; margin-bottom: 4px; }
-        .profile-info p { opacity: 0.9; font-size: 14px; }
+        .profile-info h2 { font-size: 22px; margin-bottom: 4px; }
+        .profile-info p { opacity: 0.9; font-size: 15px; }
         .profile-details { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .detail-item {
             background: rgba(255,255,255,0.2);
@@ -90,7 +91,7 @@
             display: flex; align-items: center; cursor: pointer;
         }
         .home-profile-item.selected { border: 3px solid #667eea; }
-        .home-profile-avatar { width: 40px; height: 40px; border-radius: 50%; background-size: cover; margin-right: 16px; }
+        .home-profile-avatar { width: 50px; height: 50px; border-radius: 50%; background-size: cover; margin-right: 16px; }
 
         .notification-section { margin-top: 24px; }
         .notification-card {
@@ -102,8 +103,12 @@
             background: #f8f9fa; padding: 20px; border-radius: 16px;
             margin: 16px 0; display: flex; flex-direction: column; gap: 14px;
         }
-        .edit-input {
+        .edit-input, .edit-textarea {
             padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px;
+        }
+        .photo-preview {
+            width: 120px; height: 120px; border-radius: 50%; background-size: cover;
+            margin: 0 auto 12px; border: 3px solid #667eea;
         }
 
         .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: #333; }
@@ -111,6 +116,11 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white; border: none; padding: 14px 24px;
             border-radius: 12px; font-size: 15px; font-weight: 600;
+            cursor: pointer; width: 100%;
+        }
+        .btn-secondary {
+            background: #e0e0e0; color: #333; border: none;
+            padding: 14px 24px; border-radius: 12px; font-size: 15px;
             cursor: pointer; width: 100%;
         }
         .empty-state { text-align: center; padding: 40px 20px; color: #999; }
@@ -157,7 +167,7 @@
                     name: "Σοφία",
                     age: 5,
                     gender: "Κορίτσι",
-                    clothingSize: "110cm",
+                    clothingSize: "110cm (5-6 ετών)",
                     shoeSize: "28",
                     favoriteColors: ["Ροζ", "Μωβ"],
                     avatarBase64: null
@@ -232,81 +242,168 @@
                             </div>
                         )}
 
-                        {activeTab === 'profile' && (
-                            <div>
-                                {selectedChild ? (
-                                    <div>
-                                        <div className="section-title">Προφίλ Παιδιού</div>
-                                        <div className="child-profile">
-                                            <div className="profile-header">
-                                                <div className="profile-avatar" style={{backgroundImage: `url(${selectedChild.avatarBase64})`}}>
-                                                    {!selectedChild.avatarBase64 && '👧'}
-                                                </div>
-                                                <div className="profile-info">
-                                                    <h2>{selectedChild.name}</h2>
-                                                    <p>{selectedChild.age} ετών • {selectedChild.gender}</p>
-                                                </div>
-                                            </div>
-                                            <div className="profile-details">
-                                                <div className="detail-item">
-                                                    <div className="detail-label">Ρούχα</div>
-                                                    <div className="detail-value">{selectedChild.clothingSize || '-'}</div>
-                                                </div>
-                                                <div className="detail-item">
-                                                    <div className="detail-label">Παπούτσια</div>
-                                                    <div className="detail-value">{selectedChild.shoeSize || '-'}</div>
-                                                </div>
-                                                <div className="detail-item">
-                                                    <div className="detail-label">Χρώματα</div>
-                                                    <div className="detail-value">{(selectedChild.favoriteColors || []).join(', ') || '-'}</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <button className="btn-primary" style={{marginTop: '16px'}}>
-                                            ✏️ Επεξεργασία (προσθήκη αργότερα)
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <div className="empty-state">
-                                        <div className="empty-state-icon">👶</div>
-                                        <p>Επίλεξε ή πρόσθεσε παιδί από την αρχική</p>
-                                    </div>
-                                )}
+                        {activeTab === 'profile' && <ProfileTab selectedChild={selectedChild} onUpdate={updateChild} />}
+
+                        {activeTab === 'deals' && <DealsTab />}
+                    </div>
+                </div>
+            );
+        }
+
+        function ProfileTab({ selectedChild, onUpdate }) {
+            const [editing, setEditing] = useState(false);
+            const [form, setForm] = useState(selectedChild || {
+                name: '', age: '', gender: '', clothingSize: '', shoeSize: '', favoriteColors: [], avatarBase64: null
+            });
+
+            useEffect(() => {
+                if (selectedChild) setForm(selectedChild);
+            }, [selectedChild]);
+
+            const handleChange = (e) => {
+                const { name, value } = e.target;
+                if (name === 'favoriteColors') {
+                    setForm(prev => ({ ...prev, favoriteColors: value.split(',').map(s => s.trim()) }));
+                } else {
+                    setForm(prev => ({ ...prev, [name]: value }));
+                }
+            };
+
+            const handlePhoto = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = ev => {
+                        setForm(prev => ({ ...prev, avatarBase64: ev.target.result }));
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+
+            const save = () => {
+                onUpdate(form);
+                setEditing(false);
+            };
+
+            const cancel = () => {
+                setForm(selectedChild || {});
+                setEditing(false);
+            };
+
+            if (!selectedChild && !editing) {
+                return (
+                    <div className="empty-state">
+                        <div className="empty-state-icon">👶</div>
+                        <p>Δεν έχει επιλεγεί παιδί</p>
+                    </div>
+                );
+            }
+
+            if (editing) {
+                return (
+                    <div>
+                        <div className="section-title">Επεξεργασία Προφίλ</div>
+                        <div className="edit-form">
+                            <div style={{textAlign: 'center'}}>
+                                <div className="photo-preview" style={{backgroundImage: `url(${form.avatarBase64})`}}></div>
+                                <input type="file" accept="image/*" onChange={handlePhoto} />
                             </div>
-                        )}
-
-                        {activeTab === 'deals' && (
-                            <div>
-                                <div className="section-title">Πραγματικές Προσφορές Τώρα</div>
-                                <p style={{color: '#666', marginBottom: '20px'}}>
-                                    Πάτα για να δεις live εκπτώσεις σε παιδικά ρούχα & παιχνίδια
-                                </p>
-
-                                <div className="shop-card">
-                                    <h3>Shein Παιδικά</h3>
-                                    <p>Πολύ οικονομικά, πολλές επιλογές</p>
-                                    <a href="https://eur.shein.com/Kids-c-2031.html" target="_blank" rel="noopener noreferrer">
-                                        Δες τώρα στο Shein →
-                                    </a>
-                                </div>
-
-                                <div className="shop-card">
-                                    <h3>Skroutz Παιδικά Ρούχα</h3>
-                                    <p>Σύγκριση τιμών από πολλά μαγαζιά</p>
-                                    <a href="https://www.skroutz.gr/c/380/paidika-rouxa.html?sort=price_asc" target="_blank" rel="noopener noreferrer">
-                                        Δες φθηνότερα ρούχα →
-                                    </a>
-                                </div>
-
-                                <div className="shop-card">
-                                    <h3>Jumbo Παιδικά</h3>
-                                    <p>Παιχνίδια, ρούχα & προσφορές</p>
-                                    <a href="https://www.e-jumbo.gr/paichnidia/paidika-rouxa" target="_blank" rel="noopener noreferrer">
-                                        Δες Jumbo →
-                                    </a>
-                                </div>
+                            <input name="name" className="edit-input" placeholder="Όνομα" value={form.name} onChange={handleChange} />
+                            <input name="age" type="number" className="edit-input" placeholder="Ηλικία" value={form.age} onChange={handleChange} />
+                            <input name="gender" className="edit-input" placeholder="Φύλο" value={form.gender} onChange={handleChange} />
+                            <input name="clothingSize" className="edit-input" placeholder="Μέγεθος ρούχων" value={form.clothingSize} onChange={handleChange} />
+                            <input name="shoeSize" className="edit-input" placeholder="Μέγεθος παπουτσιών" value={form.shoeSize} onChange={handleChange} />
+                            <input name="favoriteColors" className="edit-input" placeholder="Αγαπημένα χρώματα (κόμμα)" value={form.favoriteColors.join(', ')} onChange={handleChange} />
+                            <div style={{display: 'flex', gap: '10px', marginTop: '20px'}}>
+                                <button className="btn-primary" onClick={save}>Αποθήκευση</button>
+                                <button className="btn-secondary" onClick={cancel}>Άκυρο</button>
                             </div>
-                        )}
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div>
+                    <div className="section-title">Προφίλ Παιδιού</div>
+                    <div className="child-profile">
+                        <div className="profile-header">
+                            <div className="profile-avatar" style={{backgroundImage: `url(${selectedChild.avatarBase64})`}}>
+                                {!selectedChild.avatarBase64 && '👧'}
+                            </div>
+                            <div className="profile-info">
+                                <h2>{selectedChild.name}</h2>
+                                <p>{selectedChild.age} ετών • {selectedChild.gender}</p>
+                            </div>
+                        </div>
+                        <div className="profile-details">
+                            <div className="detail-item">
+                                <div className="detail-label">Ρούχα</div>
+                                <div className="detail-value">{selectedChild.clothingSize || '-'}</div>
+                            </div>
+                            <div className="detail-item">
+                                <div className="detail-label">Παπούτσια</div>
+                                <div className="detail-value">{selectedChild.shoeSize || '-'}</div>
+                            </div>
+                            <div className="detail-item">
+                                <div className="detail-label">Χρώματα</div>
+                                <div className="detail-value">{selectedChild.favoriteColors.join(', ') || '-'}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button className="btn-primary" onClick={() => setEditing(true)} style={{marginTop: '16px'}}>
+                        ✏️ Επεξεργασία
+                    </button>
+                </div>
+            );
+        }
+
+        function DealsTab() {
+            return (
+                <div>
+                    <div className="section-title">Πραγματικές Προσφορές Τώρα</div>
+                    <p style={{color: '#666', marginBottom: '20px'}}>
+                        Πάτα για να δεις live τιμές & εκπτώσεις σε παιδικά
+                    </p>
+
+                    <div className="shop-card">
+                        <h3>Shein Παιδικά</h3>
+                        <p>Πολύ φθηνά ρούχα, συχνές προσφορές</p>
+                        <a href="https://eur.shein.com/Kids-c-2031.html" target="_blank" rel="noopener noreferrer">
+                            Δες τώρα στο Shein →
+                        </a>
+                    </div>
+
+                    <div className="shop-card">
+                        <h3>Skroutz Παιδικά Ρούχα</h3>
+                        <p>Σύγκριση τιμών από πολλά καταστήματα</p>
+                        <a href="https://www.skroutz.gr/c/380/paidika-rouxa.html?sort=price_asc" target="_blank" rel="noopener noreferrer">
+                            Δες φθηνότερα ρούχα →
+                        </a>
+                    </div>
+
+                    <div className="shop-card">
+                        <h3>Jumbo Παιδικά</h3>
+                        <p>Παιχνίδια, ρούχα & πολλές εκπτώσεις</p>
+                        <a href="https://www.e-jumbo.gr/paichnidia/paidika-rouxa" target="_blank" rel="noopener noreferrer">
+                            Δες Jumbo →
+                        </a>
+                    </div>
+
+                    <div className="shop-card">
+                        <h3>Public Παιχνίδια & Ρούχα</h3>
+                        <p>Προσφορές σε LEGO, παιχνίδια κλπ</p>
+                        <a href="https://www.public.gr/cat/paidika-paixnidia/paixnidia" target="_blank" rel="noopener noreferrer">
+                            Δες Public →
+                        </a>
+                    </div>
+
+                    <div className="shop-card">
+                        <h3>H&M Kids</h3>
+                        <p>Μοντέρνα ρούχα για παιδιά</p>
+                        <a href="https://www2.hm.com/el_gr/kids.html" target="_blank" rel="noopener noreferrer">
+                            Δες H&M Kids →
+                        </a>
                     </div>
                 </div>
             );
