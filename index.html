@@ -60,13 +60,19 @@
             min-height: 500px; 
         }
 
-        .child-profile {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        .child-profile-wrapper {
+            background: white;
             border-radius: 16px;
             padding: 20px;
-            color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             margin-bottom: 20px;
-            max-height: 400px;
+        }
+        .child-profile {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 12px;
+            padding: 16px;
+            color: white;
+            max-height: 320px;
             overflow-y: auto;
         }
         .profile-header { display: flex; align-items: center; margin-bottom: 16px; }
@@ -76,7 +82,6 @@
             display: flex; align-items: center; justify-content: center;
             font-size: 36px; margin-right: 16px;
             background-size: cover; background-position: center;
-            flex-shrink: 0;
         }
         .profile-info h2 { font-size: 22px; margin-bottom: 4px; }
         .profile-info p { opacity: 0.9; font-size: 15px; }
@@ -108,7 +113,7 @@
             background: #f8f9fa; padding: 20px; border-radius: 16px;
             margin: 16px 0; display: flex; flex-direction: column; gap: 14px;
         }
-        .edit-input, .edit-textarea {
+        .edit-input {
             padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px;
         }
         .photo-preview {
@@ -187,7 +192,7 @@
                 }
             }, [children]);
 
-            const selectedChild = children.find(c => c.id === selectedChildId) || null;
+            const selectedChild = children.find(c => c.id === selectedChildId);
 
             const updateChild = (updated) => {
                 setChildren(prev => prev.map(c => c.id === updated.id ? updated : c));
@@ -247,9 +252,7 @@
                             </div>
                         )}
 
-                        {activeTab === 'profile' && (
-                            <ProfileTab selectedChild={selectedChild} onUpdate={updateChild} />
-                        )}
+                        {activeTab === 'profile' && <ProfileTab selectedChild={selectedChild} onUpdate={updateChild} />}
 
                         {activeTab === 'deals' && <DealsTab />}
                     </div>
@@ -259,7 +262,7 @@
 
         function ProfileTab({ selectedChild, onUpdate }) {
             const [editing, setEditing] = useState(false);
-            const [form, setForm] = useState(selectedChild || {
+            const [form, setForm] = useState(() => selectedChild || {
                 name: '', age: '', gender: '', clothingSize: '', shoeSize: '', favoriteColors: [], avatarBase64: null
             });
 
@@ -269,6 +272,15 @@
                     setEditing(false);
                 }
             }, [selectedChild]);
+
+            if (!selectedChild) {
+                return (
+                    <div className="empty-state">
+                        <div className="empty-state-icon">👶</div>
+                        <p>Επίλεξε ένα παιδί από την αρχική οθόνη</p>
+                    </div>
+                );
+            }
 
             const handleChange = (e) => {
                 const { name, value } = e.target;
@@ -296,22 +308,13 @@
             };
 
             const cancel = () => {
-                setForm(selectedChild || {});
+                setForm(selectedChild);
                 setEditing(false);
             };
 
-            if (!selectedChild && !editing) {
-                return (
-                    <div className="empty-state">
-                        <div className="empty-state-icon">👶</div>
-                        <p>Επίλεξε ένα παιδί από την αρχική οθόνη</p>
-                    </div>
-                );
-            }
-
             if (editing) {
                 return (
-                    <div style={{background: 'white', padding: '20px', borderRadius: '16px'}}>
+                    <div className="child-profile-wrapper">
                         <div className="section-title">Επεξεργασία Προφίλ</div>
                         <div className="edit-form">
                             <div style={{textAlign: 'center'}}>
@@ -323,7 +326,7 @@
                             <input name="gender" className="edit-input" placeholder="Φύλο" value={form.gender || ''} onChange={handleChange} />
                             <input name="clothingSize" className="edit-input" placeholder="Μέγεθος ρούχων" value={form.clothingSize || ''} onChange={handleChange} />
                             <input name="shoeSize" className="edit-input" placeholder="Μέγεθος παπουτσιών" value={form.shoeSize || ''} onChange={handleChange} />
-                            <input name="favoriteColors" className="edit-input" placeholder="Αγαπημένα χρώματα (κόμμα)" value={(form.favoriteColors || []).join(', ')} onChange={handleChange} />
+                            <input name="favoriteColors" className="edit-input" placeholder="Αγαπημένα χρώματα (κόμμα)" value={Array.isArray(form.favoriteColors) ? form.favoriteColors.join(', ') : ''} onChange={handleChange} />
                             <div style={{display: 'flex', gap: '10px', marginTop: '20px'}}>
                                 <button className="btn-primary" onClick={save}>Αποθήκευση</button>
                                 <button className="btn-secondary" onClick={cancel}>Άκυρο</button>
@@ -334,7 +337,7 @@
             }
 
             return (
-                <div style={{background: 'white', padding: '20px', borderRadius: '16px'}}>
+                <div className="child-profile-wrapper">
                     <div className="section-title">Προφίλ Παιδιού</div>
                     <div className="child-profile">
                         <div className="profile-header">
@@ -357,7 +360,7 @@
                             </div>
                             <div className="detail-item">
                                 <div className="detail-label">Χρώματα</div>
-                                <div className="detail-value">{(selectedChild.favoriteColors || []).join(', ') || '-'}</div>
+                                <div className="detail-value">{Array.isArray(selectedChild.favoriteColors) ? selectedChild.favoriteColors.join(', ') : '-'}</div>
                             </div>
                         </div>
                     </div>
