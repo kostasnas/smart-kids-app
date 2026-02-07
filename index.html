@@ -166,7 +166,7 @@
             const [activeTab, setActiveTab] = useState('home');
             const [children, setChildren] = useState([]);
             const [selectedChildId, setSelectedChildId] = useState(null);
-            const [savedNeeds, setSavedNeeds] = useState([]);
+            const [savedNeeds, setSavedNeeds] = useState({}); // τώρα είναι object { childId: ["ανάγκη1", "ανάγκη2"] }
 
             useEffect(() => {
                 const saved = localStorage.getItem('kidsShoppingChildren');
@@ -405,16 +405,33 @@
         function NeedsTab({ selectedChild, savedNeeds, setSavedNeeds }) {
             const [search, setSearch] = useState('');
 
+            // Αν δεν υπάρχει παιδί, μην προσπαθείς να αποθηκεύσεις
+            if (!selectedChild) {
+                return (
+                    <div className="empty-state">
+                        <div className="empty-state-icon">👶</div>
+                        <p>Επίλεξε πρώτα ένα παιδί από την αρχική</p>
+                    </div>
+                );
+            }
+
+            const childNeeds = savedNeeds[selectedChild.id] || [];
+
             const addNeed = () => {
                 if (search.trim()) {
-                    setSavedNeeds(prev => [...prev, search.trim()]);
+                    setSavedNeeds(prev => {
+                        const newNeeds = { ...prev };
+                        if (!newNeeds[selectedChild.id]) newNeeds[selectedChild.id] = [];
+                        newNeeds[selectedChild.id] = [...newNeeds[selectedChild.id], search.trim()];
+                        return newNeeds;
+                    });
                     setSearch('');
                 }
             };
 
             return (
                 <div>
-                    <div className="section-title">Τι χρειάζεται {selectedChild?.name || 'το παιδί'};</div>
+                    <div className="section-title">Τι χρειάζεται ο/η {selectedChild.name};</div>
                     <div style={{display: 'flex', gap: '8px', marginBottom: '20px'}}>
                         <input 
                             className="edit-input" 
@@ -426,20 +443,20 @@
                         <button className="btn-primary" onClick={addNeed} style={{width: 'auto', padding: '0 20px'}}>Προσθήκη</button>
                     </div>
 
-                    {savedNeeds.length > 0 ? (
+                    {childNeeds.length > 0 ? (
                         <div>
-                            <div className="section-title">Αποθηκευμένες ανάγκες</div>
-                            {savedNeeds.map((need, i) => (
+                            <div className="section-title">Αποθηκευμένες ανάγκες για {selectedChild.name}</div>
+                            {childNeeds.map((need, i) => (
                                 <div key={i} className="need-item">
                                     {need}
                                 </div>
                             ))}
                         </div>
                     ) : (
-                        <p style={{color: '#666'}}>Πρόσθεσε την πρώτη σου ανάγκη παραπάνω</p>
+                        <p style={{color: '#666'}}>Πρόσθεσε την πρώτη ανάγκη για αυτό το παιδί παραπάνω</p>
                     )}
 
-                    <div className="section-title" style={{marginTop: '24px'}}>Γρήγορα links αναζήτησης</div>
+                    <div className="section-title" style={{marginTop: '24px'}}>Γρήγορα links για αναζήτηση</div>
                     <div className="shop-card">
                         <h3>Shein Παιδικά</h3>
                         <a href="https://eur.shein.com/Kids-c-2031.html" target="_blank">Ψάξε στο Shein</a>
