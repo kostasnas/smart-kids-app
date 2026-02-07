@@ -135,10 +135,33 @@
             padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold;
         }
         .need-item {
-            background: #f0f0f0; padding: 12px; border-radius: 8px; margin-bottom: 8px;
+            background: #f0f0f0;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .delete-btn {
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 16px;
+            line-height: 24px;
+            cursor: pointer;
+            text-align: center;
+            padding: 0;
         }
         .ai-response {
-            background: #e8f5e9; padding: 16px; border-radius: 12px; margin-top: 16px; white-space: pre-line;
+            background: #e8f5e9;
+            padding: 16px;
+            border-radius: 12px;
+            margin-top: 16px;
+            white-space: pre-line;
             line-height: 1.5;
         }
     </style>
@@ -431,6 +454,20 @@
                 }
             };
 
+            const deleteNeed = (index) => {
+                setSavedNeeds(prev => {
+                    const newNeeds = { ...prev };
+                    if (Array.isArray(newNeeds[selectedChild.id])) {
+                        newNeeds[selectedChild.id] = newNeeds[selectedChild.id].filter((_, i) => i !== index);
+                        // Αν η λίστα γίνει άδεια, μπορείς να την κρατήσεις ή να την διαγράψεις
+                        if (newNeeds[selectedChild.id].length === 0) {
+                            delete newNeeds[selectedChild.id];
+                        }
+                    }
+                    return newNeeds;
+                });
+            };
+
             return (
                 <div>
                     <div className="section-title">Τι χρειάζεται ο/η {selectedChild.name};</div>
@@ -450,7 +487,13 @@
                             <div className="section-title">Αποθηκευμένες ανάγκες για {selectedChild.name}</div>
                             {childNeeds.map((need, i) => (
                                 <div key={i} className="need-item">
-                                    {need}
+                                    <span>{need}</span>
+                                    <button 
+                                        className="delete-btn" 
+                                        onClick={() => deleteNeed(i)}
+                                    >
+                                        ×
+                                    </button>
                                 </div>
                             ))}
                         </div>
