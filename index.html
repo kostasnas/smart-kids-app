@@ -110,15 +110,23 @@
         }
 
         .edit-form {
-            background: #f8f9fa; padding: 20px; border-radius: 16px;
-            margin: 16px 0; display: flex; flex-direction: column; gap: 14px;
+            display: flex; flex-direction: column; gap: 16px;
+        }
+        .edit-field {
+            display: flex; flex-direction: column; gap: 6px;
+        }
+        .edit-label {
+            font-size: 14px; font-weight: 600; color: #333;
         }
         .edit-input {
             padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px;
         }
         .photo-preview {
             width: 120px; height: 120px; border-radius: 50%; background-size: cover;
-            margin: 0 auto 12px; border: 3px solid #667eea;
+            margin: 0 auto 8px; border: 3px solid #667eea;
+        }
+        .photo-upload {
+            font-size: 14px; color: #666; text-align: center;
         }
 
         .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: #333; }
@@ -126,12 +134,12 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white; border: none; padding: 14px 24px;
             border-radius: 12px; font-size: 15px; font-weight: 600;
-            cursor: pointer; width: 100%;
+            cursor: pointer;
         }
         .btn-secondary {
             background: #e0e0e0; color: #333; border: none;
             padding: 14px 24px; border-radius: 12px; font-size: 15px;
-            cursor: pointer; width: 100%;
+            cursor: pointer;
         }
         .empty-state { text-align: center; padding: 40px 20px; color: #999; }
         .empty-state-icon { font-size: 48px; margin-bottom: 16px; }
@@ -319,15 +327,42 @@
                         <div className="edit-form">
                             <div style={{textAlign: 'center'}}>
                                 <div className="photo-preview" style={{backgroundImage: `url(${form.avatarBase64 || ''})`}}></div>
-                                <input type="file" accept="image/*" onChange={handlePhoto} />
+                                <div className="photo-upload">
+                                    <input type="file" accept="image/*" onChange={handlePhoto} />
+                                </div>
                             </div>
-                            <input name="name" className="edit-input" placeholder="Όνομα" value={form.name || ''} onChange={handleChange} />
-                            <input name="age" type="number" className="edit-input" placeholder="Ηλικία" value={form.age || ''} onChange={handleChange} />
-                            <input name="gender" className="edit-input" placeholder="Φύλο" value={form.gender || ''} onChange={handleChange} />
-                            <input name="clothingSize" className="edit-input" placeholder="Μέγεθος ρούχων" value={form.clothingSize || ''} onChange={handleChange} />
-                            <input name="shoeSize" className="edit-input" placeholder="Μέγεθος παπουτσιών" value={form.shoeSize || ''} onChange={handleChange} />
-                            <input name="favoriteColors" className="edit-input" placeholder="Αγαπημένα χρώματα (κόμμα)" value={Array.isArray(form.favoriteColors) ? form.favoriteColors.join(', ') : ''} onChange={handleChange} />
-                            <div style={{display: 'flex', gap: '10px', marginTop: '20px'}}>
+
+                            <div className="edit-field">
+                                <label className="edit-label">Όνομα</label>
+                                <input name="name" className="edit-input" value={form.name || ''} onChange={handleChange} />
+                            </div>
+
+                            <div className="edit-field">
+                                <label className="edit-label">Ηλικία</label>
+                                <input name="age" type="number" className="edit-input" value={form.age || ''} onChange={handleChange} />
+                            </div>
+
+                            <div className="edit-field">
+                                <label className="edit-label">Φύλο</label>
+                                <input name="gender" className="edit-input" value={form.gender || ''} onChange={handleChange} />
+                            </div>
+
+                            <div className="edit-field">
+                                <label className="edit-label">Μέγεθος ρούχων</label>
+                                <input name="clothingSize" className="edit-input" value={form.clothingSize || ''} onChange={handleChange} />
+                            </div>
+
+                            <div className="edit-field">
+                                <label className="edit-label">Μέγεθος παπουτσιών</label>
+                                <input name="shoeSize" className="edit-input" value={form.shoeSize || ''} onChange={handleChange} />
+                            </div>
+
+                            <div className="edit-field">
+                                <label className="edit-label">Αγαπημένα χρώματα (χωρισμένα με κόμμα)</label>
+                                <input name="favoriteColors" className="edit-input" value={Array.isArray(form.favoriteColors) ? form.favoriteColors.join(', ') : ''} onChange={handleChange} />
+                            </div>
+
+                            <div style={{display: 'flex', gap: '12px', marginTop: '24px'}}>
                                 <button className="btn-primary" onClick={save}>Αποθήκευση</button>
                                 <button className="btn-secondary" onClick={cancel}>Άκυρο</button>
                             </div>
