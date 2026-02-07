@@ -70,6 +70,8 @@
             background: rgba(255,255,255,0.3);
             display: flex; align-items: center; justify-content: center;
             font-size: 28px; margin-right: 16px;
+            background-size: cover;
+            background-position: center;
         }
         .profile-info h2 { font-size: 20px; margin-bottom: 4px; }
         .profile-info p { opacity: 0.9; font-size: 14px; }
@@ -85,7 +87,6 @@
         }
         .detail-value { font-size: 16px; font-weight: 600; }
 
-        /* Home extras */
         .home-profile-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
         .home-profile-item {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
@@ -93,7 +94,7 @@
             display: flex; align-items: center; cursor: pointer;
         }
         .home-profile-item.selected { border: 3px solid #667eea; }
-        .home-profile-avatar { font-size: 32px; margin-right: 16px; }
+        .home-profile-avatar { font-size: 32px; margin-right: 16px; background-size: cover; width: 40px; height: 40px; border-radius: 50%; }
 
         .notification-section { margin-top: 24px; }
         .notification-card {
@@ -108,6 +109,26 @@
         .edit-input {
             padding: 12px; border: 1px solid #ddd; border-radius: 8px;
             font-size: 15px;
+        }
+        .photo-preview {
+            width: 100px; height: 100px; border-radius: 50%; background-size: cover; margin: 0 auto;
+        }
+
+        .needs-search {
+            display: flex; gap: 8px; margin-bottom: 16px;
+        }
+        .needs-list {
+            list-style: none; 
+        }
+        .needs-item {
+            background: #f0f0f0; padding: 12px; border-radius: 8px; margin-bottom: 8px;
+        }
+
+        .ai-textarea {
+            width: 100%; height: 100px; padding: 12px; border-radius: 8px; border: 1px solid #ddd;
+        }
+        .ai-response {
+            background: #e8f5e9; padding: 16px; border-radius: 12px; margin-top: 16px;
         }
 
         .section-title {
@@ -136,11 +157,18 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        // Mock occasions για ειδοποιήσεις
+        // Mock occasions
         const initialOccasions = [
             { id: 1, name: "Καθαρά Δευτέρα", date: "2026-03-02", icon: "🪁", alert: "" },
             { id: 2, name: "Απόκριες (Τσικνοπέμπτη)", date: "2026-02-19", icon: "🎭", alert: "⚠️ ΕΠΕΙΓΟΝ: Λίγες μέρες!" },
             { id: 3, name: "Πάσχα", date: "2026-04-19", icon: "🕯️", alert: "" },
+        ];
+
+        // Mock προσφορές από search
+        const mockOffers = [
+            { title: "Παιδικά Ρούχα Embonilo -50%", price: "Από €10", shop: "Embonilo" },
+            { title: "H&M Παιδικά -70%", price: "Από €6.99", shop: "H&M" },
+            { title: "DPAM Παιδικά -50%", price: "Από €15", shop: "DPAM" },
         ];
 
         function calculateDaysUntil(dateStr) {
@@ -154,6 +182,7 @@
             const [activeTab, setActiveTab] = useState('home');
             const [children, setChildren] = useState([]);
             const [selectedChildId, setSelectedChildId] = useState(null);
+            const [savedSearches, setSavedSearches] = useState([]);
 
             useEffect(() => {
                 const saved = localStorage.getItem('kidsShoppingChildren');
@@ -164,10 +193,14 @@
                     gender: "Κορίτσι",
                     clothingSize: "110cm (5-6 ετών)",
                     shoeSize: "28",
-                    favoriteColors: ["Ροζ", "Μωβ"]
+                    favoriteColors: ["Ροζ", "Μωβ"],
+                    avatarBase64: null
                 }];
                 setChildren(initial);
                 setSelectedChildId(initial[0]?.id || null);
+
+                const savedSearches = localStorage.getItem('savedSearches');
+                if (savedSearches) setSavedSearches(JSON.parse(savedSearches));
             }, []);
 
             useEffect(() => {
@@ -176,10 +209,20 @@
                 }
             }, [children]);
 
+            useEffect(() => {
+                localStorage.setItem('savedSearches', JSON.stringify(savedSearches));
+            }, [savedSearches]);
+
             const selectedChild = children.find(c => c.id === selectedChildId) || null;
 
             const updateChild = (updated) => {
                 setChildren(prev => prev.map(c => c.id === updated.id ? updated : c));
+            };
+
+            const addChild = (newChild) => {
+                const id = Math.max(0, ...children.map(c => c.id || 0)) + 1;
+                setChildren(prev => [...prev, { id, ...newChild, avatarBase64: null }]);
+                setSelectedChildId(id);
             };
 
             const upcoming = initialOccasions
@@ -197,6 +240,8 @@
                     <div className="nav-tabs">
                         <button className={`nav-tab ${activeTab === 'home' ? 'active' : ''}`} onClick={() => setActiveTab('home')}>🏠 Αρχική</button>
                         <button className={`nav-tab ${activeTab === 'profile' ? 'active' : ''}`} onClick={() => setActiveTab('profile')}>👤 Προφίλ</button>
+                        <button className={`nav-tab ${activeTab === 'needs' ? 'active' : ''}`} onClick={() => setActiveTab('needs')}>🛒 Ανάγκη</button>
+                        <button className={`nav-tab ${activeTab === 'ai' ? 'active' : ''}`} onClick={() => setActiveTab('ai')}>🤖 AI Σύμβουλος</button>
                         <button className={`nav-tab ${activeTab === 'recommendations' ? 'active' : ''}`} onClick={() => setActiveTab('recommendations')}>👕 Προτάσεις</button>
                         <button className={`nav-tab ${activeTab === 'deals' ? 'active' : ''}`} onClick={() => setActiveTab('deals')}>🔥 Προσφορές</button>
                         <button className={`nav-tab ${activeTab === 'occasions' ? 'active' : ''}`} onClick={() => setActiveTab('occasions')}>📆 Περιστάσεις</button>
@@ -213,7 +258,9 @@
                                             className={`home-profile-item ${child.id === selectedChildId ? 'selected' : ''}`}
                                             onClick={() => setSelectedChildId(child.id)}
                                         >
-                                            <div className="home-profile-avatar">👧</div>
+                                            <div className="home-profile-avatar" style={{backgroundImage: `url(${child.avatarBase64})`}}>
+                                                {!child.avatarBase64 && '👧'}
+                                            </div>
                                             <div>
                                                 <div style={{fontWeight: 'bold'}}>{child.name}</div>
                                                 <div style={{fontSize: '14px'}}>{child.age} ετών • {child.gender}</div>
@@ -222,7 +269,7 @@
                                     ))}
                                 </div>
 
-                                <button className="btn-primary" onClick={() => setSelectedChildId(null)} style={{marginTop: '16px'}}>
+                                <button className="btn-primary" onClick={() => addChild({ name: '', age: '', gender: '', clothingSize: '', shoeSize: '', favoriteColors: [] })}>
                                     + Προσθήκη νέου παιδιού
                                 </button>
 
@@ -245,15 +292,20 @@
                             <ProfileTab
                                 selectedChild={selectedChild}
                                 onUpdateChild={updateChild}
-                                onAddNew={() => setSelectedChildId(null)}
+                                onAddNew={() => addChild({})}
                             />
                         )}
 
-                        {['recommendations','deals','occasions'].includes(activeTab) && !selectedChild && (
-                            <div className="empty-state">
-                                <div className="empty-state-icon">👶</div>
-                                <p>Επίλεξε ένα παιδί από την αρχική οθόνη</p>
-                            </div>
+                        {activeTab === 'needs' && (
+                            <NeedsTab
+                                selectedChild={selectedChild}
+                                savedSearches={savedSearches}
+                                setSavedSearches={setSavedSearches}
+                            />
+                        )}
+
+                        {activeTab === 'ai' && (
+                            <AITab selectedChild={selectedChild} />
                         )}
 
                         {activeTab === 'recommendations' && selectedChild && (
@@ -282,30 +334,8 @@
         }
 
         function ProfileTab({ selectedChild, onUpdateChild, onAddNew }) {
-            const [isEditing, setIsEditing] = useState(false);
-            const [formData, setFormData] = useState(selectedChild || {});
-
-            useEffect(() => {
-                if (selectedChild) {
-                    setFormData(selectedChild);
-                    setIsEditing(false);
-                }
-            }, [selectedChild]);
-
-            if (!selectedChild) {
-                return (
-                    <div>
-                        <div className="section-title">Προφίλ</div>
-                        <div className="empty-state">
-                            <div className="empty-state-icon">👶</div>
-                            <p>Δεν έχει επιλεγεί παιδί</p>
-                            <button className="btn-primary" onClick={onAddNew} style={{marginTop: '20px'}}>
-                                + Δημιουργία πρώτου προφίλ
-                            </button>
-                        </div>
-                    </div>
-                );
-            }
+            const [isEditing, setIsEditing] = useState(!selectedChild);
+            const [formData, setFormData] = useState(selectedChild || { name: '', age: '', gender: '', clothingSize: '', shoeSize: '', favoriteColors: [], avatarBase64: null });
 
             const handleChange = (e) => {
                 const { name, value } = e.target;
@@ -316,21 +346,44 @@
                 }
             };
 
+            const handlePhotoChange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        setFormData(prev => ({ ...prev, avatarBase64: event.target.result }));
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+
             const handleSave = () => {
-                onUpdateChild(formData);
+                if (selectedChild) {
+                    onUpdateChild(formData);
+                } else {
+                    onAddNew(formData);
+                }
                 setIsEditing(false);
             };
 
             const handleCancel = () => {
-                setFormData(selectedChild);
-                setIsEditing(false);
+                if (selectedChild) {
+                    setFormData(selectedChild);
+                    setIsEditing(false);
+                } else {
+                    onAddNew();
+                }
             };
 
             if (isEditing) {
                 return (
                     <div>
-                        <div className="section-title">Επεξεργασία Προφίλ - {selectedChild.name}</div>
+                        <div className="section-title">{selectedChild ? 'Επεξεργασία Προφίλ' : 'Νέο Προφίλ'}</div>
                         <div className="edit-form">
+                            <div style={{textAlign: 'center'}}>
+                                <div className="photo-preview" style={{backgroundImage: `url(${formData.avatarBase64})`, backgroundColor: '#ddd'}}></div>
+                                <input type="file" accept="image/*" onChange={handlePhotoChange} style={{marginTop: '8px'}} />
+                            </div>
                             <input name="name" className="edit-input" placeholder="Όνομα" value={formData.name || ''} onChange={handleChange} />
                             <input name="age" type="number" className="edit-input" placeholder="Ηλικία" value={formData.age || ''} onChange={handleChange} />
                             <input name="gender" className="edit-input" placeholder="Φύλο (Κορίτσι / Αγόρι)" value={formData.gender || ''} onChange={handleChange} />
@@ -346,12 +399,26 @@
                 );
             }
 
+            if (!selectedChild) {
+                return (
+                    <div className="empty-state">
+                        <div className="empty-state-icon">👶</div>
+                        <p>Δεν έχει επιλεγεί παιδί</p>
+                        <button className="btn-primary" onClick={onAddNew} style={{marginTop: '20px'}}>
+                            + Δημιουργία πρώτου προφίλ
+                        </button>
+                    </div>
+                );
+            }
+
             return (
                 <div>
                     <div className="section-title">Προφίλ Παιδιού</div>
                     <div className="child-profile">
                         <div className="profile-header">
-                            <div className="profile-avatar">👧</div>
+                            <div className="profile-avatar" style={{backgroundImage: `url(${selectedChild.avatarBase64})`}}>
+                                {!selectedChild.avatarBase64 && '👧'}
+                            </div>
                             <div className="profile-info">
                                 <h2>{selectedChild.name}</h2>
                                 <p>{selectedChild.age} ετών • {selectedChild.gender}</p>
@@ -375,6 +442,66 @@
                     <button className="btn-primary" onClick={() => setIsEditing(true)}>
                         ✏️ Επεξεργασία Προφίλ
                     </button>
+                </div>
+            );
+        }
+
+        function NeedsTab({ selectedChild, savedSearches, setSavedSearches }) {
+            const [searchTerm, setSearchTerm] = useState('');
+
+            const handleSearch = () => {
+                if (searchTerm) {
+                    setSavedSearches(prev => [...prev, searchTerm]);
+                    setSearchTerm('');
+                    // Εδώ αργότερα: web search για προσφορές
+                }
+            };
+
+            return (
+                <div>
+                    <div className="section-title">Ανάγκη Αγοράς για {selectedChild?.name || 'το παιδί'}</div>
+                    <div className="needs-search">
+                        <input className="edit-input" style={{flex:1}} placeholder="Ψάξε π.χ. 'χειμερινό μπουφάν'" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+                        <button className="btn-primary" style={{width: 'auto', padding: '12px'}} onClick={handleSearch}>Αναζήτηση & Αποθήκευση</button>
+                    </div>
+                    <div className="section-title">Αποθηκευμένες Αναζητήσεις (θα λαμβάνεις ειδοποιήσεις)</div>
+                    <ul className="needs-list">
+                        {savedSearches.map((search, idx) => (
+                            <li key={idx} className="needs-item">{search} - Ειδοποίηση: Νέα προσφορά βρέθηκε!</li>
+                        ))}
+                    </ul>
+                    <div className="section-title">Τρέχουσες Προσφορές (παραδείγματα)</div>
+                    <ul className="needs-list">
+                        {mockOffers.map((offer, idx) => (
+                            <li key={idx} className="needs-item">
+                                {offer.title} - {offer.price} ({offer.shop})
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            );
+        }
+
+        function AITab({ selectedChild }) {
+            const [question, setQuestion] = useState('');
+            const [response, setResponse] = useState('');
+
+            const handleAsk = () => {
+                // Εδώ αργότερα: AI API call
+                setResponse(`Παράδειγμα απάντηση για "${question}": Προτείνω χειμερινό μπουφάν από H&M σε προσφορά €20. Ταιριάζει στο μέγεθος ${selectedChild?.clothingSize}.`);
+                setQuestion('');
+            };
+
+            return (
+                <div>
+                    <div className="section-title">AI Σύμβουλος για {selectedChild?.name || 'το παιδί'}</div>
+                    <textarea className="ai-textarea" placeholder="Ρώτα π.χ. 'Ιδέες δώρου για γενέθλια budget 50€'" value={question} onChange={e => setQuestion(e.target.value)} />
+                    <button className="btn-primary" onClick={handleAsk}>Ρώτα τον AI</button>
+                    {response && (
+                        <div className="ai-response">
+                            <strong>Απάντηση AI:</strong> {response}
+                        </div>
+                    )}
                 </div>
             );
         }
