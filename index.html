@@ -93,9 +93,25 @@
             border-radius: 16px; padding: 16px; color: white;
             display: flex; align-items: center; cursor: pointer;
             margin-bottom: 12px;
+            position: relative;
         }
         .home-profile-item.selected { border: 3px solid #667eea; }
         .home-profile-avatar { width: 50px; height: 50px; border-radius: 50%; background-size: cover; margin-right: 16px; }
+        .delete-child-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 16px;
+            line-height: 24px;
+            cursor: pointer;
+            text-align: center;
+        }
 
         .notification-card {
             background: #fff3cd; border-left: 5px solid #ffc107; padding: 14px; border-radius: 8px; margin-bottom: 12px;
@@ -103,7 +119,7 @@
 
         .edit-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
         .edit-label { font-weight: 600; color: #333; font-size: 14px; }
-        .edit-input {
+        .edit-input, .edit-textarea {
             padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px;
         }
         .photo-preview {
@@ -164,6 +180,14 @@
             white-space: pre-line;
             line-height: 1.5;
         }
+        .ai-history {
+            background: #f9f9f9;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 16px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body>
@@ -190,6 +214,7 @@
             const [children, setChildren] = useState([]);
             const [selectedChildId, setSelectedChildId] = useState(null);
             const [savedNeeds, setSavedNeeds] = useState({}); // { childId: ["ανάγκη1", "ανάγκη2"] }
+            const [aiHistory, setAiHistory] = useState([]); // [{ role: "user"|"ai", content: string }]
 
             useEffect(() => {
                 const saved = localStorage.getItem('kidsShoppingChildren');
@@ -208,6 +233,9 @@
 
                 const savedN = localStorage.getItem('savedNeeds');
                 if (savedN) setSavedNeeds(JSON.parse(savedN));
+
+                const savedAI = localStorage.getItem('aiHistory');
+                if (savedAI) setAiHistory(JSON.parse(savedAI));
             }, []);
 
             useEffect(() => {
@@ -218,10 +246,35 @@
                 localStorage.setItem('savedNeeds', JSON.stringify(savedNeeds));
             }, [savedNeeds]);
 
+            useEffect(() => {
+                localStorage.setItem('aiHistory', JSON.stringify(aiHistory));
+            }, [aiHistory]);
+
             const selectedChild = children.find(c => c.id === selectedChildId);
 
             const updateChild = (updated) => {
                 setChildren(prev => prev.map(c => c.id === updated.id ? updated : c));
+            };
+
+            const addNewChild = (newChild) => {
+                const newId = Math.max(...children.map(c => c.id || 0), 0) + 1;
+                const childWithId = { ...newChild, id: newId };
+                setChildren(prev => [...prev, childWithId]);
+                setSelectedChildId(newId);
+            };
+
+            const deleteChild = (id) => {
+                if (window.confirm("Σίγουρα θέλεις να διαγράψεις αυτό το παιδί και όλες τις ανάγκες του;")) {
+                    setChildren(prev => prev.filter(c => c.id !== id));
+                    setSavedNeeds(prev => {
+                        const newNeeds = { ...prev };
+                        delete newNeeds[id];
+                        return newNeeds;
+                    });
+                    if (selectedChildId === id) {
+                        setSelectedChildId(children[0]?.id || null);
+                    }
+                }
             };
 
             const upcoming = occasions
@@ -258,9 +311,13 @@
                                                 <div style={{fontWeight: 'bold'}}>{child.name || 'Χωρίς όνομα'}</div>
                                                 <div style={{fontSize: '14px'}}>{child.age || '?'} ετών • {child.gender || '?'}</div>
                                             </div>
+                                            <button className="delete-child-btn" onClick={(e) => { e.stopPropagation(); deleteChild(child.id); }}>×</button>
                                         </div>
                                     ))}
                                 </div>
+                                <button className="btn-primary" onClick={() => setActiveTab('add-child')} style={{marginTop: '16px'}}>
+                                    + Νέο παιδί
+                                </button>
 
                                 {upcoming.length > 0 && (
                                     <div className="notification-section">
@@ -275,13 +332,82 @@
                             </div>
                         )}
 
+                        {activeTab === 'add-child' && <AddChildTab onAdd={addNewChild} onCancel={() => setActiveTab('home')} />}
+
                         {activeTab === 'profile' && <ProfileTab selectedChild={selectedChild} onUpdate={updateChild} />}
 
                         {activeTab === 'needs' && <NeedsTab selectedChild={selectedChild} savedNeeds={savedNeeds} setSavedNeeds={setSavedNeeds} />}
 
-                        {activeTab === 'ai' && <AITab selectedChild={selectedChild} />}
+                        {activeTab === 'ai' && <AITab selectedChild={selectedChild} aiHistory={aiHistory} setAiHistory={setAiHistory} />}
 
                         {activeTab === 'deals' && <DealsTab />}
+                    </div>
+                </div>
+            );
+        }
+
+        function AddChildTab({ onAdd, onCancel }) {
+            const [name, setName] = useState('');
+            const [age, setAge] = useState('');
+            const [gender, setGender] = useState('');
+            const [clothingSize, setClothingSize] = useState('');
+            const [shoeSize, setShoeSize] = useState('');
+            const [favoriteColors, setFavoriteColors] = useState('');
+
+            const save = () => {
+                if (!name.trim()) {
+                    alert("Παρακαλώ βάλε όνομα!");
+                    return;
+                }
+                onAdd({
+                    name: name.trim(),
+                    age: age ? parseInt(age) : undefined,
+                    gender,
+                    clothingSize,
+                    shoeSize,
+                    favoriteColors: favoriteColors ? favoriteColors.split(',').map(c => c.trim()) : [],
+                    avatarBase64: null
+                });
+            };
+
+            return (
+                <div className="child-profile-wrapper">
+                    <div className="section-title">Προσθήκη Νέου Παιδιού</div>
+                    <div className="edit-form">
+                        <div className="edit-field">
+                            <label className="edit-label">Όνομα</label>
+                            <input className="edit-input" value={name} onChange={e => setName(e.target.value)} />
+                        </div>
+
+                        <div className="edit-field">
+                            <label className="edit-label">Ηλικία</label>
+                            <input type="number" className="edit-input" value={age} onChange={e => setAge(e.target.value)} />
+                        </div>
+
+                        <div className="edit-field">
+                            <label className="edit-label">Φύλο</label>
+                            <input className="edit-input" value={gender} onChange={e => setGender(e.target.value)} placeholder="π.χ. Κορίτσι / Αγόρι" />
+                        </div>
+
+                        <div className="edit-field">
+                            <label className="edit-label">Μέγεθος ρούχων</label>
+                            <input className="edit-input" value={clothingSize} onChange={e => setClothingSize(e.target.value)} placeholder="π.χ. 110cm (5-6 ετών)" />
+                        </div>
+
+                        <div className="edit-field">
+                            <label className="edit-label">Μέγεθος παπουτσιών</label>
+                            <input className="edit-input" value={shoeSize} onChange={e => setShoeSize(e.target.value)} placeholder="π.χ. 28" />
+                        </div>
+
+                        <div className="edit-field">
+                            <label className="edit-label">Αγαπημένα χρώματα (κόμμα)</label>
+                            <input className="edit-input" value={favoriteColors} onChange={e => setFavoriteColors(e.target.value)} placeholder="π.χ. Ροζ, Μωβ" />
+                        </div>
+
+                        <div style={{display: 'flex', gap: '12px', marginTop: '24px'}}>
+                            <button className="btn-primary" onClick={save}>Προσθήκη</button>
+                            <button className="btn-secondary" onClick={onCancel}>Άκυρο</button>
+                        </div>
                     </div>
                 </div>
             );
@@ -437,7 +563,6 @@
                 );
             }
 
-            // Πάντα array - ακόμα και άδειο
             const childNeeds = Array.isArray(savedNeeds[selectedChild.id]) ? savedNeeds[selectedChild.id] : [];
 
             const addNeed = () => {
@@ -459,13 +584,41 @@
                     const newNeeds = { ...prev };
                     if (Array.isArray(newNeeds[selectedChild.id])) {
                         newNeeds[selectedChild.id] = newNeeds[selectedChild.id].filter((_, i) => i !== index);
-                        // Αν η λίστα γίνει άδεια, μπορείς να την κρατήσεις ή να την διαγράψεις
                         if (newNeeds[selectedChild.id].length === 0) {
                             delete newNeeds[selectedChild.id];
                         }
                     }
                     return newNeeds;
                 });
+            };
+
+            const getSuggestionLinks = (need) => {
+                const q = need.toLowerCase();
+                const ageQuery = selectedChild.age ? ` ${selectedChild.age} ετών` : '';
+                const sizeQuery = selectedChild.clothingSize ? ` ${selectedChild.clothingSize}` : '';
+                const genderQuery = selectedChild.gender ? ` ${selectedChild.gender}` : '';
+
+                if (q.includes('μπουφάν') || q.includes('πανωφόρι') || q.includes('χειμώνα')) {
+                    return [
+                        { text: "Shein Μπουφάν", link: `https://eur.shein.com/Kids-c-2031.html?search=μπουφάν${ageQuery}${sizeQuery}` },
+                        { text: "Skroutz Μπουφάν", link: `https://www.skroutz.gr/c/380/paidika-rouxa.html?keyphrase=μπουφάν+παιδικό${ageQuery}` }
+                    ];
+                } else if (q.includes('παπούτσια') || q.includes('μπότες')) {
+                    return [
+                        { text: "Jumbo Παπούτσια", link: `https://www.e-jumbo.gr/paichnidia/paidika-rouxa?query=παπούτσια${shoeQuery}` },
+                        { text: "Skroutz Παπούτσια", link: `https://www.skroutz.gr/c/380/paidika-rouxa.html?keyphrase=παπούτσια+παιδικά${shoeQuery}` }
+                    ];
+                } else if (q.includes('στολή') || q.includes('απόκρι')) {
+                    return [
+                        { text: "Shein Στολές", link: `https://eur.shein.com/Kids-c-2031.html?search=στολή+απόκριες` },
+                        { text: "Skroutz Στολές", link: `https://www.skroutz.gr/c/380/paidika-rouxa.html?keyphrase=στολή+απόκριες` }
+                    ];
+                } else {
+                    return [
+                        { text: "Shein Αναζήτηση", link: `https://eur.shein.com/Kids-c-2031.html?search=${encodeURIComponent(need)}` },
+                        { text: "Skroutz Αναζήτηση", link: `https://www.skroutz.gr/c/380/paidika-rouxa.html?keyphrase=${encodeURIComponent(need+ageQuery+sizeQuery)}` }
+                    ];
+                }
             };
 
             return (
@@ -488,20 +641,32 @@
                             {childNeeds.map((need, i) => (
                                 <div key={i} className="need-item">
                                     <span>{need}</span>
-                                    <button 
-                                        className="delete-btn" 
-                                        onClick={() => deleteNeed(i)}
-                                    >
-                                        ×
-                                    </button>
+                                    <button className="delete-btn" onClick={() => deleteNeed(i)}>×</button>
                                 </div>
                             ))}
+
+                            <div className="section-title" style={{marginTop: '24px'}}>Προτάσεις αγορών για τις ανάγκες</div>
+                            {childNeeds.map((need, i) => {
+                                const links = getSuggestionLinks(need);
+                                return (
+                                    <div key={i} style={{marginBottom: '16px'}}>
+                                        <div style={{fontWeight: 'bold', marginBottom: '8px'}}>{need}</div>
+                                        {links.map((l, j) => (
+                                            <div key={j} className="shop-card" style={{marginBottom: '8px'}}>
+                                                <a href={l.link} target="_blank" rel="noopener noreferrer">
+                                                    {l.text} →
+                                                </a>
+                                            </div>
+                                        ))}
+                                    </div>
+                                );
+                            })}
                         </div>
                     ) : (
                         <p style={{color: '#666'}}>Δεν έχεις προσθέσει ακόμα ανάγκες για αυτό το παιδί</p>
                     )}
 
-                    <div className="section-title" style={{marginTop: '24px'}}>Γρήγορα links για αναζήτηση</div>
+                    <div className="section-title" style={{marginTop: '24px'}}>Γρήγορα links αναζήτησης</div>
                     <div className="shop-card">
                         <h3>Shein Παιδικά</h3>
                         <a href="https://eur.shein.com/Kids-c-2031.html" target="_blank">Ψάξε στο Shein</a>
@@ -514,7 +679,7 @@
             );
         }
 
-        function AITab({ selectedChild }) {
+        function AITab({ selectedChild, aiHistory, setAiHistory }) {
             const [question, setQuestion] = useState('');
             const [answer, setAnswer] = useState('');
 
@@ -523,6 +688,9 @@
                     setAnswer("Γράψε κάτι στο πεδίο για να σε βοηθήσω! 😊");
                     return;
                 }
+
+                const newHistory = [...aiHistory.slice(-4), { role: "user", content: question }]; // κρατάμε 5 τελευταία (4 + τρέχον)
+                setAiHistory(newHistory);
 
                 const q = question.toLowerCase().trim();
                 const name = selectedChild?.name || 'το παιδί';
@@ -536,44 +704,29 @@
 
                 if (q.includes('μπουφάν') || q.includes('πανωφόρι') || q.includes('ζεστό') || q.includes('χειμώνα') || q.includes('jacket')) {
                     response += `\n\nΠροτείνω αντιανεμικό/αδιάβροχο μπουφάν με fleece ή γούνα εσωτερικά.`;
-                    response += `\nΜέγεθος: ${size} ή 1-2 νούμερα μεγαλύτερο για να κρατήσει και του χρόνου.`;
-                    response += `\nΤιμές τώρα: 20-45€ στο Shein ή Skroutz (πολλές εκπτώσεις χειμώνα).`;
-                    response += `\nΙδανικά σε ${colors} για να του/της αρέσει!`;
-                } 
-                else if (q.includes('παπούτσια') || q.includes('μπότες') || q.includes('παπουτσ') || q.includes('sneakers') || q.includes('boots')) {
-                    response += `\n\nΓια ${age} ετών προτείνω χειμερινές μπότες ή αθλητικά με καλή σόλα και ζεστή φόδρα.`;
+                    response += `\nΜέγεθος: ${size} ή 1-2 νούμερα μεγαλύτερο.`;
+                    response += `\nΤιμές τώρα: 20-45€ στο Shein ή Skroutz.`;
+                    response += `\nΙδανικά σε ${colors}!`;
+                } else if (q.includes('παπούτσια') || q.includes('μπότες') || q.includes('παπουτσ') || q.includes('sneakers') || q.includes('boots')) {
+                    response += `\n\nΠροτείνω χειμερινές μπότες ή αθλητικά με ζεστή φόδρα.`;
                     response += `\nΝούμερο: ${shoe} ή +1 για χοντρές κάλτσες.`;
-                    response += `\nΚοίταξε στο Jumbo ή Public, έχουν πολλές επιλογές κάτω από 30-40€.`;
-                } 
-                else if (q.includes('δώρο') || q.includes('γενέθλια') || q.includes('christmas') || q.includes('δωρο') || q.includes('gift')) {
-                    response += `\n\nΚαλές ιδέες δώρων για ${age} ετών ${gender}:`;
-                    response += `\n- Κούκλες, σετ δημιουργίας ή πριγκίπισσες (κορίτσι)`;
-                    response += `\n- Lego, αυτοκινητάκια ή παιχνίδια δράσης (αγόρι)`;
+                    response += `\nΚοίταξε Jumbo ή Public, κάτω από 40€.`;
+                } else if (q.includes('δώρο') || q.includes('γενέθλια') || q.includes('δωρο') || q.includes('gift')) {
+                    response += `\n\nΙδέες δώρων για ${age} ετών ${gender}:`;
+                    response += `\n- Κούκλες / Lego / παιχνίδια δράσης`;
                     response += `\n- Ρούχα ή αξεσουάρ σε ${colors}`;
-                    response += `\nΨάξε Public, Jumbo ή Skroutz για προσφορές 15-60€.`;
-                } 
-                else if (q.includes('απόκρι') || q.includes('στολή') || q.includes('καρναβάλι') || q.includes('αποκριες') || q.includes('costume')) {
-                    response += `\n\nΕπειδή είναι κοντά Απόκριες, προτείνω στολές πριγκίπισσας, πειρατή, ζώου ή superhero.`;
-                    response += `\nShein έχει πάρα πολύ φθηνές και όμορφες (10-25€).`;
-                    response += `\nΠάρε μέγεθος ${size} ή λίγο μεγαλύτερο για άνεση.`;
-                } 
-                else if (q.includes('ρούχα') || q.includes('παντελόνι') || q.includes('φορεμα') || q.includes('φούστα') || q.includes('ρούχο')) {
-                    response += `\n\nΓια ${age} ετών ${gender} προτείνω άνετα και ζεστά ρούχα χειμώνα.`;
-                    response += `\nΠροτίμησε σετ φούτερ + παντελόνι ή φόρμες σε ${colors}.`;
-                    response += `\nShein και H&M έχουν πολλές επιλογές κάτω από 20-30€.`;
-                } 
-                else {
-                    response += `\n\nΔεν κατάλαβα ακριβώς τι ψάχνεις, αλλά μπορώ να σε βοηθήσω καλύτερα αν μου πεις πιο συγκεκριμένα!`;
-                    response += `\n\nΠαραδείγματα ερωτήσεων που δουλεύουν καλά:`;
-                    response += `\n- χειμερινό μπουφάν για κορίτσι`;
-                    response += `\n- παπούτσια μέγεθος 29`;
-                    response += `\n- δώρο γενεθλίων 5 ετών`;
-                    response += `\n- στολή απόκριες budget 20€`;
-                    response += `\n- φόρεμα ροζ 5-6 ετών`;
-                    response += `\n\nΔοκίμασε μία από αυτές ή πες μου τι ακριβώς θες! 😊`;
+                    response += `\nΨάξε Public, Jumbo ή Skroutz.`;
+                } else if (q.includes('απόκρι') || q.includes('στολή') || q.includes('αποκριες')) {
+                    response += `\n\nΠροτείνω στολές πριγκίπισσας, πειρατή, ζώου ή superhero.`;
+                    response += `\nShein έχει φθηνές (10-25€).`;
+                    response += `\nΜέγεθος ${size} ή μεγαλύτερο.`;
+                } else {
+                    response += `\n\nΠες μου πιο συγκεκριμένα τι ψάχνεις (π.χ. "χειμερινό μπουφάν", "δώρα", "παπούτσια")`;
+                    response += `\n\nΠροηγούμενα που ρώτησες: ${aiHistory.map(m => m.content).join(', ')}`;
                 }
 
                 setAnswer(response);
+                setAiHistory([...newHistory, { role: "ai", content: response }]);
                 setQuestion('');
             };
 
@@ -597,6 +750,17 @@
                     {answer && (
                         <div className="ai-response">
                             {answer}
+                        </div>
+                    )}
+
+                    {aiHistory.length > 0 && (
+                        <div className="ai-history">
+                            <div className="section-title">Ιστορικό συζήτησης</div>
+                            {aiHistory.map((msg, i) => (
+                                <div key={i} style={{marginBottom: '8px', color: msg.role === 'user' ? '#0066cc' : '#333'}}>
+                                    <strong>{msg.role === 'user' ? 'Εσύ:' : 'AI:'}</strong> {msg.content}
+                                </div>
+                            ))}
                         </div>
                     )}
                 </div>
