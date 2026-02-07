@@ -69,6 +69,8 @@
             border-radius: 12px;
             padding: 16px;
             color: white;
+            max-height: 320px;
+            overflow-y: auto;
         }
         .profile-header { display: flex; align-items: center; margin-bottom: 16px; }
         .profile-avatar {
@@ -108,6 +110,7 @@
             width: 120px; height: 120px; border-radius: 50%; background-size: cover;
             margin: 0 auto 12px; border: 3px solid #667eea;
         }
+        .photo-upload { font-size: 14px; color: #666; text-align: center; }
 
         .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: #333; }
         .btn-primary {
@@ -455,47 +458,57 @@
             const [answer, setAnswer] = useState('');
 
             const askAI = () => {
-                if (!question.trim()) return;
+                if (!question.trim()) {
+                    setAnswer("Γράψε κάτι στο πεδίο για να σε βοηθήσω! 😊");
+                    return;
+                }
 
-                const q = question.toLowerCase();
+                const q = question.toLowerCase().trim();
                 const name = selectedChild?.name || 'το παιδί';
                 const age = selectedChild?.age || 'μικρό παιδί';
-                const gender = selectedChild?.gender || '';
-                const colors = selectedChild?.favoriteColors?.join(', ') || 'χρώματα που του αρέσουν';
+                const gender = selectedChild?.gender?.toLowerCase() || '';
+                const colors = selectedChild?.favoriteColors?.join(', ') || 'χρώματα που του/της αρέσουν';
                 const size = selectedChild?.clothingSize || 'κατάλληλο μέγεθος';
+                const shoe = selectedChild?.shoeSize || 'κατάλληλο νούμερο';
 
-                let response = `Γεια! Βλέπω ότι μιλάμε για ${name}, ${age} ετών ${gender}.`;
+                let response = `Γεια σου! Βλέπω ότι μιλάμε για ${name}, ${age} ετών ${gender}.`;
 
-                if (q.includes('μπουφάν') || q.includes('πανωφόρι') || q.includes('χειμώνα') || q.includes('ζεστό')) {
-                    response += `\n\nΓια χειμώνα προτείνω αντιανεμικό/αδιάβροχο μπουφάν με γούνα ή fleece εσωτερικά.`;
-                    response += `\nΜέγεθος: ${size} ή 1-2 νούμερα μεγαλύτερο για να κάνει και του χρόνου.`;
-                    response += `\nΠολύ καλές τιμές τώρα στο Shein ή Skroutz (20-45€).`;
-                    response += `\n\nΠροτίμησε ${colors} για να του αρέσει!`;
+                if (q.includes('μπουφάν') || q.includes('πανωφόρι') || q.includes('ζεστό') || q.includes('χειμώνα')) {
+                    response += `\n\nΠροτείνω **αντιανεμικό/αδιάβροχο μπουφάν** με fleece ή γούνα εσωτερικά.`;
+                    response += `\nΜέγεθος: ${size} ή 1-2 νούμερα μεγαλύτερο για να κρατήσει και του χρόνου.`;
+                    response += `\nΤιμές τώρα: 20-45€ στο Shein ή Skroutz (πολλές εκπτώσεις χειμώνα).`;
+                    response += `\nΙδανικά σε ${colors} για να του/της αρέσει!`;
                 } 
-                else if (q.includes('παπούτσι') || q.includes('παπούτσια') || q.includes('μπότες')) {
-                    response += `\n\nΓια ${age} ετών προτείνω χειμερινές μπότες ή αθλητικά με καλή σόλα.`;
-                    response += `\nΜέγεθος: ${selectedChild?.shoeSize || '28-30'} ή +1 για χοντρές κάλτσες.`;
-                    response += `\nΚοίταξε Jumbo ή Public, έχουν πολλές επιλογές κάτω από 30€.`;
+                else if (q.includes('παπούτσια') || q.includes('μπότες') || q.includes('παπουτσ') || q.includes('sneakers')) {
+                    response += `\n\nΓια ${age} ετών προτείνω **χειμερινές μπότες** ή αθλητικά με καλή σόλα και ζεστή φόδρα.`;
+                    response += `\nΝούμερο: ${shoe} ή +1 για χοντρές κάλτσες.`;
+                    response += `\nΚοίταξε στο Jumbo ή Public, έχουν πολλές επιλογές κάτω από 30-40€.`;
                 } 
-                else if (q.includes('δώρο') || q.includes('γενέθλια') || q.includes('δώρο')) {
-                    response += `\n\nΙδανικά δώρα για ${age} ετών ${gender}:`;
-                    response += `\n- Κούκλες ή σετ δημιουργίας (αν είναι κορίτσι)`;
-                    response += `\n- Lego ή παιχνίδια δράσης (αν είναι αγόρι)`;
-                    response += `\n- Ρούχα/αξεσουάρ σε ${colors}`;
-                    response += `\nΚοίταξε Public ή Skroutz για προσφορές 15-50€.`;
+                else if (q.includes('δώρο') || q.includes('γενέθλια') || q.includes('christmas') || q.includes('δωρο')) {
+                    response += `\n\nΚαλές ιδέες δώρων για ${age} ετών ${gender}:`;
+                    response += `\n- Κούκλες, σετ δημιουργίας ή πριγκίπισσες (κορίτσι)`;
+                    response += `\n- Lego, αυτοκινητάκια ή παιχνίδια δράσης (αγόρι)`;
+                    response += `\n- Ρούχα ή αξεσουάρ σε ${colors}`;
+                    response += `\nΨάξε Public, Jumbo ή Skroutz για προσφορές 15-60€.`;
                 } 
-                else if (q.includes('απόκρι') || q.includes('στολή') || q.includes('καρναβάλι')) {
-                    response += `\n\nΕπειδή είναι κοντά Απόκριες, προτείνω στολές πριγκίπισσας, πειρατή ή ζώου.`;
-                    response += `\nShein έχει φθηνές και όμορφες (10-25€).`;
-                    response += `\nΠάρε μέγεθος ${size} ή λίγο μεγαλύτερο.`;
+                else if (q.includes('απόκρι') || q.includes('στολή') || q.includes('καρναβάλι') || q.includes('αποκριες')) {
+                    response += `\n\nΕπειδή είναι κοντά Απόκριες, προτείνω **στολές** πριγκίπισσας, πειρατή, ζώου ή superhero.`;
+                    response += `\nShein έχει πάρα πολύ φθηνές και όμορφες (10-25€).`;
+                    response += `\nΠάρε μέγεθος ${size} ή λίγο μεγαλύτερο για άνεση.`;
+                } 
+                else if (q.includes('ρούχα') || q.includes('παντελόνι') || q.includes('φορεμα') || q.includes('φούστα')) {
+                    response += `\n\nΓια ${age} ετών ${gender} προτείνω άνετα και ζεστά ρούχα χειμώνα.`;
+                    response += `\nΠροτίμησε σετ φούτερ + παντελόνι ή φόρμες σε ${colors}.`;
+                    response += `\nShein και H&M έχουν πολλές επιλογές κάτω από 20-30€.`;
                 } 
                 else {
-                    response += `\n\nΜπορώ να σε βοηθήσω πολύ καλύτερα αν μου πεις συγκεκριμένα, π.χ.:`;
-                    response += `\n- "χειμερινό μπουφάν για κορίτσι"`;
-                    response += `\n- "δώρα γενεθλίων 5 ετών"`;
-                    response += `\n- "παπούτσια μέγεθος 29"`;
-                    response += `\n- "στολή απόκριες budget 20€"`;
-                    response += `\n\nΠες μου τι ψάχνεις ακριβώς! 😊`;
+                    response += `\n\nΔεν κατάλαβα ακριβώς τι ψάχνεις, αλλά μπορώ να βοηθήσω καλύτερα αν μου πεις συγκεκριμένα!`;
+                    response += `\n\nΠαραδείγματα ερωτήσεων:`;
+                    response += `\n- χειμερινό μπουφάν για κορίτσι`;
+                    response += `\n- δώρο γενεθλίων 5 ετών`;
+                    response += `\n- παπούτσια μέγεθος 29`;
+                    response += `\n- στολή απόκριες budget 20€`;
+                    response += `\n\nΔοκίμασε κάτι τέτοιο! 😊`;
                 }
 
                 setAnswer(response);
