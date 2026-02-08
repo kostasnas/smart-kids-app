@@ -686,57 +686,54 @@ const [aiHistory, setAiHistory] = useState([]);
 
   let response = `Γεια σου! Μιλάμε για ${name}, ${age} ετών ${gender}.\n\n`;
 
-  if (q.includes('μπουφάν') || q.includes('πανωφόρι') || q.includes('ζακέτα') || q.includes('jacket') || q.includes('χειμώνα') || q.includes('κρύο') || q.includes('ζεστό')) {
-    response += `Προτείνω αντιανεμικό/αδιάβροχο μπουφάν με fleece ή γούνα εσωτερικά.<br>`;
-    response += `Μέγεθος: ${size} ή 1-2 νούμερα μεγαλύτερο.<br>`;
-    response += `Ιδανικά σε ${colors}!<br><br>`;
-    response += `Έτοιμες προτάσεις τώρα:<br>`;
-    response += `1. Djeco Πολύχρωμο αντιανεμικό μπουφάν κοντό με κουκούλα - 18,70 €<br>`;
-    response += `<a href="https://www.skroutz.gr/s/45372034/Djeco-Adiavrocho-Paidiko-Casual-Mpoufan-Konto-me-Koukoula-Polychromo-04680.html" target="_blank" style="color:#667eea; text-decoration:underline;">Πάτα εδώ για να δεις</a><br><br>`;
-    response += `2. Hashtag Παιδικό casual μπουφάν με κουκούλα (μπεζ) - 18,00 €<br>`;
-    response += `<a href="https://www.skroutz.gr/s/63237523/hashtag-paidiko-casual-mpoufan-me-koukoula-mpez-255821.html" target="_blank" style="color:#667eea; text-decoration:underline;">Πάτα εδώ για να δεις</a><br><br>`;
-}
-  else if (q.includes('παπούτσια') || q.includes('μπότες') || q.includes('παπουτσ') || q.includes('sneakers') || q.includes('boots')) {
-    response += `Προτείνω χειμερινές μπότες ή αθλητικά με ζεστή φόδρα.\n`;
-    response += `Νούμερο: ${shoe} ή +1 για χοντρές κάλτσες.\n\n`;
+  let budget = '';
+  if (q.includes('budget') || q.includes('τιμή') || q.includes('φθηνό') || q.includes('ευρώ')) {
+    budget = ' (budget-friendly επιλογές)';
+  }
+
+  if (q.includes('μπουφ') || q.includes('πανωφόρι') || q.includes('ζακέτα') || q.includes('jacket') || q.includes('χειμώνα') || q.includes('κρύο') || q.includes('ζεστό') || q.includes('μπουφαν') || q.includes('αντιανεμικό')) {
+    response += `Προτείνω αντιανεμικό/αδιάβροχο μπουφάν με fleece ή γούνα εσωτερικά${budget}.\n`;
+    response += `Μέγεθος: ${size} ή 1-2 νούμερα μεγαλύτερο.\n`;
+    response += `Ιδανικά σε ${colors}!\n\n`;
     response += `Έτοιμες προτάσεις τώρα:\n`;
-    response += `1. Under Armour Ua Gps Surge 4 Ac Running (γκρι) - ~30 €\n`;
-    response += `   https://www.skroutz.gr/c/1580/Athlitika-Paidika-Papoytsia/f/513536/28.html\n`;
-    response += `2. adidas Tensaur Blue Rush / Core White / Dark Blue - ~25 €\n`;
-    response += `   https://www.skroutz.gr/c/1580/Athlitika-Paidika-Papoytsia/f/513536_533177/28-koritsi.html\n`;
-    response += `3. Skechers Uno Lite - ~35 €\n`;
-    response += `   https://www.skroutz.gr/s/12345678/Skechers-Uno-Lite.html`;
-  } 
-  else if (q.includes('δώρο') || q.includes('γενέθλια') || q.includes('δωρο') || q.includes('gift') || q.includes('χριστούγεννα')) {
-    response += `Ιδέες δώρων για ${age} ετών ${gender}:\n`;
+    response += `1. Djeco Πολύχρωμο - 18,70 €\n   https://www.skroutz.gr/s/45372034/Djeco-Adiavrocho-Paidiko-Casual-Mpoufan-Konto-me-Koukoula-Polychromo-04680.html\n`;
+    response += `2. Hashtag Μπεζ - 18,00 €\n   https://www.skroutz.gr/s/63237523/hashtag-paidiko-casual-mpoufan-me-koukoula-mpez-255821.html\n`;
+  } else if (q.includes('παπούτσια') || q.includes('μπότες') || q.includes('παπουτσ') || q.includes('sneakers') || q.includes('boots') || q.includes('παπούτσι') || q.includes('μποτακια')) {
+    response += `Προτείνω χειμερινές μπότες ή αθλητικά με ζεστή φόδρα${budget}.\n`;
+    response += `Νούμερο: ${shoe} ή +1.\n\n`;
+    response += `Έτοιμες προτάσεις τώρα:\n`;
+    response += `1. Under Armour Ua Gps Surge 4 Ac Running Γκρι - ~30 €\n   https://www.skroutz.gr/c/1580/Athlitika-Paidika-Papoytsia/f/513536/28.html\n`;
+    response += `2. adidas Tensaur Blue Rush / Core White / Dark Blue - ~25 €\n   https://www.skroutz.gr/c/1580/Athlitika-Paidika-Papoytsia/f/513536_533177/28-koritsi.html\n`;
+  } else if (q.includes('δώρο') || q.includes('γενέθλια') || q.includes('δωρο') || q.includes('gift') || q.includes('χριστούγεννα') || q.includes('γενεθλια')) {
+    response += `Ιδέες δώρων για ${age} ετών ${gender}${budget}:\n`;
     response += `- Κούκλες / Lego / παιχνίδια δημιουργίας\n`;
     response += `- Ρούχα ή αξεσουάρ σε ${colors}\n\n`;
     response += `Έτοιμες προτάσεις τώρα:\n`;
-    response += `1. Σαββάλας Παντομίμα Παιχνίδι εκφρασης - 24,90 €\n`;
-    response += `   https://www.public.gr/product/savvalas-pantomima-paixnidi-ekfrasis-kai-fantasias-epitrapezio-paixnidi-gia-paidia-5-eton-gia-2-4-paiktes/prod14549908pp\n`;
-    response += `2. Lego Classic Creative Animals - ~35 €\n`;
-    response += `   https://www.skroutz.gr/s/12345678/Lego-Classic-Creative-Animals.html\n`;
-    response += `3. Mattel Barbie Dreamhouse - ~80 €\n`;
-    response += `   https://www.skroutz.gr/s/98765432/Barbie-Dreamhouse.html`;
-  } 
-  else if (q.includes('απόκρι') || q.includes('στολή') || q.includes('αποκριες') || q.includes('καρναβάλι') || q.includes('costume')) {
-    response += `Προτείνω στολές πριγκίπισσας, πειρατή, ζώου ή superhero.\n`;
+    response += `1. Σαββάλας Παντομίμα Παιχνίδι εκφρασης - 24,90 €\n   https://www.public.gr/product/savvalas-pantomima-paixnidi-ekfrasis-kai-fantasias-epitrapezio-paixnidi-gia-paidia-5-eton-gia-2-4-paiktes/prod14549908pp\n`;
+    response += `2. Lego Classic Creative Animals - ~35 €\n   https://www.skroutz.gr/s/12345678/Lego-Classic-Creative-Animals.html\n`;
+    response += `3. Mattel Barbie Dreamhouse - ~80 €\n   https://www.skroutz.gr/s/98765432/Barbie-Dreamhouse.html`;
+  } else if (q.includes('απόκρι') || q.includes('στολή') || q.includes('αποκριες') || q.includes('καρναβάλι') || q.includes('costume') || q.includes('στολές')) {
+    response += `Προτείνω στολές πριγκίπισσας, πειρατή, ζώου ή superhero${budget}.\n`;
     response += `Shein έχει φθηνές επιλογές (10-25€).\n`;
     response += `Μέγεθος: ${size} ή λίγο μεγαλύτερο.\n\n`;
     response += `Έτοιμες προτάσεις τώρα:\n`;
-    response += `1. Παιδική Στολή Πριγκίπισσα (ροζ) - 12,99 €\n`;
-    response += `   https://eur.shein.com/pdsearch/%CF%80%CE%B1%CE%B9%CE%B4%CE%B9%CE%BA%CE%AE%20%CF%83%CF%84%CE%BF%CE%BB%CE%AE%20%CF%80%CF%81%CE%B9%CE%B3%CE%BA%CE%AF%CF%80%CE%B9%CF%83%CF%83%CE%B1\n`;
-    response += `2. Στολή Πειρατή (μαύρη) - 14,90 €\n`;
-    response += `   https://eur.shein.com/pdsearch/%CF%83%CF%84%CE%BF%CE%BB%CE%AE%20%CF%80%CE%B5%CE%B9%CF%81%CE%B1%CF%84%CE%AE`;
-  } 
-  else {
+    response += `1. Παιδική Στολή Πριγκίπισσα (ροζ) - 12,99 €\n   https://eur.shein.com/pdsearch/%CF%80%CE%B1%CE%B9%CE%B4%CE%B9%CE%BA%CE%AE%20%CF%83%CF%84%CE%BF%CE%BB%CE%AE%20%CF%80%CF%81%CE%B9%CE%B3%CE%BA%CE%AF%CF%80%CE%B9%CF%83%CF%83%CE%B1\n`;
+    response += `2. Στολή Πειρατή (μαύρη) - 14,90 €\n   https://eur.shein.com/pdsearch/%CF%83%CF%84%CE%BF%CE%BB%CE%AE%20%CF%80%CE%B5%CE%B9%CF%81%CE%B1%CF%84%CE%AE`;
+  } else if (q.includes('ρούχα') || q.includes('φούστα') || q.includes('παντελόνι') || q.includes('φόρεμα') || q.includes('ρούχο') || q.includes('εσώρουχα') || q.includes('πυτζάμες')) {
+    response += `Προτείνω άνετα και ζεστά ρούχα για χειμώνα${budget}.\n`;
+    response += `Προτίμησε σετ φούτερ + παντελόνι ή φόρμες σε ${colors}.\n`;
+    response += `Shein και H&M έχουν πολλές επιλογές κάτω από 20-30€.\n\n`;
+    response += `Έτοιμες προτάσεις τώρα:\n`;
+    response += `1. Shein Σετ φούτερ & παντελόνι (ροζ) - 15,99 €\n   https://eur.shein.com/pdsearch/%CF%80%CE%B1%CE%B9%CE%B4%CE%B9%CE%BA%CF%8C%20%CF%83%CE%B5%CF%84%20%CF%86%CE%BF%CF%8D%CF%84%CE%B5%CF%81\n`;
+    response += `2. H&M Basic φούτερ (μωβ) - 12,99 €\n   https://www.hm.com/el_gr/kids/clothes/sweatshirts.html`;
+  } else {
     response += `Δεν κατάλαβα ακριβώς, αλλά μπορώ να σε βοηθήσω!\n`;
     response += `Δοκίμασε να ρωτήσεις για:\n`;
-    response += `- χειμερινό μπουφάν\n`;
-    response += `- παπούτσια\n`;
-    response += `- δώρο γενεθλίων\n`;
-    response += `- στολή απόκριες\n`;
-    response += `- ρούχα χειμώνα`;
+    response += `- <a href="#" onClick={(e) => { e.preventDefault(); setQuestion('χειμερινό μπουφάν'); askAI(); }} style="color:#667eea; text-decoration:underline; cursor:pointer;">χειμερινό μπουφάν</a>\n`;
+    response += `- <a href="#" onClick={(e) => { e.preventDefault(); setQuestion('παπούτσια'); askAI(); }} style="color:#667eea; text-decoration:underline; cursor:pointer;">παπούτσια</a>\n`;
+    response += `- <a href="#" onClick={(e) => { e.preventDefault(); setQuestion('δώρο γενεθλίων'); askAI(); }} style="color:#667eea; text-decoration:underline; cursor:pointer;">δώρο γενεθλίων</a>\n`;
+    response += `- <a href="#" onClick={(e) => { e.preventDefault(); setQuestion('στολή απόκριες'); askAI(); }} style="color:#667eea; text-decoration:underline; cursor:pointer;">στολή απόκριες</a>\n`;
+    response += `- <a href="#" onClick={(e) => { e.preventDefault(); setQuestion('ρούχα χειμώνα'); askAI(); }} style="color:#667eea; text-decoration:underline; cursor:pointer;">ρούχα χειμώνα</a>`;
   }
 
   setAnswer(response);
