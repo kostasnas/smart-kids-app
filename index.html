@@ -687,17 +687,15 @@ const [aiHistory, setAiHistory] = useState([]);
   let response = `Γεια σου! Μιλάμε για ${name}, ${age} ετών ${gender}.\n\n`;
 
   if (q.includes('μπουφάν') || q.includes('πανωφόρι') || q.includes('ζακέτα') || q.includes('jacket') || q.includes('χειμώνα') || q.includes('κρύο') || q.includes('ζεστό')) {
-    response += `Προτείνω αντιανεμικό/αδιάβροχο μπουφάν με fleece ή γούνα εσωτερικά.\n`;
-    response += `Μέγεθος: ${size} ή 1-2 νούμερα μεγαλύτερο.\n`;
-    response += `Ιδανικά σε ${colors}!\n\n`;
-    response += `Έτοιμες προτάσεις τώρα (Φεβρουάριος 2026):\n`;
-    response += `1. Djeco Πολύχρωμο αντιανεμικό μπουφάν κοντό με κουκούλα - 18,70 €\n`;
-    response += `   https://www.skroutz.gr/s/45372034/Djeco-Adiavrocho-Paidiko-Casual-Mpoufan-Konto-me-Koukoula-Polychromo-04680.html\n`;
-    response += `2. Hashtag Παιδικό casual μπουφάν με κουκούλα (μπεζ) - 18,00 €\n`;
-    response += `   https://www.skroutz.gr/s/63237523/hashtag-paidiko-casual-mpoufan-me-koukoula-mpez-255821.html\n`;
-    response += `3. Shein Βασικό αντιανεμικό μπουφάν (πολλά χρώματα) - 12-22 €\n`;
-    response += `   https://eur.shein.com/pdsearch/%CE%BC%CF%80%CE%BF%CF%85%CF%86%CE%AC%CE%BD%20%CF%80%CE%B1%CE%B9%CE%B4%CE%B9%CE%BA%CF%8C`;
-  } 
+    response += `Προτείνω αντιανεμικό/αδιάβροχο μπουφάν με fleece ή γούνα εσωτερικά.<br>`;
+    response += `Μέγεθος: ${size} ή 1-2 νούμερα μεγαλύτερο.<br>`;
+    response += `Ιδανικά σε ${colors}!<br><br>`;
+    response += `Έτοιμες προτάσεις τώρα:<br>`;
+    response += `1. Djeco Πολύχρωμο αντιανεμικό μπουφάν κοντό με κουκούλα - 18,70 €<br>`;
+    response += `<a href="https://www.skroutz.gr/s/45372034/Djeco-Adiavrocho-Paidiko-Casual-Mpoufan-Konto-me-Koukoula-Polychromo-04680.html" target="_blank" style="color:#667eea; text-decoration:underline;">Πάτα εδώ για να δεις</a><br><br>`;
+    response += `2. Hashtag Παιδικό casual μπουφάν με κουκούλα (μπεζ) - 18,00 €<br>`;
+    response += `<a href="https://www.skroutz.gr/s/63237523/hashtag-paidiko-casual-mpoufan-me-koukoula-mpez-255821.html" target="_blank" style="color:#667eea; text-decoration:underline;">Πάτα εδώ για να δεις</a><br><br>`;
+}
   else if (q.includes('παπούτσια') || q.includes('μπότες') || q.includes('παπουτσ') || q.includes('sneakers') || q.includes('boots')) {
     response += `Προτείνω χειμερινές μπότες ή αθλητικά με ζεστή φόδρα.\n`;
     response += `Νούμερο: ${shoe} ή +1 για χοντρές κάλτσες.\n\n`;
@@ -762,11 +760,13 @@ const [aiHistory, setAiHistory] = useState([]);
 
                     <button className="btn-primary" onClick={askAI}>Ρώτα τον Σύμβουλο</button>
 
-                    {answer && (
-                        <div className="ai-response">
-                            {answer}
-                        </div>
-                    )}
+                   {answer && (
+    <div 
+        className="ai-response" 
+        style={{ whiteSpace: 'pre-line' }}
+        dangerouslySetInnerHTML={{ __html: answer }}
+    />
+)}
 
 {aiHistory.length > 0 && (
   <div style={{marginTop: '24px', padding: '12px', background: '#f9f9f9', borderRadius: '8px', maxHeight: '250px', overflowY: 'auto'}}>
