@@ -312,15 +312,25 @@
 )}
 
                                 {upcoming.length > 0 && (
-                                    <div className="notification-section">
-                                        <div className="section-title">Άμεσες Περιστάσεις</div>
-                                        {upcoming.map(o => (
-                                            <div key={o.name} className="notification-card">
-                                                <strong>{o.icon} {o.name}</strong> – σε {o.daysUntil} μέρες
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
+    <div className="notification-section" style={{marginTop: '24px'}}>
+        <div className="section-title">Προσεχείς Περιστάσεις</div>
+        {upcoming.map(o => (
+            <div 
+                key={o.name} 
+                className="notification-card"
+                style={{cursor: 'pointer', marginBottom: '12px'}}
+                onClick={() => {
+                    setActiveTab('needs');
+                }}
+            >
+                <strong>{o.icon} {o.name} σε {o.daysUntil} μέρες!</strong>
+                <div style={{fontSize: '14px', marginTop: '4px'}}>
+                    Πάτα εδώ για να δεις τι χρειάζεται το παιδί σου
+                </div>
+            </div>
+        ))}
+    </div>
+)}
                             </div>
                         )}
 
