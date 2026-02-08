@@ -299,10 +299,17 @@
                                     + Νέο παιδί
                                 </button>
                                 {selectedChild && savedNeeds[selectedChild.id] && savedNeeds[selectedChild.id].length > 0 && (
-                                    <div className="notification-card" style={{marginTop: '16px'}}>
-                                        <strong>🚨 Έχεις εκκρεμείς ανάγκες για {selectedChild.name}!</strong>
-                                    </div>
-                                )}
+    <div 
+        className="notification-card" 
+        style={{marginTop: '16px', cursor: 'pointer'}}
+        onClick={() => {
+            setSelectedChildId(selectedChild.id);
+            setActiveTab('needs');
+        }}
+    >
+        <strong>🚨 Έχεις εκκρεμείς ανάγκες για {selectedChild.name}! Πάτα εδώ για να τις δεις</strong>
+    </div>
+)}
 
                                 {upcoming.length > 0 && (
                                     <div className="notification-section">
