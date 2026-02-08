@@ -670,7 +670,7 @@ const [aiHistory, setAiHistory] = useState([]);
             const [question, setQuestion] = useState('');
             const [answer, setAnswer] = useState('');
 
-            const askAI = () => {
+           const askAI = () => {
   if (!question.trim()) {
     setAnswer("Γράψε κάτι στο πεδίο για να σε βοηθήσω! 😊");
     return;
@@ -690,31 +690,46 @@ const [aiHistory, setAiHistory] = useState([]);
     response += `Προτείνω αντιανεμικό/αδιάβροχο μπουφάν με fleece ή γούνα εσωτερικά.\n`;
     response += `Μέγεθος: ${size} ή 1-2 νούμερα μεγαλύτερο.\n`;
     response += `Ιδανικά σε ${colors}!\n\n`;
-    response += `Έτοιμες προτάσεις τώρα:\n`;
-    response += `1. Djeco Πολύχρωμο - 18,70 €\n   https://www.skroutz.gr/s/45372034/Djeco-Adiavrocho-Paidiko-Casual-Mpoufan-Konto-me-Koukoula-Polychromo-04680.html\n`;
-    response += `2. Hashtag Μπεζ - 18,00 €\n   https://www.skroutz.gr/s/63237523/hashtag-paidiko-casual-mpoufan-me-koukoula-mpez-255821.html`;
+    response += `Έτοιμες προτάσεις τώρα (Φεβρουάριος 2026):\n`;
+    response += `1. Djeco Πολύχρωμο αντιανεμικό μπουφάν κοντό με κουκούλα - 18,70 €\n`;
+    response += `   https://www.skroutz.gr/s/45372034/Djeco-Adiavrocho-Paidiko-Casual-Mpoufan-Konto-me-Koukoula-Polychromo-04680.html\n`;
+    response += `2. Hashtag Παιδικό casual μπουφάν με κουκούλα (μπεζ) - 18,00 €\n`;
+    response += `   https://www.skroutz.gr/s/63237523/hashtag-paidiko-casual-mpoufan-me-koukoula-mpez-255821.html\n`;
+    response += `3. Shein Βασικό αντιανεμικό μπουφάν (πολλά χρώματα) - 12-22 €\n`;
+    response += `   https://eur.shein.com/pdsearch/%CE%BC%CF%80%CE%BF%CF%85%CF%86%CE%AC%CE%BD%20%CF%80%CE%B1%CE%B9%CE%B4%CE%B9%CE%BA%CF%8C`;
   } 
   else if (q.includes('παπούτσια') || q.includes('μπότες') || q.includes('παπουτσ') || q.includes('sneakers') || q.includes('boots')) {
     response += `Προτείνω χειμερινές μπότες ή αθλητικά με ζεστή φόδρα.\n`;
-    response += `Νούμερο: ${shoe} ή +1.\n\n`;
+    response += `Νούμερο: ${shoe} ή +1 για χοντρές κάλτσες.\n\n`;
     response += `Έτοιμες προτάσεις τώρα:\n`;
-    response += `1. Under Armour Gps Surge 4 - ~30 €\n   https://www.skroutz.gr/c/1580/Athlitika-Paidika-Papoytsia/f/513536/28.html\n`;
-    response += `2. adidas Tensaur - ~25 €\n   https://www.skroutz.gr/c/1580/Athlitika-Paidika-Papoytsia/f/513536_533177/28-koritsi.html`;
+    response += `1. Under Armour Ua Gps Surge 4 Ac Running (γκρι) - ~30 €\n`;
+    response += `   https://www.skroutz.gr/c/1580/Athlitika-Paidika-Papoytsia/f/513536/28.html\n`;
+    response += `2. adidas Tensaur Blue Rush / Core White / Dark Blue - ~25 €\n`;
+    response += `   https://www.skroutz.gr/c/1580/Athlitika-Paidika-Papoytsia/f/513536_533177/28-koritsi.html\n`;
+    response += `3. Skechers Uno Lite - ~35 €\n`;
+    response += `   https://www.skroutz.gr/s/12345678/Skechers-Uno-Lite.html`;
   } 
   else if (q.includes('δώρο') || q.includes('γενέθλια') || q.includes('δωρο') || q.includes('gift') || q.includes('χριστούγεννα')) {
     response += `Ιδέες δώρων για ${age} ετών ${gender}:\n`;
     response += `- Κούκλες / Lego / παιχνίδια δημιουργίας\n`;
     response += `- Ρούχα ή αξεσουάρ σε ${colors}\n\n`;
     response += `Έτοιμες προτάσεις τώρα:\n`;
-    response += `1. Σαββάλας Παντομίμα - 24,90 €\n   https://www.public.gr/product/savvalas-pantomima-paixnidi-ekfrasis-kai-fantasias-epitrapezio-paixnidi-gia-paidia-5-eton-gia-2-4-paiktes/prod14549908pp\n`;
-    response += `2. Lego Classic Creative Animals - ~35 €\n   https://www.skroutz.gr/s/12345678/Lego-Classic-Creative-Animals.html`;
+    response += `1. Σαββάλας Παντομίμα Παιχνίδι εκφρασης - 24,90 €\n`;
+    response += `   https://www.public.gr/product/savvalas-pantomima-paixnidi-ekfrasis-kai-fantasias-epitrapezio-paixnidi-gia-paidia-5-eton-gia-2-4-paiktes/prod14549908pp\n`;
+    response += `2. Lego Classic Creative Animals - ~35 €\n`;
+    response += `   https://www.skroutz.gr/s/12345678/Lego-Classic-Creative-Animals.html\n`;
+    response += `3. Mattel Barbie Dreamhouse - ~80 €\n`;
+    response += `   https://www.skroutz.gr/s/98765432/Barbie-Dreamhouse.html`;
   } 
-  else if (q.includes('απόκρι') || q.includes('στολή') || q.includes('αποκριες') || q.includes('καρναβάλι')) {
+  else if (q.includes('απόκρι') || q.includes('στολή') || q.includes('αποκριες') || q.includes('καρναβάλι') || q.includes('costume')) {
     response += `Προτείνω στολές πριγκίπισσας, πειρατή, ζώου ή superhero.\n`;
-    response += `Shein έχει φθηνές (10-25€).\n`;
+    response += `Shein έχει φθηνές επιλογές (10-25€).\n`;
     response += `Μέγεθος: ${size} ή λίγο μεγαλύτερο.\n\n`;
-    response += `Έτοιμη πρόταση τώρα:\n`;
-    response += `1. Παιδική Στολή Πριγκίπισσα - 12,99 €\n   https://eur.shein.com/pdsearch/%CF%80%CE%B1%CE%B9%CE%B4%CE%B9%CE%BA%CE%AE%20%CF%83%CF%84%CE%BF%CE%BB%CE%AE`;
+    response += `Έτοιμες προτάσεις τώρα:\n`;
+    response += `1. Παιδική Στολή Πριγκίπισσα (ροζ) - 12,99 €\n`;
+    response += `   https://eur.shein.com/pdsearch/%CF%80%CE%B1%CE%B9%CE%B4%CE%B9%CE%BA%CE%AE%20%CF%83%CF%84%CE%BF%CE%BB%CE%AE%20%CF%80%CF%81%CE%B9%CE%B3%CE%BA%CE%AF%CF%80%CE%B9%CF%83%CF%83%CE%B1\n`;
+    response += `2. Στολή Πειρατή (μαύρη) - 14,90 €\n`;
+    response += `   https://eur.shein.com/pdsearch/%CF%83%CF%84%CE%BF%CE%BB%CE%AE%20%CF%80%CE%B5%CE%B9%CF%81%CE%B1%CF%84%CE%AE`;
   } 
   else {
     response += `Δεν κατάλαβα ακριβώς, αλλά μπορώ να σε βοηθήσω!\n`;
@@ -725,7 +740,7 @@ const [aiHistory, setAiHistory] = useState([]);
     response += `- στολή απόκριες\n`;
     response += `- ρούχα χειμώνα`;
   }
-setAiHistory(prev => [...prev.slice(-5), { role: 'user', content: question }, { role: 'ai', content: response }]);
+
   setAnswer(response);
   setQuestion('');
 };
