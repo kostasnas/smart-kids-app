@@ -298,6 +298,11 @@
                                 <button className="btn-primary" onClick={() => setActiveTab('add-child')} style={{marginTop: '16px'}}>
                                     + Νέο παιδί
                                 </button>
+                                {selectedChild && savedNeeds[selectedChild.id] && savedNeeds[selectedChild.id].length > 0 && (
+                                    <div className="notification-card" style={{marginTop: '16px'}}>
+                                        <strong>🚨 Έχεις εκκρεμείς ανάγκες για {selectedChild.name}!</strong>
+                                    </div>
+                                )}
 
                                 {upcoming.length > 0 && (
                                     <div className="notification-section">
