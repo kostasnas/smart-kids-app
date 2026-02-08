@@ -600,6 +600,20 @@
                         <h3>Skroutz</h3>
                         <a href="https://www.skroutz.gr/" target="_blank">Ψάξε στο Skroutz</a>
                     </div>
+                    {childNeeds.length > 0 && (
+                        <button 
+                            className="btn-primary" 
+                            onClick={() => {
+                                const text = `Ανάγκες για ${selectedChild.name}:\n${childNeeds.join('\n')}`;
+                                navigator.clipboard.writeText(text).then(() => {
+                                    alert("Οι ανάγκες αντιγράφηκαν στο clipboard!");
+                                });
+                            }}
+                            style={{marginTop: '16px', width: '100%'}}
+                        >
+                            Export Λίστας (αντιγραφή)
+                        </button>
+                    )}
                 </div>
             );
         }
