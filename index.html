@@ -590,6 +590,31 @@
                     ) : (
                         <p style={{color: '#666'}}>Δεν έχεις προσθέσει ακόμα ανάγκες για αυτό το παιδί</p>
                     )}
+                    <div className="section-title" style={{marginTop: '24px'}}>Προτάσεις αγορών για τις ανάγκες</div>
+                    {childNeeds.map((need, i) => (
+                        <div key={i} style={{marginBottom: '16px'}}>
+                            <div style={{fontWeight: 'bold'}}>{need}</div>
+                            <div style={{marginTop: '8px'}}>
+                                <a 
+                                    href={`https://www.skroutz.gr/search?keyphrase=${encodeURIComponent(need + ' παιδικό')}`} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    style={{color: '#667eea', textDecoration: 'none'}}
+                                >
+                                    Ψάξε στο Skroutz →
+                                </a>
+                                <br />
+                                <a 
+                                    href={`https://eur.shein.com/pdsearch/${encodeURIComponent(need)}`} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    style={{color: '#667eea', textDecoration: 'none'}}
+                                >
+                                    Ψάξε στο Shein →
+                                </a>
+                            </div>
+                        </div>
+                    ))} 
 
                     <div className="section-title" style={{marginTop: '24px'}}>Γρήγορα links αναζήτησης</div>
                     <div className="shop-card">
