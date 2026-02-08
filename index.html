@@ -726,15 +726,16 @@ const [aiHistory, setAiHistory] = useState([]);
     response += `Έτοιμες προτάσεις τώρα:\n`;
     response += `1. Shein Σετ φούτερ & παντελόνι (ροζ) - 15,99 €\n   https://eur.shein.com/pdsearch/%CF%80%CE%B1%CE%B9%CE%B4%CE%B9%CE%BA%CF%8C%20%CF%83%CE%B5%CF%84%20%CF%86%CE%BF%CF%8D%CF%84%CE%B5%CF%81\n`;
     response += `2. H&M Basic φούτερ (μωβ) - 12,99 €\n   https://www.hm.com/el_gr/kids/clothes/sweatshirts.html`;
-  } else {
-    response += `Δεν κατάλαβα ακριβώς, αλλά μπορώ να σε βοηθήσω!\n`;
-    response += `Δοκίμασε να ρωτήσεις για:\n`;
-    response += `- <a href="#" onClick={(e) => { e.preventDefault(); setQuestion('χειμερινό μπουφάν'); askAI(); }} style="color:#667eea; text-decoration:underline; cursor:pointer;">χειμερινό μπουφάν</a>\n`;
-    response += `- <a href="#" onClick={(e) => { e.preventDefault(); setQuestion('παπούτσια'); askAI(); }} style="color:#667eea; text-decoration:underline; cursor:pointer;">παπούτσια</a>\n`;
-    response += `- <a href="#" onClick={(e) => { e.preventDefault(); setQuestion('δώρο γενεθλίων'); askAI(); }} style="color:#667eea; text-decoration:underline; cursor:pointer;">δώρο γενεθλίων</a>\n`;
-    response += `- <a href="#" onClick={(e) => { e.preventDefault(); setQuestion('στολή απόκριες'); askAI(); }} style="color:#667eea; text-decoration:underline; cursor:pointer;">στολή απόκριες</a>\n`;
-    response += `- <a href="#" onClick={(e) => { e.preventDefault(); setQuestion('ρούχα χειμώνα'); askAI(); }} style="color:#667eea; text-decoration:underline; cursor:pointer;">ρούχα χειμώνα</a>`;
-  }
+ } else {
+  response += `Δεν κατάλαβα ακριβώς, αλλά μπορώ να σε βοηθήσω!\n\n`;
+  response += `Δοκίμασε να ρωτήσεις για:\n\n`;
+  response += `• <a href="#" onClick={(e) => { e.preventDefault(); setQuestion('χειμερινό μπουφάν'); askAI(); }} style="color:#667eea; text-decoration:underline; cursor:pointer;">χειμερινό μπουφάν</a>\n`;
+  response += `• <a href="#" onClick={(e) => { e.preventDefault(); setQuestion('παπούτσια'); askAI(); }} style="color:#667eea; text-decoration:underline; cursor:pointer;">παπούτσια</a>\n`;
+  response += `• <a href="#" onClick={(e) => { e.preventDefault(); setQuestion('δώρο γενεθλίων'); askAI(); }} style="color:#667eea; text-decoration:underline; cursor:pointer;">δώρο γενεθλίων</a>\n`;
+  response += `• <a href="#" onClick={(e) => { e.preventDefault(); setQuestion('στολή απόκριες'); askAI(); }} style="color:#667eea; text-decoration:underline; cursor:pointer;">στολή απόκριες</a>\n`;
+  response += `• <a href="#" onClick={(e) => { e.preventDefault(); setQuestion('ρούχα χειμώνα'); askAI(); }} style="color:#667eea; text-decoration:underline; cursor:pointer;">ρούχα χειμώνα</a>\n\n`;
+  response += `Πάτα πάνω σε οποιαδήποτε για να το ψάξω αμέσως!`;
+}
 
   setAnswer(response);
   setQuestion('');
