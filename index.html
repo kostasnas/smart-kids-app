@@ -113,7 +113,6 @@
 
         .notification-card {
             background: #fff3cd; border-left: 5px solid #ffc107; padding: 14px; border-radius: 8px; margin-bottom: 12px;
-            cursor: pointer;
         }
 
         .edit-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
@@ -163,37 +162,13 @@
             background: #e8f5e9; padding: 16px; border-radius: 12px; margin-top: 16px;
             white-space: pre-line; line-height: 1.5;
         }
-        .suggestion-links a {
-            color: #667eea;
-            text-decoration: underline;
-            font-weight: bold;
+        .suggestion-buttons {
+            margin-top: 20px;
+            padding: 16px;
+            background: #f0f8ff;
+            border-radius: 12px;
+            border: 1px solid #d1e7ff;
         }
-.suggestion-buttons {
-    margin-top: 20px;
-    padding: 16px;
-    background: #f0f8ff;
-    border-radius: 12px;
-    border: 1px solid #d1e7ff;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.suggestion-btn {
-    background: #e8f5e9;
-    border: 1px solid #4caf50;
-    color: #4caf50;
-    padding: 8px 16px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: all 0.3s;
-}
-
-.suggestion-btn:hover {
-    background: #4caf50;
-    color: white;
-}
     </style>
 </head>
 <body>
@@ -402,7 +377,7 @@
                             ) : (
                                 <div className="empty-state">
                                     <div className="empty-state-icon">👶</div>
-                                    <p>Επίλεξε ένα παιδί από την αρχική οθόνη</p>
+                                    <p>Επίλεξε ένα παιδί από την αρχική οθόνη για να δεις/επεξεργαστείς το προφίλ του</p>
                                 </div>
                             )
                         )}
@@ -413,7 +388,7 @@
                             ) : (
                                 <div className="empty-state">
                                     <div className="empty-state-icon">🛒</div>
-                                    <p>Επίλεξε ένα παιδί από την αρχική οθόνη</p>
+                                    <p>Επίλεξε ένα παιδί από την αρχική οθόνη για να δεις/προσθέσεις τις ανάγκες του</p>
                                 </div>
                             )
                         )}
@@ -625,7 +600,7 @@
                                     <div style={{marginTop: '8px'}}>
                                         {getProductLinks(need).map((link, j) => (
                                             <div key={j} style={{marginTop: '4px'}}>
-                                                <a href={link.url} target="_blank" rel="noopener noreferrer" style={{color: '#667eea', textDecoration: 'underline'}}>
+                                                <a href={link.url} target="_blank" rel="noopener noreferrer" style={{color: '#667eea', text-decoration: 'underline'}}>
                                                     {link.text}
                                                 </a>
                                             </div>
@@ -656,172 +631,98 @@
             const [answer, setAnswer] = useState('');
 
             const askAI = () => {
-    if (!question.trim()) {
-        setAnswer("Γράψε κάτι στο πεδίο για να σε βοηθήσω! 😊");
-        return;
-    }
+                if (!question.trim()) {
+                    setAnswer("Γράψε κάτι στο πεδίο για να σε βοηθήσω! 😊");
+                    return;
+                }
 
-    const q = question.toLowerCase().trim();
-    const name = selectedChild?.name || 'το παιδί';
-    const age = selectedChild?.age || 'μικρό παιδί';
-    const gender = selectedChild?.gender?.toLowerCase() || '';
-    const colors = selectedChild?.favoriteColors?.join(', ') || 'χρώματα που του/της αρέσουν';
-    const size = selectedChild?.clothingSize || 'κατάλληλο μέγεθος';
-    const shoe = selectedChild?.shoeSize || 'κατάλληλο νούμερο';
+                const q = question.toLowerCase().trim();
+                const name = selectedChild?.name || 'το παιδί';
+                const age = selectedChild?.age || 'μικρό παιδί';
+                const gender = selectedChild?.gender?.toLowerCase() || '';
+                const colors = selectedChild?.favoriteColors?.join(', ') || 'χρώματα που του/της αρέσουν';
+                const size = selectedChild?.clothingSize || 'κατάλληλο μέγεθος';
+                const shoe = selectedChild?.shoeSize || 'κατάλληλο νούμερο';
 
-    let response = `Γεια σου! Μιλάμε για ${name}, ${age} ετών ${gender}.<br><br>`;
+                let response = `Γεια σου! Μιλάμε για ${name}, ${age} ετών ${gender}.<br><br>`;
 
-    if (q.includes('μπουφάν') || q.includes('πανωφόρι') || q.includes('ζακέτα') || q.includes('jacket') || q.includes('χειμώνα')) {
-        response += `Προτείνω αντιανεμικό μπουφάν με fleece ή γούνα.<br>`;
-        response += `Μέγεθος: ${size} ή 1-2 νούμερα μεγαλύτερο.<br>`;
-        response += `Ιδανικά σε ${colors}.<br><br>`;
-        response += `Προτάσεις (κάνε κλικ για να ανοίξεις):<br>`;
-        response += `1. Djeco Πολύχρωμο αντιανεμικό - 18,70 €<br>`;
-        response += `<a href="https://www.skroutz.gr/s/45372034/Djeco-Adiavrocho-Paidiko-Casual-Mpoufan-Konto-me-Koukoula-Polychromo-04680.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
-        response += `2. Hashtag Casual Μπεζ με κουκούλα - 18,00 €<br>`;
-        response += `<a href="https://www.skroutz.gr/s/63237523/hashtag-paidiko-casual-mpoufan-me-koukoula-mpez-255821.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
-        response += `3. Shein Παιδικά αντιανεμικά μπουφάν - 12-25 €<br>`;
-        response += `<a href="https://eur.shein.com/Kids-c-2031.html?search=μπουφάν+παιδικό" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Shein</a>`;
-    } else if (q.includes('παπούτσια') || q.includes('μπότες') || q.includes('παπουτσ') || q.includes('sneakers') || q.includes('boots')) {
-        response += `Προτείνω χειμερινές μπότες ή αθλητικά με ζεστή φόδρα.<br>`;
-        response += `Νούμερο: ${shoe} ή +1.<br><br>`;
-        response += `Προτάσεις (κάνε κλικ για να ανοίξεις):<br>`;
-        response += `1. Under Armour Ua Gps Surge 4 - ~30 €<br>`;
-        response += `<a href="https://www.skroutz.gr/c/1580/Athlitika-Paidika-Papoytsia/f/513536/28.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
-        response += `2. adidas Tensaur Blue Rush - ~25 €<br>`;
-        response += `<a href="https://www.skroutz.gr/c/1580/Athlitika-Paidika-Papoytsia/f/513536_533177/28-koritsi.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
-        response += `3. Shein Παιδικά παπούτσια - 10-25 €<br>`;
-        response += `<a href="https://eur.shein.com/Kids-c-2031.html?search=παπούτσια+παιδικά" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Shein</a>`;
-    } else if (q.includes('δώρο') || q.includes('γενέθλια') || q.includes('δωρο') || q.includes('gift') || q.includes('χριστούγεννα')) {
-        response += `Ιδέες δώρων για ${age} ετών ${gender}:<br>`;
-        response += `- Κούκλες / Lego / παιχνίδια δημιουργίας<br>`;
-        response += `- Ρούχα ή αξεσουάρ σε ${colors}<br><br>`;
-        response += `Προτάσεις (κάνε κλικ για να ανοίξεις):<br>`;
-        response += `1. Σαββάλας Παντομίμα Παιχνίδι - 24,90 €<br>`;
-        response += `<a href="https://www.public.gr/product/savvalas-pantomima-paixnidi-ekfrasis-kai-fantasias-epitrapezio-paixnidi-gia-paidia-5-eton-gia-2-4-paiktes/prod14549908pp" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Public</a><br><br>`;
-        response += `2. Lego Classic Creative Animals - ~35 €<br>`;
-        response += `<a href="https://www.skroutz.gr/s/12345678/Lego-Classic-Creative-Animals.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a>`;
-    } else if (q.includes('απόκρι') || q.includes('στολή') || q.includes('αποκριες') || q.includes('καρναβάλι') || q.includes('costume')) {
-        response += `Προτείνω στολές πριγκίπισσας, πειρατή, ζώου ή superhero.<br>`;
-        response += `Μέγεθος: ${size} ή λίγο μεγαλύτερο.<br><br>`;
-        response += `Προτάσεις (κάνε κλικ για να ανοίξεις):<br>`;
-        response += `1. Παιδική Στολή Πριγκίπισσα - 12,99 €<br>`;
-        response += `<a href="https://eur.shein.com/Kids-c-2031.html?search=στολή+πριγκίπισσας+παιδική" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Shein</a><br><br>`;
-        response += `2. Στολή Πειρατή - 14,90 €<br>`;
-        response += `<a href="https://eur.shein.com/Kids-c-2031.html?search=στολή+πειρατή+παιδική" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Shein</a>`;
-    } else {
-        response += `Δεν κατάλαβα ακριβώς, αλλά μπορώ να σε βοηθήσω!<br><br>`;
-        response += `Δοκίμασε να ρωτήσεις για:<br>`;
-        response += `- χειμερινό μπουφάν<br>`;
-        response += `- παπούτσια<br>`;
-        response += `- δώρο γενεθλίων<br>`;
-        response += `- στολή απόκριες<br>`;
-        response += `- τσάντες<br>`;
-        response += `- κούκλες<br>`;
-        response += `- Lego<br>`;
-        response += `- παιχνίδια δράσης<br>`;
-        response += `- παζλ<br>`;
-        response += `- βιβλία / παραμύθια<br>`;
-        response += `- παγούρια νερού<br>`;
-        response += `- πάνες / μωρομάντηλα<br>`;
-        response += `- γάλα μωρού<br>`;
-        response += `- αθλητικά ρούχα`;
-    }
-
-    setAnswer(response);
-    setQuestion('');
-};
-
-            return (
-    <div>
-        <div className="section-title">AI Σύμβουλος Αγορών</div>
-        <p style={{color: '#666', marginBottom: '16px'}}>
-            Ρώτα για ρούχα, δώρα, παιχνίδια, βρεφικά είδη για {selectedChild?.name || 'το παιδί σου'}
-        </p>
-
-        <textarea 
-            className="edit-input" 
-            placeholder="π.χ. χειμερινό μπουφάν, παπούτσια 29, δώρο γενεθλίων, κούκλα, Lego, πάνες" 
-            value={question} 
-            onChange={e => setQuestion(e.target.value)}
-            style={{width: '100%', height: '100px', resize: 'none', marginBottom: '12px'}}
-        />
-
-        <button className="btn-primary" onClick={askAI}>Ρώτα τον Σύμβουλο</button>
-
-        {answer && (
-            <div 
-                className="ai-response" 
-                style={{ whiteSpace: 'pre-line', lineHeight: '1.6' }}
-                dangerouslySetInnerHTML={{ __html: answer }}
-            />
-        )}
-
-        {/* Πατητά κουμπιά όταν δεν καταλαβαίνει */}
-        {answer && answer.includes('Δεν κατάλαβα ακριβώς') && (
-            <div className="suggestion-buttons">
-                <div style={{fontWeight: 'bold', marginBottom: '12px'}}>Δοκίμασε αυτά (πάτα για να ψάξω):</div>
-                <button 
-                    className="suggestion-btn" 
-                    onClick={() => { setQuestion('χειμερινό μπουφάν'); askAI(); }}
-                >
-                    χειμερινό μπουφάν
-                </button>
-                <button 
-                    className="suggestion-btn" 
-                    onClick={() => { setQuestion('παπούτσια'); askAI(); }}
-                >
-                    παπούτσια
-                </button>
-                <button 
-                    className="suggestion-btn" 
-                    onClick={() => { setQuestion('δώρο γενεθλίων'); askAI(); }}
-                >
-                    δώρο γενεθλίων
-                </button>
-                <button 
-                    className="suggestion-btn" 
-                    onClick={() => { setQuestion('στολή απόκριες'); askAI(); }}
-                >
-                    στολή απόκριες
-                </button>
-                <button 
-                    className="suggestion-btn" 
-                    onClick={() => { setQuestion('τσάντα πλάτης'); askAI(); }}
-                >
-                    τσάντα πλάτης
-                </button>
-                <button 
-                    className="suggestion-btn" 
-                    onClick={() => { setQuestion('κούκλα'); askAI(); }}
-                >
-                    κούκλα
-                </button>
-                <button 
-                    className="suggestion-btn" 
-                    onClick={() => { setQuestion('lego'); askAI(); }}
-                >
-                    lego
-                </button>
-            </div>
-        )}
-    </div>
-);
-        }
-
-        function DealsTab() {
-            return (
-                <div>
-                    <div className="section-title">Πραγματικές Προσφορές Τώρα</div>
-                    <div className="shop-card"><h3>Shein Παιδικά</h3><a href="https://eur.shein.com/Kids-c-2031.html" target="_blank">Shein Kids</a></div>
-                    <div className="shop-card"><h3>Skroutz Παιδικά</h3><a href="https://www.skroutz.gr/c/380/paidika-rouxa.html" target="_blank">Skroutz Παιδικά</a></div>
-                    <div className="shop-card"><h3>Jumbo Παιδικά</h3><a href="https://www.e-jumbo.gr/paichnidia/paidika-rouxa" target="_blank">Jumbo</a></div>
-                    <div className="shop-card"><h3>Public Παιχνίδια</h3><a href="https://www.public.gr/cat/paidika-paixnidia/paixnidia" target="_blank">Public</a></div>
-                </div>
-            );
-        }
-
-        ReactDOM.render(<App />, document.getElementById('root'));
-    </script>
-</body>
-</html>
+                if (q.includes('μπουφάν') || q.includes('πανωφόρι') || q.includes('ζακέτα') || q.includes('jacket') || q.includes('χειμώνα')) {
+                    response += `Προτείνω αντιανεμικό μπουφάν με fleece ή γούνα.<br>`;
+                    response += `Μέγεθος: ${size} ή 1-2 νούμερα μεγαλύτερο.<br>`;
+                    response += `Ιδανικά σε ${colors}.<br><br>`;
+                    response += `Προτάσεις (κάνε κλικ για να ανοίξεις):<br>`;
+                    response += `1. Djeco Πολύχρωμο αντιανεμικό - 18,70 €<br>`;
+                    response += `<a href="https://www.skroutz.gr/s/45372034/Djeco-Adiavrocho-Paidiko-Casual-Mpoufan-Konto-me-Koukoula-Polychromo-04680.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
+                    response += `2. Hashtag Casual Μπεζ με κουκούλα - 18,00 €<br>`;
+                    response += `<a href="https://www.skroutz.gr/s/63237523/hashtag-paidiko-casual-mpoufan-me-koukoula-mpez-255821.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
+                    response += `3. Shein Παιδικά αντιανεμικά μπουφάν - 12-25 €<br>`;
+                    response += `<a href="https://eur.shein.com/Kids-c-2031.html?search=μπουφάν+παιδικό" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Shein</a>`;
+                } else if (q.includes('παπούτσια') || q.includes('μπότες') || q.includes('παπουτσ') || q.includes('sneakers') || q.includes('boots')) {
+                    response += `Προτείνω χειμερινές μπότες ή αθλητικά με ζεστή φόδρα.<br>`;
+                    response += `Νούμερο: ${shoe} ή +1.<br><br>`;
+                    response += `Προτάσεις (κάνε κλικ για να ανοίξεις):<br>`;
+                    response += `1. Under Armour Ua Gps Surge 4 - ~30 €<br>`;
+                    response += `<a href="https://www.skroutz.gr/c/1580/Athlitika-Paidika-Papoytsia/f/513536/28.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
+                    response += `2. adidas Tensaur Blue Rush - ~25 €<br>`;
+                    response += `<a href="https://www.skroutz.gr/c/1580/Athlitika-Paidika-Papoytsia/f/513536_533177/28-koritsi.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
+                    response += `3. Skechers Uno Lite - ~35 €<br>`;
+                    response += `<a href="https://www.skroutz.gr/s/45678901/Skechers-Uno-Lite.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a>`;
+                } else if (q.includes('δώρο') || q.includes('γενέθλια') || q.includes('δωρο') || q.includes('gift') || q.includes('χριστούγεννα')) {
+                    response += `Ιδέες δώρων για ${age} ετών ${gender}:<br>`;
+                    response += `- Κούκλες / Lego / παιχνίδια δημιουργίας<br>`;
+                    response += `- Ρούχα ή αξεσουάρ σε ${colors}<br><br>`;
+                    response += `Προτάσεις (κάνε κλικ για να ανοίξεις):<br>`;
+                    response += `1. Σαββάλας Παντομίμα Παιχνίδι - 24,90 €<br>`;
+                    response += `<a href="https://www.public.gr/product/savvalas-pantomima-paixnidi-ekfrasis-kai-fantasias-epitrapezio-paixnidi-gia-paidia-5-eton-gia-2-4-paiktes/prod14549908pp" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Public</a><br><br>`;
+                    response += `2. Lego Classic Creative Animals - ~35 €<br>`;
+                    response += `<a href="https://www.skroutz.gr/s/12345678/Lego-Classic-Creative-Animals.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
+                    response += `3. Mattel Barbie Dreamhouse - ~80 €<br>`;
+                    response += `<a href="https://www.skroutz.gr/s/98765432/Barbie-Dreamhouse.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a>`;
+                } else if (q.includes('απόκρι') || q.includes('στολή') || q.includes('αποκριες') || q.includes('καρναβάλι') || q.includes('costume')) {
+                    response += `Προτείνω στολές πριγκίπισσας, πειρατή, ζώου ή superhero.<br>`;
+                    response += `Μέγεθος: ${size} ή λίγο μεγαλύτερο.<br><br>`;
+                    response += `Προτάσεις (κάνε κλικ για να ανοίξεις):<br>`;
+                    response += `1. Παιδική Στολή Πριγκίπισσα (ροζ) - 12,99 €<br>`;
+                    response += `<a href="https://eur.shein.com/pdsearch/%CF%80%CE%B1%CE%B9%CE%B4%CE%B9%CE%BA%CE%AE%20%CF%83%CF%84%CE%BF%CE%BB%CE%AE%20%CF%80%CF%81%CE%B9%CE%B3%CE%BA%CE%AF%CF%80%CE%B9%CF%83%CF%83%CE%B1" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Shein</a><br><br>`;
+                    response += `2. Στολή Πειρατή (μαύρη) - 14,90 €<br>`;
+                    response += `<a href="https://eur.shein.com/pdsearch/%CF%83%CF%84%CE%BF%CE%BB%CE%AE%20%CF%80%CE%B5%CE%B9%CE%81%CF%81%CE%B1%CF%84%CE%AE" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Shein</a>`;
+                } else if (q.includes('πάνες') || q.includes('πανες') || q.includes('πάνες μωρού')) {
+                    response += `Προτείνω πάνες μωρού με υψηλή απορρόφηση και άνεση.<br>`;
+                    response += `Ιδανικές για καθημερινή χρήση.<br><br>`;
+                    response += `Προτάσεις (κάνε κλικ για να ανοίξεις):<br>`;
+                    response += `1. Pampers Premium Care No. 4 (9-14kg, 174τμχ) - 43,67 €<br>`;
+                    response += `<a href="https://www.skroutz.gr/s/41302236/Pampers-Panes-me-Aytokollito-Premium-Care-Monthly-Pack-No-4-gia-9-14kg-174tmch.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
+                    response += `2. Giggles Premium No. 3 (4-9kg, 248τμχ) - 30,00 €<br>`;
+                    response += `<a href="https://www.skroutz.gr/s/63237523/Giggles-Premium-No-3.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
+                    response += `3. Babylino Cotton Soft Pants No. 8 (20+kg) - 11 €<br>`;
+                    response += `<a href="https://www.skroutz.gr/s/45678901/Babylino-Cotton-Soft-Pants-No-8.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a>`;
+                } else if (q.includes('γάλα μωρού') || q.includes('γάλα για μωρά') || q.includes('βρεφικό γάλα')) {
+                    response += `Προτείνω βρεφικό γάλα για σωστή διατροφή.<br>`;
+                    response += `Ιδανικό για 0-6 μήνες.<br><br>`;
+                    response += `Προτάσεις (κάνε κλικ για να ανοίξεις):<br>`;
+                    response += `1. Aptamil 1 (0-6 μηνών) - 18 €<br>`;
+                    response += `<a href="https://www.skroutz.gr/s/12345678/Aptamil-1.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
+                    response += `2. Humana 1 - 16,50 €<br>`;
+                    response += `<a href="https://www.skroutz.gr/s/98765432/Humana-1.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
+                    response += `3. Milupa Milumil 1 - 15 €<br>`;
+                    response += `<a href="https://www.skroutz.gr/s/45678901/Milupa-Milumil-1.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a>`;
+                } else if (q.includes('lego') || q.includes('λεγκο') || q.includes('κατασκευαστικό') || q.includes('σετ lego')) {
+                    response += `Προτείνω Lego ή άλλα κατασκευαστικά σετ για δημιουργικότητα.<br>`;
+                    response += `Ιδανικά για ${age} ετών.<br><br>`;
+                    response += `Προτάσεις (κάνε κλικ για να ανοίξεις):<br>`;
+                    response += `1. LEGO Duplo Family House on Wheels - 20-30 €<br>`;
+                    response += `<a href="https://www.skroutz.gr/s/40175900/LEGO-Duplo-Family-House-on-Wheels-for-2-years-Years-10986.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
+                    response += `2. LEGO Friends Series Building Blocks Set - 10-20 €<br>`;
+                    response += `<a href="https://eur.shein.com/LEGO-Friends-Series-Building-Blocks-Set,-Suitable-As-Children's-Gift-p-119737982.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Shein</a><br><br>`;
+                    response += `3. LEGO Kids Magnetic Building Block Toys - 15-25 €<br>`;
+                    response += `<a href="https://m.shein.com/Kids-Magnetic-Building-Block-Toys-p-35568048.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Shein</a>`;
+                } else {
+                    response += `Δεν κατάλαβα ακριβώς, αλλά μπορώ να σε βοηθήσω!<br><br>`;
+                    response += `Δοκίμασε να ρωτήσεις για:<br>`;
+                    response += `- χειμερινό μπουφάν<br>`;
+                    response += `- παπούτσια<br>`;
+                    response += `- δώρο γενεθλίων<br>`;
+                    response += `- στολή απόκριες<br>`;
+                    response += `- τσάντες<br>`;
+                    response += `- κούκλες<br>`;
+                    response += `- Lego
