@@ -729,12 +729,12 @@ const [aiHistory, setAiHistory] = useState([]);
  } else {
   response += `Δεν κατάλαβα ακριβώς, αλλά μπορώ να σε βοηθήσω!\n\n`;
   response += `Δοκίμασε να ρωτήσεις για:\n\n`;
-  response += `• <a href="#" onClick={(e) => { e.preventDefault(); setQuestion('χειμερινό μπουφάν'); askAI(); }} style="color:#667eea; text-decoration:underline; cursor:pointer;">χειμερινό μπουφάν</a>\n`;
-  response += `• <a href="#" onClick={(e) => { e.preventDefault(); setQuestion('παπούτσια'); askAI(); }} style="color:#667eea; text-decoration:underline; cursor:pointer;">παπούτσια</a>\n`;
-  response += `• <a href="#" onClick={(e) => { e.preventDefault(); setQuestion('δώρο γενεθλίων'); askAI(); }} style="color:#667eea; text-decoration:underline; cursor:pointer;">δώρο γενεθλίων</a>\n`;
-  response += `• <a href="#" onClick={(e) => { e.preventDefault(); setQuestion('στολή απόκριες'); askAI(); }} style="color:#667eea; text-decoration:underline; cursor:pointer;">στολή απόκριες</a>\n`;
-  response += `• <a href="#" onClick={(e) => { e.preventDefault(); setQuestion('ρούχα χειμώνα'); askAI(); }} style="color:#667eea; text-decoration:underline; cursor:pointer;">ρούχα χειμώνα</a>\n\n`;
-  response += `Πάτα πάνω σε οποιαδήποτε για να το ψάξω αμέσως!`;
+  response += `- χειμερινό μπουφάν\n`;
+  response += `- παπούτσια\n`;
+  response += `- δώρο γενεθλίων\n`;
+  response += `- στολή απόκριες\n`;
+  response += `- ρούχα χειμώνα\n\n`;
+  response += `Πάτα τα κουμπιά παρακάτω για να ψάξω αμέσως!`;
 }
 
   setAnswer(response);
