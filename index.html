@@ -168,6 +168,32 @@
             text-decoration: underline;
             font-weight: bold;
         }
+.suggestion-buttons {
+    margin-top: 20px;
+    padding: 16px;
+    background: #f0f8ff;
+    border-radius: 12px;
+    border: 1px solid #d1e7ff;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.suggestion-btn {
+    background: #e8f5e9;
+    border: 1px solid #4caf50;
+    color: #4caf50;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.suggestion-btn:hover {
+    background: #4caf50;
+    color: white;
+}
     </style>
 </head>
 <body>
@@ -704,29 +730,78 @@
             };
 
             return (
-                <div>
-                    <div className="section-title">AI Σύμβουλος Αγορών</div>
-                    <p style={{color: '#666', marginBottom: '16px'}}>
-                        Ρώτα για ρούχα, δώρα, παιχνίδια, βρεφικά είδη για {selectedChild?.name || 'το παιδί σου'}
-                    </p>
+    <div>
+        <div className="section-title">AI Σύμβουλος Αγορών</div>
+        <p style={{color: '#666', marginBottom: '16px'}}>
+            Ρώτα για ρούχα, δώρα, παιχνίδια, βρεφικά είδη για {selectedChild?.name || 'το παιδί σου'}
+        </p>
 
-                    <textarea 
-                        className="edit-input" 
-                        placeholder="π.χ. χειμερινό μπουφάν, παπούτσια 29, δώρο γενεθλίων, κούκλα, Lego, πάνες" 
-                        value={question} 
-                        onChange={e => setQuestion(e.target.value)}
-                        style={{width: '100%', height: '100px', resize: 'none', marginBottom: '12px'}}
-                    />
+        <textarea 
+            className="edit-input" 
+            placeholder="π.χ. χειμερινό μπουφάν, παπούτσια 29, δώρο γενεθλίων, κούκλα, Lego, πάνες" 
+            value={question} 
+            onChange={e => setQuestion(e.target.value)}
+            style={{width: '100%', height: '100px', resize: 'none', marginBottom: '12px'}}
+        />
 
-                    <button className="btn-primary" onClick={askAI}>Ρώτα τον Σύμβουλο</button>
+        <button className="btn-primary" onClick={askAI}>Ρώτα τον Σύμβουλο</button>
 
-                    {answer && (
-                        <div className="ai-response" style={{ whiteSpace: 'pre-line' }}>
-                            {answer}
-                        </div>
-                    )}
-                </div>
-            );
+        {answer && (
+            <div className="ai-response" style={{ whiteSpace: 'pre-line' }}>
+                {answer}
+            </div>
+        )}
+
+        {/* Πατητά κουμπιά όταν δεν καταλαβαίνει */}
+        {answer && answer.includes('Δεν κατάλαβα ακριβώς') && (
+            <div className="suggestion-buttons">
+                <div style={{fontWeight: 'bold', marginBottom: '12px'}}>Δοκίμασε αυτά (πάτα για να ψάξω):</div>
+                <button 
+                    className="suggestion-btn" 
+                    onClick={() => { setQuestion('χειμερινό μπουφάν'); askAI(); }}
+                >
+                    χειμερινό μπουφάν
+                </button>
+                <button 
+                    className="suggestion-btn" 
+                    onClick={() => { setQuestion('παπούτσια'); askAI(); }}
+                >
+                    παπούτσια
+                </button>
+                <button 
+                    className="suggestion-btn" 
+                    onClick={() => { setQuestion('δώρο γενεθλίων'); askAI(); }}
+                >
+                    δώρο γενεθλίων
+                </button>
+                <button 
+                    className="suggestion-btn" 
+                    onClick={() => { setQuestion('στολή απόκριες'); askAI(); }}
+                >
+                    στολή απόκριες
+                </button>
+                <button 
+                    className="suggestion-btn" 
+                    onClick={() => { setQuestion('τσάντα πλάτης'); askAI(); }}
+                >
+                    τσάντα πλάτης
+                </button>
+                <button 
+                    className="suggestion-btn" 
+                    onClick={() => { setQuestion('κούκλα'); askAI(); }}
+                >
+                    κούκλα
+                </button>
+                <button 
+                    className="suggestion-btn" 
+                    onClick={() => { setQuestion('lego'); askAI(); }}
+                >
+                    lego
+                </button>
+            </div>
+        )}
+    </div>
+);
         }
 
         function DealsTab() {
