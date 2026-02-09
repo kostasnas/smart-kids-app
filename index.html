@@ -544,11 +544,13 @@
 
     const addNeed = () => {
         if (search.trim()) {
-            setSavedNeeds(prev => {
-                const newNeeds = { ...prev };
-                newNeeds[selectedChild.id] = [...(newNeeds[selectedChild.id] || []), search.trim()];
-                return newNeeds;
-            });
+            setSavedNeeds(prev => ({
+                ...prev,
+                [selectedChild.id]: [
+                    ...(prev[selectedChild.id] || []),
+                    search.trim()
+                ]
+            }));
             setSearch('');
         }
     };
