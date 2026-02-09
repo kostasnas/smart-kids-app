@@ -691,14 +691,16 @@ const [aiHistory, setAiHistory] = useState([]);
     budget = ' (budget-friendly επιλογές)';
   }
 
-  if (q.includes('μπουφ') || q.includes('πανωφόρι') || q.includes('ζακέτα') || q.includes('jacket') || q.includes('χειμώνα') || q.includes('κρύο') || q.includes('ζεστό') || q.includes('μπουφαν') || q.includes('αντιανεμικό')) {
-    response += `Προτείνω αντιανεμικό/αδιάβροχο μπουφάν με fleece ή γούνα εσωτερικά${budget}.\n`;
+  if (q.includes('μπουφάν') || q.includes('πανωφόρι') || q.includes('ζακέτα') || q.includes('jacket') || q.includes('χειμώνα') || q.includes('κρύο') || q.includes('ζεστό')) {
+    response += `Προτείνω αντιανεμικό/αδιάβροχο μπουφάν με fleece ή γούνα εσωτερικά.\n`;
     response += `Μέγεθος: ${size} ή 1-2 νούμερα μεγαλύτερο.\n`;
     response += `Ιδανικά σε ${colors}!\n\n`;
     response += `Έτοιμες προτάσεις τώρα:\n`;
-    response += `1. Djeco Πολύχρωμο - 18,70 €\n   https://www.skroutz.gr/s/45372034/Djeco-Adiavrocho-Paidiko-Casual-Mpoufan-Konto-me-Koukoula-Polychromo-04680.html\n`;
-    response += `2. Hashtag Μπεζ - 18,00 €\n   https://www.skroutz.gr/s/63237523/hashtag-paidiko-casual-mpoufan-me-koukoula-mpez-255821.html\n`;
-  } else if (q.includes('παπούτσια') || q.includes('μπότες') || q.includes('παπουτσ') || q.includes('sneakers') || q.includes('boots') || q.includes('παπούτσι') || q.includes('μποτακια')) {
+    response += `1. Djeco Πολύχρωμο αντιανεμικό μπουφάν κοντό με κουκούλα - 18,70 €<br>`;
+    response += `<a href="https://www.skroutz.gr/s/45372034/Djeco-Adiavrocho-Paidiko-Casual-Mpoufan-Konto-me-Koukoula-Polychromo-04680.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Άνοιξε το προϊόν</a><br><br>`;
+    response += `2. Hashtag Παιδικό casual μπουφάν με κουκούλα (μπεζ) - 18,00 €<br>`;
+    response += `<a href="https://www.skroutz.gr/s/63237523/hashtag-paidiko-casual-mpoufan-me-koukoula-mpez-255821.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Άνοιξε το προϊόν</a><br><br>`;
+} else if (q.includes('παπούτσια') || q.includes('μπότες') || q.includes('παπουτσ') || q.includes('sneakers') || q.includes('boots') || q.includes('παπούτσι') || q.includes('μποτακια')) {
     response += `Προτείνω χειμερινές μπότες ή αθλητικά με ζεστή φόδρα${budget}.\n`;
     response += `Νούμερο: ${shoe} ή +1.\n\n`;
     response += `Έτοιμες προτάσεις τώρα:\n`;
@@ -761,7 +763,7 @@ const [aiHistory, setAiHistory] = useState([]);
                    {answer && (
     <div 
         className="ai-response" 
-        style={{ whiteSpace: 'pre-line' }}
+        style={{ whiteSpace: 'pre-line', lineHeight: '1.6' }}
         dangerouslySetInnerHTML={{ __html: answer }}
     />
 )}
