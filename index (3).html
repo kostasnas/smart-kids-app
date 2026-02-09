@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Kids Shopping - Έξυπνος Σύμβουλος Αγορών για Παιδιά</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .app-container {
+            max-width: 420px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 24px;
+            text-align: center;
+        }
+        .header h1 { font-size: 24px; margin-bottom: 8px; }
+        .header p { opacity: 0.9; font-size: 14px; }
+        .nav-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            overflow-x: auto;
+        }
+        .nav-tab {
+            flex: 1;
+            padding: 16px 12px;
+            background: none;
+            border: none;
+            font-size: 13px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+        }
+        .nav-tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            background: white;
+        }
+        .content { padding: 20px; min-height: 500px; }
+
+        .child-profile-wrapper {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .child-profile {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 12px;
+            padding: 16px;
+            color: white;
+        }
+        .profile-header { display: flex; align-items: center; margin-bottom: 16px; }
+        .profile-avatar {
+            width: 80px; height: 80px; border-radius: 50%;
+            background-size: cover; background-position: center;
+            margin-right: 16px;
+        }
+        .profile-info h2 { font-size: 22px; margin-bottom: 4px; }
+        .profile-details { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+        .detail-item {
+            background: rgba(255,255,255,0.2);
+            padding: 12px;
+            border-radius: 12px;
+        }
+        .detail-label { font-size: 11px; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.5px; }
+        .detail-value { font-size: 16px; font-weight: 600; }
+
+        .home-profile-item {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 16px; padding: 16px; color: white;
+            display: flex; align-items: center; cursor: pointer;
+            margin-bottom: 12px;
+            position: relative;
+        }
+        .home-profile-item.selected { border: 3px solid #667eea; }
+        .home-profile-avatar { width: 50px; height: 50px; border-radius: 50%; background-size: cover; margin-right: 16px; }
+        .delete-child-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 16px;
+            line-height: 24px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .notification-card {
+            background: #fff3cd; border-left: 5px solid #ffc107; padding: 14px; border-radius: 8px; margin-bottom: 12px;
+            cursor: pointer;
+        }
+
+        .edit-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+        .edit-label { font-weight: 600; color: #333; font-size: 14px; }
+        .edit-input {
+            padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px;
+        }
+        .photo-preview {
+            width: 120px; height: 120px; border-radius: 50%; background-size: cover;
+            margin: 0 auto 12px; border: 3px solid #667eea;
+        }
+
+        .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: #333; }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; border: none; padding: 14px 24px;
+            border-radius: 12px; font-size: 15px; font-weight: 600;
+            cursor: pointer; width: 100%;
+        }
+        .btn-secondary {
+            background: #e0e0e0; color: #333; border: none;
+            padding: 14px 24px; border-radius: 12px; font-size: 15px;
+            cursor: pointer; width: 100%;
+        }
+        .empty-state { text-align: center; padding: 40px 20px; color: #999; }
+        .empty-state-icon { font-size: 48px; margin-bottom: 16px; }
+
+        .shop-card {
+            background: white; border: 1px solid #ddd; border-radius: 12px;
+            padding: 16px; margin-bottom: 16px; text-align: center;
+        }
+        .shop-card a {
+            display: block; margin-top: 12px; background: #667eea; color: white;
+            padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold;
+        }
+        .need-item {
+            background: #f0f0f0; padding: 12px; border-radius: 8px; margin-bottom: 8px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .delete-btn {
+            background: #ff4d4d; color: white; border: none;
+            border-radius: 50%; width: 24px; height: 24px;
+            font-size: 16px; line-height: 24px; cursor: pointer;
+            text-align: center; padding: 0;
+        }
+        .ai-response {
+            background: #e8f5e9; padding: 16px; border-radius: 12px; margin-top: 16px;
+            white-space: pre-line; line-height: 1.5;
+        }
+        .suggestion-links a {
+            color: #667eea;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+.suggestion-buttons {
+    margin-top: 20px;
+    padding: 16px;
+    background: #f0f8ff;
+    border-radius: 12px;
+    border: 1px solid #d1e7ff;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.suggestion-btn {
+    background: #e8f5e9;
+    border: 1px solid #4caf50;
+    color: #4caf50;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.suggestion-btn:hover {
+    background: #4caf50;
+    color: white;
+}
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const occasions = [
+            { name: "Απόκριες", date: "2026-02-19", icon: "🎭" },
+            { name: "Καθαρά Δευτέρα", date: "2026-03-02", icon: "🪁" },
+            { name: "Πάσχα", date: "2026-04-19", icon: "🕯️" },
+        ];
+
+        function calculateDaysUntil(dateStr) {
+            const now = new Date();
+            const event = new Date(dateStr);
+            const diff = event - now;
+            return Math.ceil(diff / (1000 * 60 * 60 * 24));
+        }
+
+        function App() {
+            const [activeTab, setActiveTab] = useState('home');
+            const [children, setChildren] = useState([]);
+            const [selectedChildId, setSelectedChildId] = useState(null);
+            const [savedNeeds, setSavedNeeds] = useState({});
+
+            useEffect(() => {
+                const saved = localStorage.getItem('kidsShoppingChildren');
+                const initial = saved ? JSON.parse(saved) : [{
+                    id: 1,
+                    name: "Σοφία",
+                    age: 5,
+                    gender: "Κορίτσι",
+                    clothingSize: "110cm (5-6 ετών)",
+                    shoeSize: "28",
+                    favoriteColors: ["Ροζ", "Μωβ"],
+                    avatarBase64: null
+                }];
+                setChildren(initial);
+                if (initial.length > 0) setSelectedChildId(initial[0].id);
+
+                const savedN = localStorage.getItem('savedNeeds');
+                if (savedN) setSavedNeeds(JSON.parse(savedN));
+            }, []);
+
+            useEffect(() => localStorage.setItem('kidsShoppingChildren', JSON.stringify(children)), [children]);
+            useEffect(() => localStorage.setItem('savedNeeds', JSON.stringify(savedNeeds)), [savedNeeds]);
+
+            const selectedChild = children.find(c => c.id === selectedChildId);
+
+            const updateChild = (updated) => {
+                setChildren(prev => prev.map(c => c.id === updated.id ? updated : c));
+            };
+
+            const addNewChild = (newChild) => {
+                const newId = Math.max(...children.map(c => c.id || 0), 0) + 1;
+                const childWithId = { ...newChild, id: newId };
+                setChildren(prev => [...prev, childWithId]);
+                setSelectedChildId(newId);
+                setActiveTab('home');
+            };
+
+            const deleteChild = (id) => {
+                if (window.confirm("Σίγουρα θέλεις να διαγράψεις αυτό το παιδί και όλες τις ανάγκες του;")) {
+                    setChildren(prev => prev.filter(c => c.id !== id));
+                    setSavedNeeds(prev => {
+                        const newNeeds = { ...prev };
+                        delete newNeeds[id];
+                        return newNeeds;
+                    });
+                    if (selectedChildId === id) {
+                        const remaining = children.filter(c => c.id !== id);
+                        setSelectedChildId(remaining.length > 0 ? remaining[0].id : null);
+                    }
+                }
+            };
+
+            const upcoming = occasions
+                .map(o => ({ ...o, daysUntil: calculateDaysUntil(o.date) }))
+                .filter(o => o.daysUntil > 0 && o.daysUntil <= 30)
+                .sort((a, b) => a.daysUntil - b.daysUntil);
+
+            return (
+                <div className="app-container">
+                    <div className="header">
+                        <h1>👶 Smart Kids Shopping</h1>
+                        <p>Ο έξυπνος σύμβουλος αγορών για γονείς</p>
+                    </div>
+
+                    <div className="nav-tabs">
+                        <button className={`nav-tab ${activeTab === 'home' ? 'active' : ''}`} onClick={() => setActiveTab('home')}>🏠 Αρχική</button>
+                        <button className={`nav-tab ${activeTab === 'profile' ? 'active' : ''}`} onClick={() => setActiveTab('profile')}>👤 Προφίλ</button>
+                        <button className={`nav-tab ${activeTab === 'needs' ? 'active' : ''}`} onClick={() => setActiveTab('needs')}>🛒 Ανάγκη</button>
+                        <button className={`nav-tab ${activeTab === 'ai' ? 'active' : ''}`} onClick={() => setActiveTab('ai')}>🤖 AI Σύμβουλος</button>
+                        <button className={`nav-tab ${activeTab === 'deals' ? 'active' : ''}`} onClick={() => setActiveTab('deals')}>🔥 Προσφορές</button>
+                    </div>
+
+                    <div className="content">
+                        {activeTab === 'home' && (
+                            <div>
+                                <div className="section-title">Τα Παιδιά μου</div>
+                                {children.length === 0 ? (
+                                    <div className="empty-state">
+                                        <div className="empty-state-icon">👶</div>
+                                        <p>Δεν έχεις προσθέσει παιδιά ακόμα</p>
+                                        <button className="btn-primary" onClick={() => setActiveTab('add-child')} style={{marginTop: '16px'}}>
+                                            + Πρόσθεσε το πρώτο παιδί
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className="home-profile-list">
+                                        {children.map(child => (
+                                            <div key={child.id} className={`home-profile-item ${child.id === selectedChildId ? 'selected' : ''}`} onClick={() => setSelectedChildId(child.id)}>
+                                                <div className="home-profile-avatar" style={{backgroundImage: `url(${child.avatarBase64 || ''})`}}>
+                                                    {!child.avatarBase64 && '👧'}
+                                                </div>
+                                                <div>
+                                                    <div style={{fontWeight: 'bold'}}>{child.name || 'Χωρίς όνομα'}</div>
+                                                    <div style={{fontSize: '14px'}}>{child.age || '?'} ετών • {child.gender || '?'}</div>
+                                                </div>
+                                                <button className="delete-child-btn" onClick={(e) => { e.stopPropagation(); deleteChild(child.id); }}>×</button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                                <button className="btn-primary" onClick={() => setActiveTab('add-child')} style={{marginTop: '16px'}}>
+                                    + Νέο παιδί
+                                </button>
+
+                                {upcoming.length > 0 && (
+                                    <div className="notification-section">
+                                        <div className="section-title">Άμεσες Περιστάσεις</div>
+                                        {upcoming.map(o => (
+                                            <div key={o.name} className="notification-card" style={{cursor: 'pointer'}} onClick={() => setActiveTab('needs')}>
+                                                <strong>{o.icon} {o.name}</strong> – σε {o.daysUntil} μέρες
+                                                <br/><small>Πάτα για να δεις ανάγκες</small>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+
+                                {selectedChild && savedNeeds[selectedChild.id] && savedNeeds[selectedChild.id].length > 0 && (
+                                    <div className="notification-card" style={{marginTop: '16px', cursor: 'pointer'}} onClick={() => setActiveTab('needs')}>
+                                        <strong>🚨 Έχεις εκκρεμείς ανάγκες για {selectedChild.name}!</strong>
+                                        <br/><small>Πάτα εδώ για να τις δεις</small>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {activeTab === 'add-child' && (
+                            <div className="child-profile-wrapper">
+                                <div className="section-title">Προσθήκη Νέου Παιδιού</div>
+                                <div className="edit-form">
+                                    <div className="edit-field">
+                                        <label className="edit-label">Όνομα</label>
+                                        <input className="edit-input" placeholder="π.χ. Άρης" id="newName" />
+                                    </div>
+                                    <div className="edit-field">
+                                        <label className="edit-label">Ηλικία</label>
+                                        <input type="number" className="edit-input" placeholder="π.χ. 7" id="newAge" />
+                                    </div>
+                                    <div className="edit-field">
+                                        <label className="edit-label">Φύλο</label>
+                                        <input className="edit-input" placeholder="π.χ. Αγόρι / Κορίτσι" id="newGender" />
+                                    </div>
+                                    <div className="edit-field">
+                                        <label className="edit-label">Μέγεθος ρούχων</label>
+                                        <input className="edit-input" placeholder="π.χ. 128cm (7-8 ετών)" id="newClothing" />
+                                    </div>
+                                    <div className="edit-field">
+                                        <label className="edit-label">Μέγεθος παπουτσιών</label>
+                                        <input className="edit-input" placeholder="π.χ. 32" id="newShoe" />
+                                    </div>
+                                    <div className="edit-field">
+                                        <label className="edit-label">Αγαπημένα χρώματα (κόμμα)</label>
+                                        <input className="edit-input" placeholder="π.χ. Μπλε, Πράσινο" id="newColors" />
+                                    </div>
+                                    <div style={{display: 'flex', gap: '12px', marginTop: '24px'}}>
+                                        <button className="btn-primary" onClick={() => {
+                                            const name = document.getElementById('newName').value.trim();
+                                            if (!name) {
+                                                alert("Βάλε τουλάχιστον όνομα!");
+                                                return;
+                                            }
+                                            addNewChild({
+                                                name,
+                                                age: document.getElementById('newAge').value ? parseInt(document.getElementById('newAge').value) : undefined,
+                                                gender: document.getElementById('newGender').value.trim(),
+                                                clothingSize: document.getElementById('newClothing').value.trim(),
+                                                shoeSize: document.getElementById('newShoe').value.trim(),
+                                                favoriteColors: document.getElementById('newColors').value ? document.getElementById('newColors').value.split(',').map(c => c.trim()) : [],
+                                                avatarBase64: null
+                                            });
+                                        }}>Προσθήκη</button>
+                                        <button className="btn-secondary" onClick={() => setActiveTab('home')}>Άκυρο</button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === 'profile' && (
+                            selectedChild ? (
+                                <ProfileTab selectedChild={selectedChild} onUpdate={updateChild} />
+                            ) : (
+                                <div className="empty-state">
+                                    <div className="empty-state-icon">👶</div>
+                                    <p>Επίλεξε ένα παιδί από την αρχική οθόνη</p>
+                                </div>
+                            )
+                        )}
+
+                        {activeTab === 'needs' && (
+                            selectedChild ? (
+                                <NeedsTab selectedChild={selectedChild} savedNeeds={savedNeeds} setSavedNeeds={setSavedNeeds} />
+                            ) : (
+                                <div className="empty-state">
+                                    <div className="empty-state-icon">🛒</div>
+                                    <p>Επίλεξε ένα παιδί από την αρχική οθόνη</p>
+                                </div>
+                            )
+                        )}
+
+                        {activeTab === 'ai' && <AITab selectedChild={selectedChild} />}
+
+                        {activeTab === 'deals' && <DealsTab />}
+                    </div>
+                </div>
+            );
+        }
+
+        function ProfileTab({ selectedChild, onUpdate }) {
+            const [editing, setEditing] = useState(false);
+            const [form, setForm] = useState(() => selectedChild || {
+                name: '', age: '', gender: '', clothingSize: '', shoeSize: '', favoriteColors: [], avatarBase64: null
+            });
+
+            useEffect(() => {
+                if (selectedChild) {
+                    setForm(selectedChild);
+                    setEditing(false);
+                }
+            }, [selectedChild]);
+
+            const handleChange = (e) => {
+                const { name, value } = e.target;
+                if (name === 'favoriteColors') {
+                    setForm(prev => ({ ...prev, favoriteColors: value.split(',').map(s => s.trim()) }));
+                } else {
+                    setForm(prev => ({ ...prev, [name]: value }));
+                }
+            };
+
+            const handlePhoto = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = ev => {
+                        setForm(prev => ({ ...prev, avatarBase64: ev.target.result }));
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+
+            const save = () => {
+                onUpdate(form);
+                setEditing(false);
+            };
+
+            const cancel = () => {
+                setForm(selectedChild);
+                setEditing(false);
+            };
+
+            if (editing) {
+                return (
+                    <div className="child-profile-wrapper">
+                        <div className="section-title">Επεξεργασία Προφίλ</div>
+                        <div className="edit-form">
+                            <div style={{textAlign: 'center'}}>
+                                <div className="photo-preview" style={{backgroundImage: `url(${form.avatarBase64 || ''})`}}></div>
+                                <input type="file" accept="image/*" onChange={handlePhoto} />
+                            </div>
+
+                            <div className="edit-field">
+                                <label className="edit-label">Όνομα</label>
+                                <input name="name" className="edit-input" value={form.name || ''} onChange={handleChange} />
+                            </div>
+
+                            <div className="edit-field">
+                                <label className="edit-label">Ηλικία</label>
+                                <input name="age" type="number" className="edit-input" value={form.age || ''} onChange={handleChange} />
+                            </div>
+
+                            <div className="edit-field">
+                                <label className="edit-label">Φύλο</label>
+                                <input name="gender" className="edit-input" value={form.gender || ''} onChange={handleChange} />
+                            </div>
+
+                            <div className="edit-field">
+                                <label className="edit-label">Μέγεθος ρούχων</label>
+                                <input name="clothingSize" className="edit-input" value={form.clothingSize || ''} onChange={handleChange} />
+                            </div>
+
+                            <div className="edit-field">
+                                <label className="edit-label">Μέγεθος παπουτσιών</label>
+                                <input name="shoeSize" className="edit-input" value={form.shoeSize || ''} onChange={handleChange} />
+                            </div>
+
+                            <div className="edit-field">
+                                <label className="edit-label">Αγαπημένα χρώματα</label>
+                                <input name="favoriteColors" className="edit-input" value={Array.isArray(form.favoriteColors) ? form.favoriteColors.join(', ') : ''} onChange={handleChange} />
+                            </div>
+
+                            <div style={{display: 'flex', gap: '12px', marginTop: '24px'}}>
+                                <button className="btn-primary" onClick={save}>Αποθήκευση</button>
+                                <button className="btn-secondary" onClick={cancel}>Άκυρο</button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="child-profile-wrapper">
+                    <div className="section-title">Προφίλ Παιδιού</div>
+                    <div className="child-profile">
+                        <div className="profile-header">
+                            <div className="profile-avatar" style={{backgroundImage: `url(${selectedChild.avatarBase64 || ''})`}}>
+                                {!selectedChild.avatarBase64 && '👧'}
+                            </div>
+                            <div className="profile-info">
+                                <h2>{selectedChild.name || 'Χωρίς όνομα'}</h2>
+                                <p>{selectedChild.age || '?'} ετών • {selectedChild.gender || '?'}</p>
+                            </div>
+                        </div>
+                        <div className="profile-details">
+                            <div className="detail-item">
+                                <div className="detail-label">Ρούχα</div>
+                                <div className="detail-value">{selectedChild.clothingSize || '-'}</div>
+                            </div>
+                            <div className="detail-item">
+                                <div className="detail-label">Παπούτσια</div>
+                                <div className="detail-value">{selectedChild.shoeSize || '-'}</div>
+                            </div>
+                            <div className="detail-item">
+                                <div className="detail-label">Χρώματα</div>
+                                <div className="detail-value">{Array.isArray(selectedChild.favoriteColors) ? selectedChild.favoriteColors.join(', ') : '-'}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button className="btn-primary" onClick={() => setEditing(true)} style={{marginTop: '16px'}}>
+                        ✏️ Επεξεργασία Προφίλ
+                    </button>
+                </div>
+            );
+        }
+
+        function NeedsTab({ selectedChild, savedNeeds, setSavedNeeds }) {
+            const [search, setSearch] = useState('');
+
+            if (!selectedChild) {
+                return (
+                    <div className="empty-state">
+                        <div className="empty-state-icon">🛒</div>
+                        <p>Επίλεξε ένα παιδί από την αρχική οθόνη</p>
+                    </div>
+                );
+            }
+
+            const childNeeds = Array.isArray(savedNeeds[selectedChild.id]) ? savedNeeds[selectedChild.id] : [];
+
+            const addNeed = () => {
+                if (search.trim()) {
+                    setSavedNeeds(prev => {
+                        const newNeeds = { ...prev };
+                        newNeeds[selectedChild.id] = [...(newNeeds[selectedChild.id] || []), search.trim()];
+                        return newNeeds;
+                    });
+                    setSearch('');
+                }
+            };
+
+            const deleteNeed = (index) => {
+                setSavedNeeds(prev => {
+                    const newNeeds = { ...prev };
+                    newNeeds[selectedChild.id] = newNeeds[selectedChild.id].filter((_, i) => i !== index);
+                    return newNeeds;
+                });
+            };
+
+            const getProductLinks = (need) => {
+                const query = encodeURIComponent(need + ' παιδικό');
+                return [
+                    { text: 'Ψάξε στο Skroutz', url: `https://www.skroutz.gr/search?keyphrase=${query}` },
+                    { text: 'Ψάξε στο Shein (παιδικά)', url: `https://eur.shein.com/Kids-c-2031.html?search=${query}` }
+                ];
+            };
+
+            return (
+                <div>
+                    <div className="section-title">Τι χρειάζεται ο/η {selectedChild.name};</div>
+                    <div style={{display: 'flex', gap: '8px', marginBottom: '20px'}}>
+                        <input 
+                            className="edit-input" 
+                            placeholder="π.χ. χειμερινό μπουφάν, παπούτσια 29" 
+                            value={search} 
+                            onChange={e => setSearch(e.target.value)} 
+                            style={{flex: 1}}
+                        />
+                        <button className="btn-primary" onClick={addNeed} style={{width: 'auto', padding: '0 20px'}}>Προσθήκη</button>
+                    </div>
+
+                    {childNeeds.length > 0 ? (
+                        <div>
+                            <div className="section-title">Αποθηκευμένες ανάγκες</div>
+                            {childNeeds.map((need, i) => (
+                                <div key={i} className="need-item">
+                                    <span>{need}</span>
+                                    <button className="delete-btn" onClick={() => deleteNeed(i)}>×</button>
+                                </div>
+                            ))}
+
+                            <div className="section-title" style={{marginTop: '24px'}}>Προτάσεις για τις ανάγκες</div>
+                            {childNeeds.map((need, i) => (
+                                <div key={i} style={{marginBottom: '16px'}}>
+                                    <strong>{need}</strong>
+                                    <div style={{marginTop: '8px'}}>
+                                        {getProductLinks(need).map((link, j) => (
+                                            <div key={j} style={{marginTop: '4px'}}>
+                                                <a href={link.url} target="_blank" rel="noopener noreferrer" style={{color: '#667eea', textDecoration: 'underline'}}>
+                                                    {link.text}
+                                                </a>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <p style={{color: '#666'}}>Δεν έχεις προσθέσει ανάγκες ακόμα</p>
+                    )}
+
+                    <div className="section-title" style={{marginTop: '24px'}}>Γρήγορα links</div>
+                    <div className="shop-card">
+                        <h3>Shein Παιδικά</h3>
+                        <a href="https://eur.shein.com/Kids-c-2031.html" target="_blank">Ψάξε στο Shein</a>
+                    </div>
+                    <div className="shop-card">
+                        <h3>Skroutz</h3>
+                        <a href="https://www.skroutz.gr/" target="_blank">Ψάξε στο Skroutz</a>
+                    </div>
+                </div>
+            );
+        }
+
+        function AITab({ selectedChild }) {
+            const [question, setQuestion] = useState('');
+            const [answer, setAnswer] = useState('');
+
+            const askAI = () => {
+    if (!question.trim()) {
+        setAnswer("Γράψε κάτι στο πεδίο για να σε βοηθήσω! 😊");
+        return;
+    }
+
+    const q = question.toLowerCase().trim();
+    const name = selectedChild?.name || 'το παιδί';
+    const age = selectedChild?.age || 'μικρό παιδί';
+    const gender = selectedChild?.gender?.toLowerCase() || '';
+    const colors = selectedChild?.favoriteColors?.join(', ') || 'χρώματα που του/της αρέσουν';
+    const size = selectedChild?.clothingSize || 'κατάλληλο μέγεθος';
+    const shoe = selectedChild?.shoeSize || 'κατάλληλο νούμερο';
+
+    let response = `Γεια σου! Μιλάμε για ${name}, ${age} ετών ${gender}.<br><br>`;
+
+    if (q.includes('μπουφάν') || q.includes('πανωφόρι') || q.includes('ζακέτα') || q.includes('jacket') || q.includes('χειμώνα')) {
+        response += `Προτείνω αντιανεμικό μπουφάν με fleece ή γούνα.<br>`;
+        response += `Μέγεθος: ${size} ή 1-2 νούμερα μεγαλύτερο.<br>`;
+        response += `Ιδανικά σε ${colors}.<br><br>`;
+        response += `Προτάσεις (κάνε κλικ για να ανοίξεις):<br>`;
+        response += `1. Djeco Πολύχρωμο αντιανεμικό - 18,70 €<br>`;
+        response += `<a href="https://www.skroutz.gr/s/45372034/Djeco-Adiavrocho-Paidiko-Casual-Mpoufan-Konto-me-Koukoula-Polychromo-04680.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
+        response += `2. Hashtag Casual Μπεζ με κουκούλα - 18,00 €<br>`;
+        response += `<a href="https://www.skroutz.gr/s/63237523/hashtag-paidiko-casual-mpoufan-me-koukoula-mpez-255821.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
+        response += `3. Shein Παιδικά αντιανεμικά μπουφάν - 12-25 €<br>`;
+        response += `<a href="https://eur.shein.com/Kids-c-2031.html?search=μπουφάν+παιδικό" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Shein</a>`;
+    } 
+    else if (q.includes('παπούτσια') || q.includes('μπότες') || q.includes('παπουτσ') || q.includes('sneakers') || q.includes('boots')) {
+        response += `Προτείνω χειμερινές μπότες ή αθλητικά με ζεστή φόδρα.<br>`;
+        response += `Νούμερο: ${shoe} ή +1.<br><br>`;
+        response += `Προτάσεις (κάνε κλικ για να ανοίξεις):<br>`;
+        response += `1. Under Armour Ua Gps Surge 4 - ~30 €<br>`;
+        response += `<a href="https://www.skroutz.gr/c/1580/Athlitika-Paidika-Papoytsia/f/513536/28.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
+        response += `2. adidas Tensaur Blue Rush - ~25 €<br>`;
+        response += `<a href="https://www.skroutz.gr/c/1580/Athlitika-Paidika-Papoytsia/f/513536_533177/28-koritsi.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
+        response += `3. Skechers Uno Lite - ~35 €<br>`;
+        response += `<a href="https://www.skroutz.gr/s/45678901/Skechers-Uno-Lite.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a>`;
+    } 
+    else if (q.includes('δώρο') || q.includes('γενέθλια') || q.includes('δωρο') || q.includes('gift') || q.includes('χριστούγεννα')) {
+        response += `Ιδέες δώρων για ${age} ετών ${gender}:<br>`;
+        response += `- Κούκλες / Lego / παιχνίδια δημιουργίας<br>`;
+        response += `- Ρούχα ή αξεσουάρ σε ${colors}<br><br>`;
+        response += `Προτάσεις (κάνε κλικ για να ανοίξεις):<br>`;
+        response += `1. Σαββάλας Παντομίμα Παιχνίδι - 24,90 €<br>`;
+        response += `<a href="https://www.public.gr/product/savvalas-pantomima-paixnidi-ekfrasis-kai-fantasias-epitrapezio-paixnidi-gia-paidia-5-eton-gia-2-4-paiktes/prod14549908pp" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Public</a><br><br>`;
+        response += `2. Lego Classic Creative Animals - ~35 €<br>`;
+        response += `<a href="https://www.skroutz.gr/s/12345678/Lego-Classic-Creative-Animals.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
+        response += `3. Mattel Barbie Dreamhouse - ~80 €<br>`;
+        response += `<a href="https://www.skroutz.gr/s/98765432/Barbie-Dreamhouse.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a>`;
+    } 
+    else if (q.includes('απόκρι') || q.includes('στολή') || q.includes('αποκριες') || q.includes('καρναβάλι') || q.includes('costume')) {
+        response += `Προτείνω στολές πριγκίπισσας, πειρατή, ζώου ή superhero.<br>`;
+        response += `Μέγεθος: ${size} ή λίγο μεγαλύτερο.<br><br>`;
+        response += `Προτάσεις (κάνε κλικ για να ανοίξεις):<br>`;
+        response += `1. Παιδική Στολή Πριγκίπισσα (ροζ) - 12,99 €<br>`;
+        response += `<a href="https://eur.shein.com/pdsearch/%CF%80%CE%B1%CE%B9%CE%B4%CE%B9%CE%BA%CE%AE%20%CF%83%CF%84%CE%BF%CE%BB%CE%AE%20%CF%80%CF%81%CE%B9%CE%B3%CE%BA%CE%AF%CF%80%CE%B9%CF%83%CF%83%CE%B1" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Shein</a><br><br>`;
+        response += `2. Στολή Πειρατή (μαύρη) - 14,90 €<br>`;
+        response += `<a href="https://eur.shein.com/pdsearch/%CF%83%CF%84%CE%BF%CE%BB%CE%AE%20%CF%80%CE%B5%CE%B9%CF%81%CE%B1%CF%84%CE%AE" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Shein</a>`;
+    } 
+    else if (q.includes('πάνες') || q.includes('πανες') || q.includes('πάνες μωρού')) {
+        response += `Προτείνω πάνες μωρού (Pampers, Huggies κλπ) για καθημερινή χρήση.<br><br>`;
+        response += `Προτάσεις (κάνε κλικ για να ανοίξεις):<br>`;
+        response += `1. Pampers Pants No5 (11-18kg) - ~12 €/πακέτο<br>`;
+        response += `<a href="https://www.skroutz.gr/s/12345678/Pampers-Pants-No5.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες Pampers Pants No5 στο Skroutz</a><br><br>`;
+        response += `2. Huggies Pants Jumbo No5 - ~13,50 €<br>`;
+        response += `<a href="https://www.skroutz.gr/s/98765432/Huggies-Pants-Jumbo-No5.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες Huggies στο Skroutz</a><br><br>`;
+        response += `3. Babylino Pants Sensitive No5 - ~11 €<br>`;
+        response += `<a href="https://www.skroutz.gr/s/45678901/Babylino-Pants-Sensitive-No5.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες Babylino στο Skroutz</a>`;
+    } 
+    else if (q.includes('γάλα μωρού') || q.includes('γάλα για μωρά') || q.includes('βρεφικό γάλα')) {
+        response += `Προτείνω βρεφικό γάλα (Aptamil, Humana, Milupa κλπ).<br><br>`;
+        response += `Προτάσεις (κάνε κλικ για να ανοίξεις):<br>`;
+        response += `1. Aptamil 1 (0-6 μηνών) - ~18 €<br>`;
+        response += `<a href="https://www.skroutz.gr/s/12345678/Aptamil-1.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες Aptamil 1 στο Skroutz</a><br><br>`;
+        response += `2. Humana 1 - ~16,50 €<br>`;
+        response += `<a href="https://www.skroutz.gr/s/98765432/Humana-1.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες Humana 1 στο Skroutz</a><br><br>`;
+        response += `3. Milupa Milumil 1 - ~15 €<br>`;
+        response += `<a href="https://www.skroutz.gr/s/45678901/Milupa-Milumil-1.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες Milupa στο Skroutz</a>`;
+    } 
+    else if (q.includes('lego') || q.includes('λεγκο') || q.includes('κατασκευαστικό') || q.includes('σετ lego')) {
+        response += `Προτείνω Lego ή άλλα κατασκευαστικά σετ για δημιουργικότητα.<br>`;
+        response += `Ιδανικά για ${age} ετών.<br><br>`;
+        response += `Προτάσεις (κάνε κλικ για να ανοίξεις):<br>`;
+        response += `1. Lego Classic Creative Animals - ~35 €<br>`;
+        response += `<a href="https://www.skroutz.gr/s/12345678/Lego-Classic-Creative-Animals.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες Lego Classic στο Skroutz</a><br><br>`;
+        response += `2. Lego City Fire Station - ~45 €<br>`;
+        response += `<a href="https://www.skroutz.gr/s/98765432/Lego-City-Fire-Station.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες Lego City στο Skroutz</a><br><br>`;
+        response += `3. Lego Friends Heartlake City - ~25-40 €<br>`;
+        response += `<a href="https://www.skroutz.gr/c/380/paidika-paixnidia/f/123456/lego.html?keyphrase=lego+friends" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες Lego Friends στο Skroutz</a>`;
+    } 
+    else {
+        response += `Δεν κατάλαβα ακριβώς, αλλά μπορώ να σε βοηθήσω!<br><br>`;
+        response += `Δοκίμασε να ρωτήσεις για:<br>`;
+        response += `- χειμερινό μπουφάν<br>`;
+        response += `- παπούτσια<br>`;
+        response += `- δώρο γενεθλίων<br>`;
+        response += `- στολή απόκριες<br>`;
+        response += `- τσάντες<br>`;
+        response += `- κούκλες<br>`;
+        response += `- Lego<br>`;
+        response += `- πάνες<br>`;
+        response += `- γάλα μωρού<br>`;
+        response += `- παιχνίδια δράσης<br>`;
+        response += `- παζλ<br>`;
+        response += `- βιβλία / παραμύθια<br>`;
+        response += `- παγούρια νερού<br>`;
+        response += `- αθλητικά ρούχα`;
+    }
+
+    setAnswer(response);
+    setQuestion('');
+};
+
+            return (
+    <div>
+        <div className="section-title">AI Σύμβουλος Αγορών</div>
+        <p style={{color: '#666', marginBottom: '16px'}}>
+            Ρώτα για ρούχα, δώρα, παιχνίδια, βρεφικά είδη για {selectedChild?.name || 'το παιδί σου'}
+        </p>
+
+        <textarea 
+            className="edit-input" 
+            placeholder="π.χ. χειμερινό μπουφάν, παπούτσια 29, δώρο γενεθλίων, κούκλα, Lego, πάνες" 
+            value={question} 
+            onChange={e => setQuestion(e.target.value)}
+            style={{width: '100%', height: '100px', resize: 'none', marginBottom: '12px'}}
+        />
+
+        <button className="btn-primary" onClick={askAI}>Ρώτα τον Σύμβουλο</button>
+
+        {answer && (
+            <div 
+                className="ai-response" 
+                style={{ whiteSpace: 'pre-line', lineHeight: '1.6' }}
+                dangerouslySetInnerHTML={{ __html: answer }}
+            />
+        )}
+
+        {/* Πατητά κουμπιά όταν δεν καταλαβαίνει */}
+        {answer && answer.includes('Δεν κατάλαβα ακριβώς') && (
+            <div className="suggestion-buttons">
+                <div style={{fontWeight: 'bold', marginBottom: '12px'}}>Δοκίμασε αυτά (πάτα για να ψάξω):</div>
+                <button 
+                    className="suggestion-btn" 
+                    onClick={() => { setQuestion('χειμερινό μπουφάν'); askAI(); }}
+                >
+                    χειμερινό μπουφάν
+                </button>
+                <button 
+                    className="suggestion-btn" 
+                    onClick={() => { setQuestion('παπούτσια'); askAI(); }}
+                >
+                    παπούτσια
+                </button>
+                <button 
+                    className="suggestion-btn" 
+                    onClick={() => { setQuestion('δώρο γενεθλίων'); askAI(); }}
+                >
+                    δώρο γενεθλίων
+                </button>
+                <button 
+                    className="suggestion-btn" 
+                    onClick={() => { setQuestion('στολή απόκριες'); askAI(); }}
+                >
+                    στολή απόκριες
+                </button>
+                <button 
+                    className="suggestion-btn" 
+                    onClick={() => { setQuestion('τσάντα πλάτης'); askAI(); }}
+                >
+                    τσάντα πλάτης
+                </button>
+                <button 
+                    className="suggestion-btn" 
+                    onClick={() => { setQuestion('κούκλα'); askAI(); }}
+                >
+                    κούκλα
+                </button>
+                <button 
+                    className="suggestion-btn" 
+                    onClick={() => { setQuestion('lego'); askAI(); }}
+                >
+                    lego
+                </button>
+            </div>
+        )}
+    </div>
+);
+        }
+
+        function DealsTab() {
+            return (
+                <div>
+                    <div className="section-title">Πραγματικές Προσφορές Τώρα</div>
+                    <div className="shop-card"><h3>Shein Παιδικά</h3><a href="https://eur.shein.com/Kids-c-2031.html" target="_blank">Shein Kids</a></div>
+                    <div className="shop-card"><h3>Skroutz Παιδικά</h3><a href="https://www.skroutz.gr/c/380/paidika-rouxa.html" target="_blank">Skroutz Παιδικά</a></div>
+                    <div className="shop-card"><h3>Jumbo Παιδικά</h3><a href="https://www.e-jumbo.gr/paichnidia/paidika-rouxa" target="_blank">Jumbo</a></div>
+                    <div className="shop-card"><h3>Public Παιχνίδια</h3><a href="https://www.public.gr/cat/paidika-paixnidia/paixnidia" target="_blank">Public</a></div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
