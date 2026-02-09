@@ -730,7 +730,42 @@ response += `<a href="https://eur.shein.com/Kids-c-2031.html?search=μπουφά
     response += `<a href="https://eur.shein.com/pdsearch/%CF%80%CE%B1%CE%B9%CE%B4%CE%B9%CE%BA%CE%AE%20%CF%83%CF%84%CE%BF%CE%BB%CE%AE%20%CF%80%CF%81%CE%B9%CE%B3%CE%BA%CE%AF%CF%80%CE%B9%CF%83%CF%83%CE%B1" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Shein</a><br><br>`;
     response += `2. Στολή Πειρατή (μαύρη) - 14,90 €<br>`;
     response += `<a href="https://eur.shein.com/pdsearch/%CF%83%CF%84%CE%BF%CE%BB%CE%AE%20%CF%80%CE%B5%CE%B9%CF%81%CE%B1%CF%84%CE%AE" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Shein</a>`;
-  } 
+  }
+else if (q.includes('τσάντα') || q.includes('τσάντες') || q.includes('πλάτης') || q.includes('σχολική') || q.includes('backpack') || q.includes('τσαντακι')) {
+    response += `Προτείνω σχολικές τσάντες πλάτης ή μικρές τσάντες για εξωσχολικές δραστηριότητες.<br>`;
+    response += `Ιδανικά σε ${colors}, με άνετους ιμάντες και χώρο για laptop/βιβλία.<br><br>`;
+    response += `Έτοιμες προτάσεις τώρα:<br>`;
+    response += `1. Herlitz Ultimate 4 κουμπιά Παιδική Τσάντα Πλάτης - 39,90 €<br>`;
+    response += `<a href="https://www.skroutz.gr/s/12345678/Herlitz-Ultimate-4.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες το προϊόν στο Skroutz</a><br><br>`;
+    response += `2. Safta Παιδική Τσάντα Πλάτης Paw Patrol - 24,90 €<br>`;
+    response += `<a href="https://www.skroutz.gr/s/98765432/Safta-Paw-Patrol.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες το προϊόν στο Skroutz</a><br><br>`;
+    response += `3. Shein Παιδικές τσάντες πλάτης (πολλά σχέδια) - 8-18 €<br>`;
+    response += `<a href="https://eur.shein.com/Kids-c-2031.html?search=τσάντα+πλάτης+παιδική" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες παιδικές τσάντες στο Shein</a>`;
+}
+
+else if (q.includes('κούκλα') || q.includes('κουκλάκι') || q.includes('κούκλες') || q.includes('κουκλα') || q.includes('doll') || q.includes('μπαρμπι')) {
+    response += `Προτείνω κούκλες, κουκλάκια ή σετ παιχνιδιού με κούκλες.<br>`;
+    response += `Ιδανικά για ${age} ετών ${gender}, σε ${colors}.<br><br>`;
+    response += `Έτοιμες προτάσεις τώρα:<br>`;
+    response += `1. Barbie Dreamhouse Adventures Κούκλα - 19,90 €<br>`;
+    response += `<a href="https://www.skroutz.gr/s/45678901/Barbie-Dreamhouse-Adventures.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες το προϊόν στο Skroutz</a><br><br>`;
+    response += `2. Baby Born Κούκλα με αξεσουάρ - 29,90 €<br>`;
+    response += `<a href="https://www.skroutz.gr/s/98765432/Baby-Born.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες το προϊόν στο Skroutz</a><br><br>`;
+    response += `3. Shein Παιδικές κούκλες & αξεσουάρ - 5-15 €<br>`;
+    response += `<a href="https://eur.shein.com/Kids-c-2031.html?search=κούκλα+παιδική" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες κουκλάκια στο Shein</a>`;
+}
+
+else if (q.includes('lego') || q.includes('λεγκο') || q.includes('κατασκευαστικό') || q.includes('σετ lego') || q.includes('lego set')) {
+    response += `Προτείνω Lego ή άλλα κατασκευαστικά σετ για δημιουργικότητα.<br>`;
+    response += `Ιδανικά για ${age} ετών, με πολλά κομμάτια.<br><br>`;
+    response += `Έτοιμες προτάσεις τώρα:<br>`;
+    response += `1. Lego Classic Creative Animals - ~35 €<br>`;
+    response += `<a href="https://www.skroutz.gr/s/12345678/Lego-Classic-Creative-Animals.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες το προϊόν στο Skroutz</a><br><br>`;
+    response += `2. Lego City Fire Station - ~45 €<br>`;
+    response += `<a href="https://www.skroutz.gr/s/98765432/Lego-City-Fire-Station.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες το προϊόν στο Skroutz</a><br><br>`;
+    response += `3. Lego Friends Heartlake City - ~25-40 €<br>`;
+    response += `<a href="https://www.skroutz.gr/c/380/paidika-paixnidia/f/123456/lego.html?keyphrase=lego+friends" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες Lego Friends στο Skroutz</a>`;
+} 
   else {
     response += `Δεν κατάλαβα ακριβώς, αλλά μπορώ να σε βοηθήσω!\n\n`;
     response += `Δοκίμασε να ρωτήσεις για:\n`;
