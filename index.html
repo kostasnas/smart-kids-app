@@ -686,179 +686,95 @@ const [aiHistory, setAiHistory] = useState([]);
 
   let response = `Γεια σου! Μιλάμε για ${name}, ${age} ετών ${gender}.\n\n`;
 
-  if (q.includes('μπουφάν') || q.includes('πανωφόρι') || q.includes('ζακέτα') || q.includes('jacket') || q.includes('χειμώνα') || q.includes('κρύο') || q.includes('ζεστό') || q.includes('μπουφαν') || q.includes('αντιανεμικό')) {
+  let budgetTip = '';
+  if (q.includes('budget') || q.includes('τιμή') || q.includes('φθηνό') || q.includes('ευρώ') || q.includes('κάτω από')) {
+    budgetTip = '<br>Ψάξε με φίλτρα: τιμή < 30€ & βαθμολογία >4.5 ★ για τις καλύτερες επιλογές!';
+  }
+
+  if (q.includes('μπουφάν') || q.includes('πανωφόρι') || q.includes('ζακέτα') || q.includes('jacket') || q.includes('χειμώνα') || q.includes('κρύο') || q.includes('ζεστό')) {
     response += `Προτείνω αντιανεμικό/αδιάβροχο μπουφάν με fleece ή γούνα εσωτερικά.<br>`;
     response += `Μέγεθος: ${size} ή 1-2 νούμερα μεγαλύτερο.<br>`;
-    response += `Ιδανικά σε ${colors}!<br><br>`;
-    response += `Έτοιμες προτάσεις τώρα:<br>`;
-    response += `1. Djeco Αδιάβροχο Παιδικό Casual Μπουφάν Πολύχρωμο - 18,70 €<br>`;
-    response += `<a href="https://www.skroutz.gr/s/45372034/Djeco-Adiavrocho-Paidiko-Casual-Mpoufan-Konto-me-Koukoula-Polychromo-04680.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες το προϊόν στο Skroutz</a><br><br>`;
-    response += `2. Hashtag Παιδικό Casual Μπουφάν Μπεζ με Κουκούλα - 18,00 €<br>`;
-    response += `<a href="https://www.skroutz.gr/s/63237523/hashtag-paidiko-casual-mpoufan-me-koukoula-mpez-255821.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες το προϊόν στο Skroutz</a><br><br>`;
-    response += `3. Shein Παιδικά αντιανεμικά μπουφάν (πολλά χρώματα & μεγέθη) - 12-25 €<br>`;
-response += `<a href="https://eur.shein.com/Kids-c-2031.html?search=μπουφάν+παιδικό" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες παιδικά μπουφάν στο Shein</a><br><br>`;
-    response += `4. Adidas Παιδικό μπουφάν με κουκούλα - 35-45 €<br>`;
-    response += `<a href="https://www.skroutz.gr/c/2075/Paidika_Mpoufan/f/558144/moyfana.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a>`;
+    response += `Ιδανικά σε ${colors}!<br>${budgetTip}<br><br>`;
+    response += `Έτοιμες προτάσεις (βάλε φίλτρα βαθμολογία >4.5):<br>`;
+    response += `<a href="https://www.skroutz.gr/c/2075/Paidika_Mpoufan.html?keyphrase=μπουφάν+παιδικό&sort=rating_desc" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Καλύτερα βαθμολογημένα μπουφάν στο Skroutz</a><br><br>`;
+    response += `<a href="https://eur.shein.com/Kids-c-2031.html?search=μπουφάν+παιδικό" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Παιδικά μπουφάν στο Shein (φίλτρα: υψηλή βαθμολογία)</a>`;
   } 
-  else if (q.includes('παπούτσια') || q.includes('μπότες') || q.includes('παπουτσ') || q.includes('sneakers') || q.includes('boots') || q.includes('παπούτσι') || q.includes('μποτακια')) {
+  else if (q.includes('παπούτσια') || q.includes('μπότες') || q.includes('παπουτσ') || q.includes('sneakers') || q.includes('boots')) {
     response += `Προτείνω χειμερινές μπότες ή αθλητικά με ζεστή φόδρα.<br>`;
-    response += `Νούμερο: ${shoe} ή +1.<br><br>`;
-    response += `Έτοιμες προτάσεις τώρα:<br>`;
-    response += `1. Under Armour Ua Gps Surge 4 Ac Running Γκρι - ~30 €<br>`;
-    response += `<a href="https://www.skroutz.gr/s/58709512/Under-Armour-Ua-Gps-Surge-4-Ac-Athlitika-Paidika-Papoutsia-Running-me-Skrats-Gri-3027109-100.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες το προϊόν στο Skroutz</a><br><br>`;
-    response += `2. adidas Tensaur Sport 2.0 Dark Blue / Blue Rush - ~25 €<br>`;
-    response += `<a href="https://www.skroutz.gr/s/37097750/adidas-Tensaur-Sport-2-0-Paidika-Sneakers-me-Skrats-Dark-Blue-Blue-Rush-Cloud-White-GW6458.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες το προϊόν στο Skroutz</a><br><br>`;
-    response += `3. Skechers Uno Lite Παιδικά αθλητικά - ~35 €<br>`;
-    response += `<a href="https://www.skroutz.gr/s/45678901/Skechers-Uno-Lite.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες το προϊόν στο Skroutz</a>`;
+    response += `Νούμερο: ${shoe} ή +1.<br>${budgetTip}<br><br>`;
+    response += `Έτοιμες προτάσεις (βάλε φίλτρα βαθμολογία >4.5):<br>`;
+    response += `<a href="https://www.skroutz.gr/c/1580/Athlitika-Paidika-Papoytsia.html?keyphrase=παπούτσια+παιδικά&sort=rating_desc" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Καλύτερα βαθμολογημένα παιδικά παπούτσια στο Skroutz</a><br><br>`;
+    response += `<a href="https://eur.shein.com/Kids-c-2031.html?search=παπούτσια+παιδικά" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Παιδικά παπούτσια στο Shein</a>`;
   } 
-  else if (q.includes('δώρο') || q.includes('γενέθλια') || q.includes('δωρο') || q.includes('gift') || q.includes('χριστούγεννα') || q.includes('γενεθλια')) {
+  else if (q.includes('δώρο') || q.includes('γενέθλια') || q.includes('δωρο') || q.includes('gift') || q.includes('χριστούγεννα')) {
     response += `Ιδέες δώρων για ${age} ετών ${gender}:<br>`;
     response += `- Κούκλες / Lego / παιχνίδια δημιουργίας<br>`;
-    response += `- Ρούχα ή αξεσουάρ σε ${colors}<br><br>`;
-    response += `Έτοιμες προτάσεις τώρα:<br>`;
-    response += `1. Σαββάλας Παντομίμα Παιχνίδι - 24,90 €<br>`;
-    response += `<a href="https://www.public.gr/product/savvalas-pantomima-paixnidi-ekfrasis-kai-fantasias-epitrapezio-paixnidi-gia-paidia-5-eton-gia-2-4-paiktes/prod14549908pp" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες το προϊόν</a><br><br>`;
-    response += `2. Lego Classic Creative Animals - ~35 €<br>`;
-    response += `<a href="https://www.skroutz.gr/s/12345678/Lego-Classic-Creative-Animals.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες το προϊόν</a>`;
+    response += `- Ρούχα ή αξεσουάρ σε ${colors}<br>${budgetTip}<br><br>`;
+    response += `Έτοιμες προτάσεις:<br>`;
+    response += `<a href="https://www.skroutz.gr/c/380/paidika-paixnidia.html?keyphrase=δώρο+παιδικό&sort=rating_desc" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Καλύτερα βαθμολογημένα δώρα στο Skroutz</a><br><br>`;
+    response += `<a href="https://eur.shein.com/Kids-c-2031.html?search=δώρο+παιδικό" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Παιδικά δώρα στο Shein</a>`;
   } 
-  else if (q.includes('απόκρι') || q.includes('στολή') || q.includes('αποκριες') || q.includes('καρναβάλι') || q.includes('costume') || q.includes('στολές')) {
+  else if (q.includes('απόκρι') || q.includes('στολή') || q.includes('αποκριες') || q.includes('καρναβάλι') || q.includes('costume')) {
     response += `Προτείνω στολές πριγκίπισσας, πειρατή, ζώου ή superhero.<br>`;
-    response += `Shein έχει φθηνές επιλογές (10-25€).<br>`;
-    response += `Μέγεθος: ${size} ή λίγο μεγαλύτερο.<br><br>`;
-    response += `Έτοιμες προτάσεις τώρα:<br>`;
-    response += `1. Παιδική Στολή Πριγκίπισσα (ροζ) - 12,99 €<br>`;
-    response += `<a href="https://eur.shein.com/pdsearch/%CF%80%CE%B1%CE%B9%CE%B4%CE%B9%CE%BA%CE%AE%20%CF%83%CF%84%CE%BF%CE%BB%CE%AE%20%CF%80%CF%81%CE%B9%CE%B3%CE%BA%CE%AF%CF%80%CE%B9%CF%83%CF%83%CE%B1" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Shein</a><br><br>`;
-    response += `2. Στολή Πειρατή (μαύρη) - 14,90 €<br>`;
-    response += `<a href="https://eur.shein.com/pdsearch/%CF%83%CF%84%CE%BF%CE%BB%CE%AE%20%CF%80%CE%B5%CE%B9%CF%81%CE%B1%CF%84%CE%AE" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Shein</a>`;
-  }
-else if (q.includes('τσάντα') || q.includes('τσάντες') || q.includes('πλάτης') || q.includes('σχολική') || q.includes('backpack') || q.includes('τσαντακι')) {
-    response += `Προτείνω σχολικές τσάντες πλάτης ή μικρές τσάντες για εξωσχολικές δραστηριότητες.<br>`;
-    response += `Ιδανικά σε ${colors}, με άνετους ιμάντες και χώρο για laptop/βιβλία.<br><br>`;
-    response += `Έτοιμες προτάσεις τώρα:<br>`;
-    response += `1. Herlitz Ultimate 4 κουμπιά Παιδική Τσάντα Πλάτης - 39,90 €<br>`;
-    response += `<a href="https://www.skroutz.gr/s/12345678/Herlitz-Ultimate-4.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες το προϊόν στο Skroutz</a><br><br>`;
-    response += `2. Safta Παιδική Τσάντα Πλάτης Paw Patrol - 24,90 €<br>`;
-    response += `<a href="https://www.skroutz.gr/s/98765432/Safta-Paw-Patrol.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες το προϊόν στο Skroutz</a><br><br>`;
-    response += `3. Shein Παιδικές τσάντες πλάτης (πολλά σχέδια) - 8-18 €<br>`;
-    response += `<a href="https://eur.shein.com/Kids-c-2031.html?search=τσάντα+πλάτης+παιδική" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες παιδικές τσάντες στο Shein</a>`;
-}
-
-else if (q.includes('κούκλα') || q.includes('κουκλάκι') || q.includes('κούκλες') || q.includes('κουκλα') || q.includes('doll') || q.includes('μπαρμπι')) {
-    response += `Προτείνω κούκλες, κουκλάκια ή σετ παιχνιδιού με κούκλες.<br>`;
-    response += `Ιδανικά για ${age} ετών ${gender}, σε ${colors}.<br><br>`;
-    response += `Έτοιμες προτάσεις τώρα:<br>`;
-    response += `1. Barbie Dreamhouse Adventures Κούκλα - 19,90 €<br>`;
-    response += `<a href="https://www.skroutz.gr/s/45678901/Barbie-Dreamhouse-Adventures.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες το προϊόν στο Skroutz</a><br><br>`;
-    response += `2. Baby Born Κούκλα με αξεσουάρ - 29,90 €<br>`;
-    response += `<a href="https://www.skroutz.gr/s/98765432/Baby-Born.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες το προϊόν στο Skroutz</a><br><br>`;
-    response += `3. Shein Παιδικές κούκλες & αξεσουάρ - 5-15 €<br>`;
-    response += `<a href="https://eur.shein.com/Kids-c-2031.html?search=κούκλα+παιδική" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες κουκλάκια στο Shein</a>`;
-}
-
-else if (q.includes('lego') || q.includes('λεγκο') || q.includes('κατασκευαστικό') || q.includes('σετ lego') || q.includes('lego set')) {
-    response += `Προτείνω Lego ή άλλα κατασκευαστικά σετ για δημιουργικότητα.<br>`;
-    response += `Ιδανικά για ${age} ετών, με πολλά κομμάτια.<br><br>`;
-    response += `Έτοιμες προτάσεις τώρα:<br>`;
-    response += `1. Lego Classic Creative Animals - ~35 €<br>`;
-    response += `<a href="https://www.skroutz.gr/s/12345678/Lego-Classic-Creative-Animals.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες το προϊόν στο Skroutz</a><br><br>`;
-    response += `2. Lego City Fire Station - ~45 €<br>`;
-    response += `<a href="https://www.skroutz.gr/s/98765432/Lego-City-Fire-Station.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες το προϊόν στο Skroutz</a><br><br>`;
-    response += `3. Lego Friends Heartlake City - ~25-40 €<br>`;
-    response += `<a href="https://www.skroutz.gr/c/380/paidika-paixnidia/f/123456/lego.html?keyphrase=lego+friends" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες Lego Friends στο Skroutz</a>`;
-}
-else if (q.includes('παιχνίδι δράσης') || q.includes('παιχνίδια δράσης') || q.includes('action figure') || q.includes('φιγούρα') || q.includes('δράσης')) {
+    response += `Shein έχει φθηνές επιλογές (10-25€).<br>${budgetTip}<br><br>`;
+    response += `Έτοιμες προτάσεις:<br>`;
+    response += `<a href="https://eur.shein.com/Kids-c-2031.html?search=στολή+απόκριες+παιδική" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Παιδικές στολές απόκριες στο Shein</a>`;
+  } 
+  else if (q.includes('παιχνίδι δράσης') || q.includes('παιχνίδια δράσης') || q.includes('action figure') || q.includes('φιγούρα') || q.includes('δράσης')) {
     response += `Προτείνω παιχνίδια δράσης, φιγούρες δράσης ή action figures.<br>`;
-    response += `Ιδανικά για ${age} ετών, με ήρωες / υπερήρωες.<br><br>`;
-    response += `Έτοιμες προτάσεις τώρα:<br>`;
-    response += `1. Marvel Avengers Φιγούρες Δράσης - ~15-25 €<br>`;
-    response += `<a href="https://www.skroutz.gr/c/380/paidika-paixnidia/f/123456/action-figures.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες φιγούρες δράσης στο Skroutz</a><br><br>`;
-    response += `2. Lego Ninjago Σετ Δράσης - ~30 €<br>`;
-    response += `<a href="https://www.skroutz.gr/s/98765432/Lego-Ninjago.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες Lego Ninjago</a><br><br>`;
-    response += `3. Shein Παιδικά παιχνίδια δράσης & φιγούρες - 5-20 €<br>`;
-    response += `<a href="https://eur.shein.com/Kids-c-2031.html?search=παιχνίδια+δράσης+παιδικά" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες παιχνίδια δράσης στο Shein</a>`;
-}
-
-else if (q.includes('υπερήρωας') || q.includes('υπερήρωες') || q.includes('ήρωας') || q.includes('ήρωες') || q.includes('καρτούν') || q.includes('cartoon hero') || q.includes('superhero')) {
+    response += `Ιδανικά για ${age} ετών.<br>${budgetTip}<br><br>`;
+    response += `Έτοιμες προτάσεις:<br>`;
+    response += `<a href="https://www.skroutz.gr/c/380/paidika-paixnidia/f/123456/action-figures.html?sort=rating_desc" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Καλύτερα βαθμολογημένα παιχνίδια δράσης στο Skroutz</a>`;
+  }
+  else if (q.includes('υπερήρωας') || q.includes('υπερήρωες') || q.includes('ήρωας') || q.includes('ήρωες') || q.includes('καρτούν') || q.includes('cartoon hero') || q.includes('superhero')) {
     response += `Προτείνω παιχνίδια, φιγούρες, ρούχα ή αξεσουάρ με υπερήρωες και ήρωες καρτούν.<br>`;
-    response += `Ιδανικά για ${age} ετών ${gender}.<br><br>`;
-    response += `Έτοιμες προτάσεις τώρα:<br>`;
-    response += `1. Marvel Spider-Man Φιγούρα Δράσης - 12,90 €<br>`;
-    response += `<a href="https://www.skroutz.gr/s/45678901/Spider-Man-Action-Figure.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες Spider-Man στο Skroutz</a><br><br>`;
-    response += `2. Παιδικό Φούτερ Batman - 18,99 €<br>`;
-    response += `<a href="https://www.skroutz.gr/s/98765432/Batman-Hoodie.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες Batman ρούχα</a><br><br>`;
-    response += `3. Shein Παιδικά ρούχα & αξεσουάρ υπερηρώων - 8-20 €<br>`;
-    response += `<a href="https://eur.shein.com/Kids-c-2031.html?search=υπερήρωας+παιδικό" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες υπερήρωες στο Shein</a>`;
-}
-
-else if (q.includes('παζλ') || q.includes('puzzle') || q.includes('παζλ') || q.includes('jigsaw')) {
-    response += `Προτείνω παζλ (jigsaw) για συγκέντρωση και διασκέδαση.<br>`;
-    response += `Ιδανικά για ${age} ετών, με 100–500 κομμάτια.<br><br>`;
-    response += `Έτοιμες προτάσεις τώρα:<br>`;
-    response += `1. Ravensburger Puzzle 100 τεμ. Disney - 12,90 €<br>`;
-    response += `<a href="https://www.skroutz.gr/c/380/paidika-paixnidia/f/123456/puzzle.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες παζλ στο Skroutz</a><br><br>`;
-    response += `2. Clementoni Puzzle 500 τεμ. Animal Planet - 14,90 €<br>`;
-    response += `<a href="https://www.skroutz.gr/s/98765432/Clementoni-Animal-Planet.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες το προϊόν</a>`;
-}
-
-else if (q.includes('βιβλίο') || q.includes('βιβλία') || q.includes('παραμύθι') || q.includes('παραμύθια') || q.includes('παραμυθι') || q.includes('βιβλίο παιδικό')) {
+    response += `Ιδανικά για ${age} ετών ${gender}.<br>${budgetTip}<br><br>`;
+    response += `Έτοιμες προτάσεις:<br>`;
+    response += `<a href="https://www.skroutz.gr/c/380/paidika-paixnidia.html?keyphrase=υπερήρωας&sort=rating_desc" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Καλύτερα βαθμολογημένα υπερήρωες στο Skroutz</a>`;
+  }
+  else if (q.includes('παζλ') || q.includes('puzzle') || q.includes('jigsaw')) {
+    response += `Προτείνω παζλ για συγκέντρωση και διασκέδαση.<br>`;
+    response += `Ιδανικά για ${age} ετών, 100–500 κομμάτια.<br>${budgetTip}<br><br>`;
+    response += `Έτοιμες προτάσεις:<br>`;
+    response += `<a href="https://www.skroutz.gr/c/380/paidika-paixnidia/f/123456/puzzle.html?sort=rating_desc" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Καλύτερα βαθμολογημένα παζλ στο Skroutz</a>`;
+  }
+  else if (q.includes('βιβλίο') || q.includes('βιβλία') || q.includes('παραμύθι') || q.includes('παραμύθια') || q.includes('παραμυθι')) {
     response += `Προτείνω παιδικά βιβλία, παραμύθια ή εικονογραφημένα βιβλία.<br>`;
-    response += `Ιδανικά για ${age} ετών ${gender}.<br><br>`;
-    response += `Έτοιμες προτάσεις τώρα:<br>`;
-    response += `1. Ο Γιάννης και το Μαγικό Δάσος - 9,90 €<br>`;
-    response += `<a href="https://www.public.gr/cat/vivlia/paidika-vivlia/paramythia" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες παιδικά παραμύθια στο Public</a><br><br>`;
-    response += `2. Disney Princess Βιβλίο με δραστηριότητες - 8,50 €<br>`;
-    response += `<a href="https://www.skroutz.gr/c/380/paidika-vivlia.html?keyphrase=disney+princess" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες Disney βιβλία στο Skroutz</a>`;
-}
-
-else if (q.includes('παγούρι') || q.includes('παγούρια') || q.includes('παγούρι νερού') || q.includes('παγούρι') || q.includes('water bottle')) {
-    response += `Προτείνω παγούρια νερού (ανοξείδωτα ή πλαστικά, με καλαμάκι ή χωρίς).<br>`;
-    response += `Ιδανικά για σχολείο ή εξωσχολικές δραστηριότητες.<br><br>`;
-    response += `Έτοιμες προτάσεις τώρα:<br>`;
-    response += `1. Laken Παγούρι Ανοξείδωτο 500ml - 14,90 €<br>`;
-    response += `<a href="https://www.skroutz.gr/s/12345678/Laken-500ml.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες το προϊόν στο Skroutz</a><br><br>`;
-    response += `2. Ion8 Παιδικό παγούρι με καλαμάκι - 12,50 €<br>`;
-    response += `<a href="https://www.skroutz.gr/s/98765432/Ion8-Kids.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες το προϊόν</a>`;
-}
-
-else if (q.includes('βρεφικό') || q.includes('βρεφικά') || q.includes('βρεφικα ειδη') || q.includes('βρεφικά είδη')) {
-    response += `Προτείνω βρεφικά είδη (ρούχα, αξεσουάρ, είδη φροντίδας).<br>`;
-    response += `Ιδανικά για μωρά 0-3 ετών.<br><br>`;
-    response += `Έτοιμες προτάσεις τώρα:<br>`;
-    response += `1. Chicco Σετ Ρούχα Βρεφικά - 18-25 €<br>`;
-    response += `<a href="https://www.skroutz.gr/c/380/paidika-rouxa/f/123456/vrefika.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες βρεφικά ρούχα στο Skroutz</a>`;
-}
-
-else if (q.includes('πάνες') || q.includes('πανες') || q.includes('πάνες μωρού')) {
-    response += `Προτείνω πάνες μωρού (Pampers, Huggies, κλπ).<br>`;
-    response += `Ιδανικές για καθημερινή χρήση.<br><br>`;
-    response += `Έτοιμες προτάσεις τώρα:<br>`;
-    response += `1. Pampers Pants No5 (11-18kg) - ~12 €/πακέτο<br>`;
-    response += `<a href="https://www.skroutz.gr/c/380/paidika/panes.html?keyphrase=pampers+pants" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες πάνες Pampers στο Skroutz</a>`;
-}
-
-else if (q.includes('μωρομάντηλα') || q.includes('μωρομαντιλα') || q.includes('μωρομάντηλο')) {
-    response += `Προτείνω μωρομάντηλα (υγρά μαντηλάκια) για αλλαγή & καθαρισμό.<br><br>`;
-    response += `Έτοιμες προτάσεις τώρα:<br>`;
-    response += `1. WaterWipes Μωρομάντηλα 100% νερό - ~4 €/πακέτο<br>`;
-    response += `<a href="https://www.skroutz.gr/s/12345678/WaterWipes.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες WaterWipes στο Skroutz</a>`;
-}
-
-else if (q.includes('γάλα') || q.includes('γάλα μωρού') || q.includes('γάλα για μωρά') || q.includes('infant formula')) {
-    response += `Προτείνω γάλα για μωρά (βρεφικό γάλα 1ης, 2ης, 3ης ηλικίας).<br><br>`;
-    response += `Έτοιμες προτάσεις τώρα:<br>`;
-    response += `1. Aptamil 1 Βρεφικό Γάλα 0-6 μηνών - ~18 €<br>`;
-    response += `<a href="https://www.skroutz.gr/c/380/paidika/gala-morou.html?keyphrase=aptamil" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες βρεφικό γάλα στο Skroutz</a>`;
-}
-
-else if (q.includes('αθλητικά ρούχα') || q.includes('αθλητικό') || q.includes('sportswear') || q.includes('αθλητικα ρουχα')) {
-    response += `Προτείνω αθλητικά ρούχα για παιδιά (σετ φόρμες, κολάν, t-shirt).<br>`;
-    response += `Ιδανικά για γυμναστική ή καθημερινή άνεση.<br><br>`;
-    response += `Έτοιμες προτάσεις τώρα:<br>`;
-    response += `1. Adidas Παιδικό Σετ Φόρμα - 28-38 €<br>`;
-    response += `<a href="https://www.skroutz.gr/c/380/paidika-rouxa/f/123456/adidas.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες Adidas παιδικά στο Skroutz</a><br><br>`;
-    response += `2. Nike Παιδικό T-shirt Dri-FIT - 18 €<br>`;
-    response += `<a href="https://www.skroutz.gr/s/98765432/Nike-Dri-FIT-Kids.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες Nike στο Skroutz</a>`;
-} 
+    response += `Ιδανικά για ${age} ετών ${gender}.<br>${budgetTip}<br><br>`;
+    response += `Έτοιμες προτάσεις:<br>`;
+    response += `<a href="https://www.public.gr/cat/vivlia/paidika-vivlia/paramythia?sort=rating_desc" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Καλύτερα βαθμολογημένα παραμύθια στο Public</a>`;
+  }
+  else if (q.includes('τσάντα') || q.includes('τσάντες') || q.includes('πλάτης') || q.includes('σχολική') || q.includes('backpack')) {
+    response += `Προτείνω σχολικές τσάντες πλάτης ή μικρές τσάντες.<br>`;
+    response += `Ιδανικά με άνετους ιμάντες και χώρο.<br>${budgetTip}<br><br>`;
+    response += `Έτοιμες προτάσεις:<br>`;
+    response += `<a href="https://www.skroutz.gr/c/380/paidika-tsantes.html?sort=rating_desc" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Καλύτερα βαθμολογημένες τσάντες στο Skroutz</a>`;
+  }
+  else if (q.includes('παγούρι') || q.includes('παγούρια') || q.includes('παγούρι νερού') || q.includes('water bottle')) {
+    response += `Προτείνω παγούρια νερού (ανοξείδωτα ή με καλαμάκι).<br>${budgetTip}<br><br>`;
+    response += `Έτοιμες προτάσεις:<br>`;
+    response += `<a href="https://www.skroutz.gr/c/380/paidika/pagoyria.html?sort=rating_desc" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Καλύτερα βαθμολογημένα παγούρια στο Skroutz</a>`;
+  }
+  else if (q.includes('πάνες') || q.includes('πανες') || q.includes('πάνες μωρού')) {
+    response += `Προτείνω πάνες μωρού (Pampers, Huggies κλπ).<br>${budgetTip}<br><br>`;
+    response += `Έτοιμες προτάσεις:<br>`;
+    response += `<a href="https://www.skroutz.gr/c/380/paidika/panes.html?sort=rating_desc" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Καλύτερα βαθμολογημένες πάνες στο Skroutz</a>`;
+  }
+  else if (q.includes('μωρομάντηλα') || q.includes('μωρομαντιλα')) {
+    response += `Προτείνω μωρομάντηλα για αλλαγή & καθαρισμό.<br>${budgetTip}<br><br>`;
+    response += `Έτοιμες προτάσεις:<br>`;
+    response += `<a href="https://www.skroutz.gr/c/380/paidika/moromantila.html?sort=rating_desc" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Καλύτερα βαθμολογημένα μωρομάντηλα στο Skroutz</a>`;
+  }
+  else if (q.includes('γάλα') || q.includes('γάλα μωρού') || q.includes('γάλα για μωρά')) {
+    response += `Προτείνω βρεφικό γάλα (Aptamil, Humana κλπ).<br>${budgetTip}<br><br>`;
+    response += `Έτοιμες προτάσεις:<br>`;
+    response += `<a href="https://www.skroutz.gr/c/380/paidika/gala-morou.html?sort=rating_desc" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Καλύτερα βαθμολογημένα γάλατα μωρού στο Skroutz</a>`;
+  }
+  else if (q.includes('αθλητικά ρούχα') || q.includes('αθλητικό') || q.includes('sportswear')) {
+    response += `Προτείνω αθλητικά ρούχα (σετ φόρμες, κολάν, t-shirt).<br>${budgetTip}<br><br>`;
+    response += `Έτοιμες προτάσεις:<br>`;
+    response += `<a href="https://www.skroutz.gr/c/380/paidika-rouxa.html?keyphrase=αθλητικά+παιδικά&sort=rating_desc" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Καλύτερα βαθμολογημένα αθλητικά ρούχα στο Skroutz</a>`;
+  }
   else {
     response += `Δεν κατάλαβα ακριβώς, αλλά μπορώ να σε βοηθήσω!\n\n`;
     response += `Δοκίμασε να ρωτήσεις για:\n`;
@@ -866,7 +782,16 @@ else if (q.includes('αθλητικά ρούχα') || q.includes('αθλητικ
     response += `- παπούτσια\n`;
     response += `- δώρο γενεθλίων\n`;
     response += `- στολή απόκριες\n`;
-    response += `- ρούχα χειμώνα`;
+    response += `- τσάντες\n`;
+    response += `- κούκλες\n`;
+    response += `- Lego\n`;
+    response += `- παιχνίδια δράσης\n`;
+    response += `- παζλ\n`;
+    response += `- βιβλία / παραμύθια\n`;
+    response += `- παγούρια νερού\n`;
+    response += `- πάνες / μωρομάντηλα\n`;
+    response += `- γάλα μωρού\n`;
+    response += `- αθλητικά ρούχα`;
   }
 
   setAnswer(response);
