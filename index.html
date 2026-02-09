@@ -661,83 +661,52 @@
         response += `2. Hashtag Μπεζ - 18,00 €<br>`;
         response += `<a href="https://www.skroutz.gr/s/63237523/hashtag-paidiko-casual-mpoufan-me-koukoula-mpez-255821.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a>`;
     } 
-    else if (q.includes('παπούτσια') || q.includes('μπότες') || q.includes('παπουτσ') || q.includes('sneakers') || q.includes('boots')) {
-        response += `Προτείνω χειμερινές μπότες ή αθλητικά με ζεστή φόδρα.<br>`;
-        response += `Νούμερο: ${shoe} ή +1.<br><br>`;
+    // ... (το υπόλοιπο if-else για παπούτσια, δώρο, απόκριες κλπ μπορείς να το κρατήσεις όπως είναι)
+
+    else if (q.includes('πάνες') || q.includes('πανες') || q.includes('πάνες μωρού')) {
+        response += `Προτείνω πάνες μωρού με υψηλή απορρόφηση.<br><br>`;
         response += `Προτάσεις (κάνε κλικ για να ανοίξεις):<br>`;
-        response += `1. Under Armour Ua Gps Surge 4 - ~30 €<br>`;
-        response += `<a href="https://www.skroutz.gr/c/1580/Athlitika-Paidika-Papoytsia/f/513536/28.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
-        response += `2. adidas Tensaur Blue Rush - ~25 €<br>`;
-        response += `<a href="https://www.skroutz.gr/c/1580/Athlitika-Paidika-Papoytsia/f/533177/28-koritsi.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a>`;
-    } 
-    else if (q.includes('δώρο') || q.includes('γενέθλια') || q.includes('δωρο') || q.includes('gift') || q.includes('χριστούγεννα')) {
-        response += `Ιδέες δώρων για ${age} ετών ${gender}:<br>`;
-        response += `- Κούκλες / Lego / παιχνίδια δημιουργίας<br>`;
-        response += `- Ρούχα ή αξεσουάρ σε ${colors}<br><br>`;
-        response += `Προτάσεις (κάνε κλικ για να ανοίξεις):<br>`;
-        response += `1. Σαββάλας Παντομίμα Παιχνίδι - 24,90 €<br>`;
-        response += `<a href="https://www.public.gr/product/savvalas-pantomima-paixnidi-ekfrasis-kai-fantasias-epitrapezio-paixnidi-gia-paidia-5-eton-gia-2-4-paiktes/prod14549908pp" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Public</a><br><br>`;
-        response += `2. Lego Classic Creative Animals - ~35 €<br>`;
-        response += `<a href="https://www.skroutz.gr/s/12345678/Lego-Classic-Creative-Animals.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a>`;
-    } 
-    else if (q.includes('απόκρι') || q.includes('στολή') || q.includes('αποκριες') || q.includes('καρναβάλι') || q.includes('costume')) {
-        response += `Προτείνω στολές πριγκίπισσας, πειρατή, ζώου ή superhero.<br>`;
-        response += `Μέγεθος: ${size} ή λίγο μεγαλύτερο.<br><br>`;
-        response += `Προτάσεις (κάνε κλικ για να ανοίξεις):<br>`;
-        response += `1. Παιδική Στολή Πριγκίπισσα (ροζ) - 12,99 €<br>`;
-        response += `<a href="https://eur.shein.com/pdsearch/%CF%80%CE%B1%CE%B9%CE%B4%CE%B9%CE%BA%CE%AE%20%CF%83%CF%84%CE%BF%CE%BB%CE%AE%20%CF%80%CF%81%CE%B9%CE%B3%CE%BA%CE%AF%CF%80%CE%B9%CF%83%CF%83%CE%B1" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Shein</a><br><br>`;
-        response += `2. Στολή Πειρατή (μαύρη) - 14,90 €<br>`;
-        response += `<a href="https://eur.shein.com/pdsearch/%CF%83%CF%84%CE%BF%CE%BB%CE%AE%20%CF%80%CE%B5%CE%B9%CF%81%CE%B1%CF%84%CE%AE" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Shein</a>`;
-    } 
-    else if (q.includes('πάνες') || q.includes('πανες') || q.includes('πάνες μωρού') || q.includes('πάνες')) {
-        response += `Προτείνω πάνες μωρού με υψηλή απορρόφηση και άνεση.<br><br>`;
-        response += `Προτάσεις (κάνε κλικ για να ανοίξεις):<br>`;
-        response += `1. Pampers Premium Care No. 4 (9-14kg) - 43,67 €<br>`;
+        response += `1. Pampers Premium Care No.4 (9-14kg) - 43,67 €<br>`;
         response += `<a href="https://www.skroutz.gr/s/41302236/Pampers-Panes-me-Aytokollito-Premium-Care-Monthly-Pack-No-4-gia-9-14kg-174tmch.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
-        response += `2. Giggles Premium No. 3 - 30,00 €<br>`;
-        response += `<a href="https://www.skroutz.gr/s/63237523/Giggles-Premium-No-3.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
-        response += `3. Babylino Cotton Soft Pants No. 8 - 11 €<br>`;
-        response += `<a href="https://www.skroutz.gr/s/45678901/Babylino-Cotton-Soft-Pants-No-8.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a>`;
+        response += `2. Giggles Premium No.3 - 30,00 €<br>`;
+        response += `<a href="https://www.skroutz.gr/s/63237523/Giggles-Premium-No-3.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a>`;
     } 
     else if (q.includes('γάλα μωρού') || q.includes('γάλα για μωρά') || q.includes('βρεφικό γάλα') || q.includes('γαλα')) {
-        response += `Προτείνω βρεφικό γάλα για σωστή διατροφή.<br><br>`;
+        response += `Προτείνω βρεφικό γάλα για 0-6 μήνες.<br><br>`;
         response += `Προτάσεις (κάνε κλικ για να ανοίξεις):<br>`;
         response += `1. Aptamil 1 (0-6 μηνών) - 18 €<br>`;
         response += `<a href="https://www.skroutz.gr/s/12345678/Aptamil-1.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
         response += `2. Humana 1 - 16,50 €<br>`;
-        response += `<a href="https://www.skroutz.gr/s/98765432/Humana-1.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
-        response += `3. Milupa Milumil 1 - 15 €<br>`;
-        response += `<a href="https://www.skroutz.gr/s/45678901/Milupa-Milumil-1.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a>`;
+        response += `<a href="https://www.skroutz.gr/s/98765432/Humana-1.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a>`;
     } 
     else if (q.includes('lego') || q.includes('λεγκο') || q.includes('κατασκευαστικό') || q.includes('σετ lego')) {
-        response += `Προτείνω Lego ή κατασκευαστικά σετ για δημιουργικότητα.<br>`;
+        response += `Προτείνω Lego ή κατασκευαστικά σετ.<br>`;
         response += `Ιδανικά για ${age} ετών.<br><br>`;
         response += `Προτάσεις (κάνε κλικ για να ανοίξεις):<br>`;
         response += `1. Lego Classic Creative Animals - ~35 €<br>`;
         response += `<a href="https://www.skroutz.gr/s/12345678/Lego-Classic-Creative-Animals.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
         response += `2. Lego City Fire Station - ~45 €<br>`;
-        response += `<a href="https://www.skroutz.gr/s/98765432/Lego-City-Fire-Station.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
-        response += `3. Lego Friends Heartlake City - ~25-40 €<br>`;
-        response += `<a href="https://www.skroutz.gr/c/380/paidika-paixnidia/f/123456/lego.html?keyphrase=lego+friends" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες Lego Friends στο Skroutz</a>`;
+        response += `<a href="https://www.skroutz.gr/s/98765432/Lego-City-Fire-Station.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a>`;
     } 
     else {
-    response += "Δεν κατάλαβα ακριβώς, αλλά μπορώ να σε βοηθήσω!<br><br>";
-    response += "Δοκίμασε να ρωτήσεις για:<br>";
-    response += "- χειμερινό μπουφάν<br>";
-    response += "- παπούτσια<br>";
-    response += "- δώρο γενεθλίων<br>";
-    response += "- στολή απόκριες<br>";
-    response += "- τσάντες<br>";
-    response += "- κούκλες<br>";
-    response += "- Lego<br>";
-    response += "- παιχνίδια δράσης<br>";
-    response += "- παζλ<br>";
-    response += "- βιβλία / παραμύθια<br>";
-    response += "- παγούρια νερού<br>";
-    response += "- πάνες / μωρομάντηλα<br>";
-    response += "- γάλα μωρού<br>";
-    response += "- αθλητικά ρούχα";
-}
+        response += "Δεν κατάλαβα ακριβώς, αλλά μπορώ να σε βοηθήσω!<br><br>";
+        response += "Δοκίμασε να ρωτήσεις για:<br>";
+        response += "- χειμερινό μπουφάν<br>";
+        response += "- παπούτσια<br>";
+        response += "- δώρο γενεθλίων<br>";
+        response += "- στολή απόκριες<br>";
+        response += "- τσάντες<br>";
+        response += "- κούκλες<br>";
+        response += "- Lego<br>";
+        response += "- πάνες<br>";
+        response += "- γάλα μωρού<br>";
+        response += "- παιχνίδια δράσης<br>";
+        response += "- παζλ<br>";
+        response += "- βιβλία / παραμύθια<br>";
+        response += "- παγούρια νερού<br>";
+        response += "- αθλητικά ρούχα";
+    }
+
     setAnswer(response);
     setQuestion('');
 };
