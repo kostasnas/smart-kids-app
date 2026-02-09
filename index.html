@@ -529,102 +529,107 @@
         }
 
         function NeedsTab({ selectedChild, savedNeeds, setSavedNeeds }) {
-            const [search, setSearch] = useState('');
+    const [search, setSearch] = useState('');
 
-            if (!selectedChild) {
-                return (
-                    <div className="empty-state">
-                        <div className="empty-state-icon">🛒</div>
-                        <p>Επίλεξε ένα παιδί από την αρχική οθόνη</p>
-                    </div>
-                );
-            }
+    if (!selectedChild) {
+        return (
+            <div className="empty-state">
+                <div className="empty-state-icon">🛒</div>
+                <p>Επίλεξε ένα παιδί από την αρχική οθόνη</p>
+            </div>
+        );
+    }
 
-            const childNeeds = Array.isArray(savedNeeds[selectedChild.id]) ? savedNeeds[selectedChild.id] : [];
+    const childNeeds = Array.isArray(savedNeeds[selectedChild.id]) ? savedNeeds[selectedChild.id] : [];
 
-            const addNeed = () => {
-                if (search.trim()) {
-                    setSavedNeeds(prev => {
-                        const newNeeds = { ...prev };
-                        newNeeds[selectedChild.id] = [...(newNeeds[selectedChild.id] || []), search.trim()];
-                        return newNeeds;
-                    });
-                    setSearch('');
-                }
-            };
-
-            const deleteNeed = (index) => {
-                setSavedNeeds(prev => {
-                    const newNeeds = { ...prev };
-                    newNeeds[selectedChild.id] = newNeeds[selectedChild.id].filter((_, i) => i !== index);
-                    return newNeeds;
-                });
-            };
-
-            const getProductLinks = (need) => {
-                const query = encodeURIComponent(need + ' παιδικό');
-                return [
-                    { text: 'Ψάξε στο Skroutz', url: `https://www.skroutz.gr/search?keyphrase=${query}` },
-                    { text: 'Ψάξε στο Shein (παιδικά)', url: `https://eur.shein.com/Kids-c-2031.html?search=${query}` }
-                ];
-            };
-
-            return (
-                <div>
-                    <div className="section-title">Τι χρειάζεται ο/η {selectedChild.name};</div>
-                    <div style={{display: 'flex', gap: '8px', marginBottom: '20px'}}>
-                        <input 
-                            className="edit-input" 
-                            placeholder="π.χ. χειμερινό μπουφάν, παπούτσια 29" 
-                            value={search} 
-                            onChange={e => setSearch(e.target.value)} 
-                            style={{flex: 1}}
-                        />
-                        <button className="btn-primary" onClick={addNeed} style={{width: 'auto', padding: '0 20px'}}>Προσθήκη</button>
-                    </div>
-
-                    {childNeeds.length > 0 ? (
-                        <div>
-                            <div className="section-title">Αποθηκευμένες ανάγκες</div>
-                            {childNeeds.map((need, i) => (
-                                <div key={i} className="need-item">
-                                    <span>{need}</span>
-                                    <button className="delete-btn" onClick={() => deleteNeed(i)}>×</button>
-                                </div>
-                            ))}
-
-                            <div className="section-title" style={{marginTop: '24px'}}>Προτάσεις για τις ανάγκες</div>
-                            {childNeeds.map((need, i) => (
-                                <div key={i} style={{marginBottom: '16px'}}>
-                                    <strong>{need}</strong>
-                                    <div style={{marginTop: '8px'}}>
-                                        {getProductLinks(need).map((link, j) => (
-                                            <div key={j} style={{marginTop: '4px'}}>
-                                                <a href={link.url} target="_blank" rel="noopener noreferrer" style={{color: '#667eea', text-decoration: 'underline'}}>
-                                                    {link.text}
-                                                </a>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    ) : (
-                        <p style={{color: '#666'}}>Δεν έχεις προσθέσει ανάγκες ακόμα</p>
-                    )}
-
-                    <div className="section-title" style={{marginTop: '24px'}}>Γρήγορα links</div>
-                    <div className="shop-card">
-                        <h3>Shein Παιδικά</h3>
-                        <a href="https://eur.shein.com/Kids-c-2031.html" target="_blank">Ψάξε στο Shein</a>
-                    </div>
-                    <div className="shop-card">
-                        <h3>Skroutz</h3>
-                        <a href="https://www.skroutz.gr/" target="_blank">Ψάξε στο Skroutz</a>
-                    </div>
-                </div>
-            );
+    const addNeed = () => {
+        if (search.trim()) {
+            setSavedNeeds(prev => {
+                const newNeeds = { ...prev };
+                newNeeds[selectedChild.id] = [...(newNeeds[selectedChild.id] || []), search.trim()];
+                return newNeeds;
+            });
+            setSearch('');
         }
+    };
+
+    const deleteNeed = (index) => {
+        setSavedNeeds(prev => {
+            const newNeeds = { ...prev };
+            newNeeds[selectedChild.id] = newNeeds[selectedChild.id].filter((_, i) => i !== index);
+            return newNeeds;
+        });
+    };
+
+    const getProductLinks = (need) => {
+        const query = encodeURIComponent(need + ' παιδικό');
+        return [
+            { text: 'Ψάξε στο Skroutz', url: `https://www.skroutz.gr/search?keyphrase=${query}` },
+            { text: 'Ψάξε στο Shein (παιδικά)', url: `https://eur.shein.com/Kids-c-2031.html?search=${query}` }
+        ];
+    };
+
+    return (
+        <div>
+            <div className="section-title">Τι χρειάζεται ο/η {selectedChild.name};</div>
+            <div style={{display: 'flex', gap: '8px', marginBottom: '20px'}}>
+                <input 
+                    className="edit-input" 
+                    placeholder="π.χ. χειμερινό μπουφάν, παπούτσια 29" 
+                    value={search} 
+                    onChange={e => setSearch(e.target.value)} 
+                    style={{flex: 1}}
+                />
+                <button className="btn-primary" onClick={addNeed} style={{width: 'auto', padding: '0 20px'}}>Προσθήκη</button>
+            </div>
+
+            {childNeeds.length > 0 ? (
+                <div>
+                    <div className="section-title">Αποθηκευμένες ανάγκες</div>
+                    {childNeeds.map((need, i) => (
+                        <div key={i} className="need-item">
+                            <span>{need}</span>
+                            <button className="delete-btn" onClick={() => deleteNeed(i)}>×</button>
+                        </div>
+                    ))}
+
+                    <div className="section-title" style={{marginTop: '24px'}}>Προτάσεις για τις ανάγκες</div>
+                    {childNeeds.map((need, i) => (
+                        <div key={i} style={{marginBottom: '16px'}}>
+                            <strong>{need}</strong>
+                            <div style={{marginTop: '8px'}}>
+                                {getProductLinks(need).map((link, j) => (
+                                    <div key={j} style={{marginTop: '4px'}}>
+                                        <a 
+                                            href={link.url} 
+                                            target="_blank" 
+                                            rel="noopener noreferrer"
+                                            style={{color: '#667eea', textDecoration: 'underline'}}
+                                        >
+                                            {link.text}
+                                        </a>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <p style={{color: '#666'}}>Δεν έχεις προσθέσει ανάγκες ακόμα</p>
+            )}
+
+            <div className="section-title" style={{marginTop: '24px'}}>Γρήγορα links</div>
+            <div className="shop-card">
+                <h3>Shein Παιδικά</h3>
+                <a href="https://eur.shein.com/Kids-c-2031.html" target="_blank">Ψάξε στο Shein</a>
+            </div>
+            <div className="shop-card">
+                <h3>Skroutz</h3>
+                <a href="https://www.skroutz.gr/" target="_blank">Ψάξε στο Skroutz</a>
+            </div>
+        </div>
+    );
+}
 
         function AITab({ selectedChild }) {
             const [question, setQuestion] = useState('');
