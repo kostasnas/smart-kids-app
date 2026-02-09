@@ -656,78 +656,81 @@
             const [answer, setAnswer] = useState('');
 
             const askAI = () => {
-                if (!question.trim()) {
-                    setAnswer("Γράψε κάτι στο πεδίο για να σε βοηθήσω! 😊");
-                    return;
-                }
+    if (!question.trim()) {
+        setAnswer("Γράψε κάτι στο πεδίο για να σε βοηθήσω! 😊");
+        return;
+    }
 
-                const q = question.toLowerCase().trim();
-                const name = selectedChild?.name || 'το παιδί';
-                const age = selectedChild?.age || 'μικρό παιδί';
-                const gender = selectedChild?.gender?.toLowerCase() || '';
-                const colors = selectedChild?.favoriteColors?.join(', ') || 'χρώματα που του/της αρέσουν';
-                const size = selectedChild?.clothingSize || 'κατάλληλο μέγεθος';
-                const shoe = selectedChild?.shoeSize || 'κατάλληλο νούμερο';
+    const q = question.toLowerCase().trim();
+    const name = selectedChild?.name || 'το παιδί';
+    const age = selectedChild?.age || 'μικρό παιδί';
+    const gender = selectedChild?.gender?.toLowerCase() || '';
+    const colors = selectedChild?.favoriteColors?.join(', ') || 'χρώματα που του/της αρέσουν';
+    const size = selectedChild?.clothingSize || 'κατάλληλο μέγεθος';
+    const shoe = selectedChild?.shoeSize || 'κατάλληλο νούμερο';
 
-                let response = `Γεια σου! Μιλάμε για ${name}, ${age} ετών ${gender}.\n\n`;
+    let response = `Γεια σου! Μιλάμε για ${name}, ${age} ετών ${gender}.<br><br>`;
 
-                if (q.includes('μπουφάν') || q.includes('πανωφόρι') || q.includes('ζακέτα') || q.includes('jacket') || q.includes('χειμώνα')) {
-                    response += `Προτείνω αντιανεμικό μπουφάν με fleece ή γούνα.\n`;
-                    response += `Μέγεθος: ${size} ή 1-2 νούμερα μεγαλύτερο.\n`;
-                    response += `Ιδανικά σε ${colors}.\n\n`;
-                    response += `Προτάσεις (κάνε κλικ στα links):\n`;
-                    response += `1. Djeco Πολύχρωμο - 18,70 €\n   https://www.skroutz.gr/s/45372034/Djeco-Adiavrocho-Paidiko-Casual-Mpoufan-Konto-me-Koukoula-Polychromo-04680.html\n`;
-                    response += `2. Hashtag Μπεζ - 18,00 €\n   https://www.skroutz.gr/s/63237523/hashtag-paidiko-casual-mpoufan-me-koukoula-mpez-255821.html\n`;
-                    response += `3. Shein Παιδικά μπουφάν - 12-25 €\n   https://eur.shein.com/Kids-c-2031.html?search=μπουφάν+παιδικό`;
-                } else if (q.includes('παπούτσια') || q.includes('μπότες') || q.includes('παπουτσ') || q.includes('sneakers') || q.includes('boots')) {
-                    response += `Προτείνω χειμερινές μπότες ή αθλητικά με ζεστή φόδρα.\n`;
-                    response += `Νούμερο: ${shoe} ή +1.\n\n`;
-                    response += `Προτάσεις:\n`;
-                    response += `1. Under Armour Ua Gps Surge 4 - ~30 €\n   https://www.skroutz.gr/c/1580/Athlitika-Paidika-Papoytsia/f/513536/28.html\n`;
-                    response += `2. adidas Tensaur - ~25 €\n   https://www.skroutz.gr/c/1580/Athlitika-Paidika-Papoytsia/f/513536_533177/28-koritsi.html\n`;
-                    response += `3. Shein Παιδικά παπούτσια - 10-25 €\n   https://eur.shein.com/Kids-c-2031.html?search=παπούτσια+παιδικά`;
-                } else if (q.includes('δώρο') || q.includes('γενέθλια') || q.includes('δωρο') || q.includes('gift') || q.includes('χριστούγεννα')) {
-                    response += `Ιδέες δώρων για ${age} ετών ${gender}:\n`;
-                    response += `- Κούκλες / Lego / παιχνίδια δημιουργίας\n`;
-                    response += `- Ρούχα ή αξεσουάρ σε ${colors}\n\n`;
-                    response += `Προτάσεις:\n`;
-                    response += `1. Σαββάλας Παντομίμα - 24,90 €\n   https://www.public.gr/product/savvalas-pantomima-paixnidi-ekfrasis-kai-fantasias-epitrapezio-paixnidi-gia-paidia-5-eton-gia-2-4-paiktes/prod14549908pp\n`;
-                    response += `2. Lego Classic Creative Animals - ~35 €\n   https://www.skroutz.gr/s/12345678/Lego-Classic-Creative-Animals.html`;
-                } else if (q.includes('απόκρι') || q.includes('στολή') || q.includes('αποκριες') || q.includes('καρναβάλι') || q.includes('costume')) {
-                    response += `Προτείνω στολές πριγκίπισσας, πειρατή, ζώου ή superhero.\n`;
-                    response += `Μέγεθος: ${size} ή λίγο μεγαλύτερο.\n\n`;
-                    response += `Προτάσεις:\n`;
-                    response += `1. Παιδική Στολή Πριγκίπισσα - 12,99 €\n   https://eur.shein.com/Kids-c-2031.html?search=στολή+πριγκίπισσας+παιδική\n`;
-                    response += `2. Στολή Πειρατή - 14,90 €\n   https://eur.shein.com/Kids-c-2031.html?search=στολή+πειρατή+παιδική`;
-                } else if (q.includes('τσάντα') || q.includes('τσάντες') || q.includes('πλάτης') || q.includes('σχολική') || q.includes('backpack')) {
-                    response += `Προτείνω σχολικές τσάντες πλάτης ή μικρές τσάντες.\n`;
-                    response += `Ιδανικά σε ${colors}.\n\n`;
-                    response += `Προτάσεις:\n`;
-                    response += `1. Herlitz Ultimate - 39,90 €\n   https://www.skroutz.gr/search?keyphrase=herlitz+ultimate+παιδική+τσάντα\n`;
-                    response += `2. Safta Paw Patrol - 24,90 €\n   https://www.skroutz.gr/search?keyphrase=safta+paw+patrol+τσάντα\n`;
-                    response += `3. Shein Παιδικές τσάντες - 8-18 €\n   https://eur.shein.com/Kids-c-2031.html?search=τσάντα+πλάτης+παιδική`;
-                } else {
-                    response += `Δεν κατάλαβα ακριβώς, αλλά μπορώ να σε βοηθήσω!\n\n`;
-                    response += `Δοκίμασε να ρωτήσεις για:\n`;
-                    response += `- χειμερινό μπουφάν\n`;
-                    response += `- παπούτσια\n`;
-                    response += `- δώρο γενεθλίων\n`;
-                    response += `- στολή απόκριες\n`;
-                    response += `- τσάντες\n`;
-                    response += `- κούκλες\n`;
-                    response += `- Lego\n`;
-                    response += `- παιχνίδια δράσης\n`;
-                    response += `- παζλ\n`;
-                    response += `- βιβλία / παραμύθια\n`;
-                    response += `- παγούρια νερού\n`;
-                    response += `- πάνες / μωρομάντηλα\n`;
-                    response += `- γάλα μωρού\n`;
-                    response += `- αθλητικά ρούχα`;
-                }
+    if (q.includes('μπουφάν') || q.includes('πανωφόρι') || q.includes('ζακέτα') || q.includes('jacket') || q.includes('χειμώνα')) {
+        response += `Προτείνω αντιανεμικό μπουφάν με fleece ή γούνα.<br>`;
+        response += `Μέγεθος: ${size} ή 1-2 νούμερα μεγαλύτερο.<br>`;
+        response += `Ιδανικά σε ${colors}.<br><br>`;
+        response += `Προτάσεις (κάνε κλικ για να ανοίξεις):<br>`;
+        response += `1. Djeco Πολύχρωμο αντιανεμικό - 18,70 €<br>`;
+        response += `<a href="https://www.skroutz.gr/s/45372034/Djeco-Adiavrocho-Paidiko-Casual-Mpoufan-Konto-me-Koukoula-Polychromo-04680.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
+        response += `2. Hashtag Casual Μπεζ με κουκούλα - 18,00 €<br>`;
+        response += `<a href="https://www.skroutz.gr/s/63237523/hashtag-paidiko-casual-mpoufan-me-koukoula-mpez-255821.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
+        response += `3. Shein Παιδικά αντιανεμικά μπουφάν - 12-25 €<br>`;
+        response += `<a href="https://eur.shein.com/Kids-c-2031.html?search=μπουφάν+παιδικό" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Shein</a>`;
+    } else if (q.includes('παπούτσια') || q.includes('μπότες') || q.includes('παπουτσ') || q.includes('sneakers') || q.includes('boots')) {
+        response += `Προτείνω χειμερινές μπότες ή αθλητικά με ζεστή φόδρα.<br>`;
+        response += `Νούμερο: ${shoe} ή +1.<br><br>`;
+        response += `Προτάσεις (κάνε κλικ για να ανοίξεις):<br>`;
+        response += `1. Under Armour Ua Gps Surge 4 - ~30 €<br>`;
+        response += `<a href="https://www.skroutz.gr/c/1580/Athlitika-Paidika-Papoytsia/f/513536/28.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
+        response += `2. adidas Tensaur Blue Rush - ~25 €<br>`;
+        response += `<a href="https://www.skroutz.gr/c/1580/Athlitika-Paidika-Papoytsia/f/513536_533177/28-koritsi.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a><br><br>`;
+        response += `3. Shein Παιδικά παπούτσια - 10-25 €<br>`;
+        response += `<a href="https://eur.shein.com/Kids-c-2031.html?search=παπούτσια+παιδικά" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Shein</a>`;
+    } else if (q.includes('δώρο') || q.includes('γενέθλια') || q.includes('δωρο') || q.includes('gift') || q.includes('χριστούγεννα')) {
+        response += `Ιδέες δώρων για ${age} ετών ${gender}:<br>`;
+        response += `- Κούκλες / Lego / παιχνίδια δημιουργίας<br>`;
+        response += `- Ρούχα ή αξεσουάρ σε ${colors}<br><br>`;
+        response += `Προτάσεις (κάνε κλικ για να ανοίξεις):<br>`;
+        response += `1. Σαββάλας Παντομίμα Παιχνίδι - 24,90 €<br>`;
+        response += `<a href="https://www.public.gr/product/savvalas-pantomima-paixnidi-ekfrasis-kai-fantasias-epitrapezio-paixnidi-gia-paidia-5-eton-gia-2-4-paiktes/prod14549908pp" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Public</a><br><br>`;
+        response += `2. Lego Classic Creative Animals - ~35 €<br>`;
+        response += `<a href="https://www.skroutz.gr/s/12345678/Lego-Classic-Creative-Animals.html" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Skroutz</a>`;
+    } else if (q.includes('απόκρι') || q.includes('στολή') || q.includes('αποκριες') || q.includes('καρναβάλι') || q.includes('costume')) {
+        response += `Προτείνω στολές πριγκίπισσας, πειρατή, ζώου ή superhero.<br>`;
+        response += `Μέγεθος: ${size} ή λίγο μεγαλύτερο.<br><br>`;
+        response += `Προτάσεις (κάνε κλικ για να ανοίξεις):<br>`;
+        response += `1. Παιδική Στολή Πριγκίπισσα - 12,99 €<br>`;
+        response += `<a href="https://eur.shein.com/Kids-c-2031.html?search=στολή+πριγκίπισσας+παιδική" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Shein</a><br><br>`;
+        response += `2. Στολή Πειρατή - 14,90 €<br>`;
+        response += `<a href="https://eur.shein.com/Kids-c-2031.html?search=στολή+πειρατή+παιδική" target="_blank" style="color:#667eea; text-decoration:underline; font-weight:bold;">Δες στο Shein</a>`;
+    } else {
+        response += `Δεν κατάλαβα ακριβώς, αλλά μπορώ να σε βοηθήσω!<br><br>`;
+        response += `Δοκίμασε να ρωτήσεις για:<br>`;
+        response += `- χειμερινό μπουφάν<br>`;
+        response += `- παπούτσια<br>`;
+        response += `- δώρο γενεθλίων<br>`;
+        response += `- στολή απόκριες<br>`;
+        response += `- τσάντες<br>`;
+        response += `- κούκλες<br>`;
+        response += `- Lego<br>`;
+        response += `- παιχνίδια δράσης<br>`;
+        response += `- παζλ<br>`;
+        response += `- βιβλία / παραμύθια<br>`;
+        response += `- παγούρια νερού<br>`;
+        response += `- πάνες / μωρομάντηλα<br>`;
+        response += `- γάλα μωρού<br>`;
+        response += `- αθλητικά ρούχα`;
+    }
 
-                setAnswer(response);
-                setQuestion('');
-            };
+    setAnswer(response);
+    setQuestion('');
+};
 
             return (
     <div>
@@ -747,9 +750,11 @@
         <button className="btn-primary" onClick={askAI}>Ρώτα τον Σύμβουλο</button>
 
         {answer && (
-            <div className="ai-response" style={{ whiteSpace: 'pre-line' }}>
-                {answer}
-            </div>
+            <div 
+                className="ai-response" 
+                style={{ whiteSpace: 'pre-line', lineHeight: '1.6' }}
+                dangerouslySetInnerHTML={{ __html: answer }}
+            />
         )}
 
         {/* Πατητά κουμπιά όταν δεν καταλαβαίνει */}
