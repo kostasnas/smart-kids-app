@@ -734,6 +734,69 @@
                         response += '<a href="https://www.skroutz.gr/c/25/paixnidia.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
                     }
                 }
+                // ΦΟΡΕΜΑΤΑ
+                else if (q.includes('φόρεμα') || q.includes('dress')) {
+                    response += "👗 <strong>Παιδικά Φορέματα:</strong><br><br>";
+                    response += "🏪 <strong>Orchestra:</strong> <a href='https://www.orchestra.gr/' target='_blank' style='color:#667eea;'>Δες Συλλογή</a><br>";
+                    response += "🏪 <strong>DPAM:</strong> <a href='https://www.dpam.com/gr/' target='_blank' style='color:#667eea;'>Δες Συλλογή</a><br>";
+                    response += "🏪 <strong>Zara Kids:</strong> <a href='https://www.zara.com/gr/el/kids-l1216.html' target='_blank' style='color:#667eea;'>Δες Συλλογή</a><br>";
+                    response += "🏪 <strong>H&M Kids:</strong> <a href='https://www2.hm.com/el_gr/kids.html' target='_blank' style='color:#667eea;'>Δες Συλλογή</a>";
+                }
+                // ΠΙΤΖΑΜΕΣ
+                else if (q.includes('πιτζάμα') || q.includes('pyjama') || q.includes('νυχτικό')) {
+                    response += "🌙 <strong>Παιδικές Πιτζάμες:</strong><br><br>";
+                    response += "🏪 <strong>H&M Kids:</strong> <a href='https://www2.hm.com/el_gr/kids.html' target='_blank' style='color:#667eea;'>Δες Πιτζάμες</a><br>";
+                    response += "🏪 <strong>Zara Kids:</strong> <a href='https://www.zara.com/gr/el/kids-l1216.html' target='_blank' style='color:#667eea;'>Δες Πιτζάμες</a><br>";
+                    response += "🏪 <strong>Marks & Spencer:</strong> <a href='https://www.marksandspencer.gr/' target='_blank' style='color:#667eea;'>Δες Συλλογή</a>";
+                }
+                // ΜΑΓΙΟ
+                else if (q.includes('μαγιό') || q.includes('μαγιώ') || q.includes('swimwear')) {
+                    response += "🩱 <strong>Παιδικά Μαγιό:</strong><br><br>";
+                    response += "🏪 <strong>Decathlon:</strong> <a href='https://www.decathlon.gr/C-850754-paidika-magio' target='_blank' style='color:#667eea;'>Δες Μαγιό</a><br>";
+                    response += "🏪 <strong>Zara Kids:</strong> <a href='https://www.zara.com/gr/el/kids-l1216.html' target='_blank' style='color:#667eea;'>Δες Συλλογή</a><br>";
+                    response += "🏪 <strong>H&M Kids:</strong> <a href='https://www2.hm.com/el_gr/kids.html' target='_blank' style='color:#667eea;'>Δες Μαγιό</a>";
+                }
+                // ΠΟΔΙΑ ΣΧΟΛΙΚΗ
+                else if (q.includes('ποδιά') || q.includes('σχολική στολή') || q.includes('στολή σχολείου')) {
+                    response += "🎓 <strong>Σχολικές Ποδιές:</strong><br><br>";
+                    response += "🏪 <strong>Jumbo:</strong> <a href='https://www.e-jumbo.gr/' target='_blank' style='color:#667eea;'>Δες Ποδιές</a><br>";
+                    response += "🏪 <strong>Public:</strong> <a href='https://www.public.gr/' target='_blank' style='color:#667eea;'>Σχολικά Είδη</a><br>";
+                    response += "🏪 <strong>Skroutz:</strong> <a href='https://www.skroutz.gr/c/2482/scholikes-podias.html' target='_blank' style='color:#667eea;'>Δες όλες</a>";
+                }
+                // ΚΑΠΕΛΑ
+                else if (q.includes('καπέλο') || q.includes('σκούφο') || q.includes('hat')) {
+                    response += "🧢 <strong>Παιδικά Καπέλα:</strong><br><br>";
+                    response += "🏪 <strong>Zakcret:</strong> <a href='https://www.zakcret.gr/' target='_blank' style='color:#667eea;'>Δες Καπέλα</a><br>";
+                    response += "🏪 <strong>Intersport:</strong> <a href='https://www.intersport.gr/' target='_blank' style='color:#667eea;'>Αθλητικά Καπέλα</a><br>";
+                    response += "🏪 <strong>H&M:</strong> <a href='https://www2.hm.com/el_gr/kids.html' target='_blank' style='color:#667eea;'>Δες Αξεσουάρ</a>";
+                }
+                // ΓΑΝΤΙΑ ΚΑΣΚΟΛ
+                else if (q.includes('γάντια') || q.includes('κασκόλ') || q.includes('χειμωνιάτικα')) {
+                    response += "🧣 <strong>Χειμωνιάτικα Αξεσουάρ:</strong><br><br>";
+                    response += "🏪 <strong>Zara Kids:</strong> <a href='https://www.zara.com/gr/el/kids-l1216.html' target='_blank' style='color:#667eea;'>Γάντια & Κασκόλ</a><br>";
+                    response += "🏪 <strong>Orchestra:</strong> <a href='https://www.orchestra.gr/' target='_blank' style='color:#667eea;'>Αξεσουάρ</a><br>";
+                    response += "🏪 <strong>Decathlon:</strong> <a href='https://www.decathlon.gr/' target='_blank' style='color:#667eea;'>Χειμωνιάτικα</a>";
+                }
+                // ΚΑΤΑΣΤΗΜΑΤΑ ΡΟΥΧΩΝ
+                else if (q.includes('ρούχα') || q.includes('ρουχα') || q.includes('clothes') || q.includes('ντύσιμο')) {
+                    response += "👕 <strong>Καταστήματα Παιδικών Ρούχων:</strong><br><br>";
+                    response += "🏪 <strong>Orchestra:</strong> <a href='https://www.orchestra.gr/' target='_blank' style='color:#667eea;'>Ειδικό παιδικό</a><br>";
+                    response += "🏪 <strong>DPAM:</strong> <a href='https://www.dpam.com/gr/' target='_blank' style='color:#667eea;'>Premium παιδικά</a><br>";
+                    response += "🏪 <strong>Zara Kids:</strong> <a href='https://www.zara.com/gr/el/kids-l1216.html' target='_blank' style='color:#667eea;'>Μόδα για παιδιά</a><br>";
+                    response += "🏪 <strong>H&M Kids:</strong> <a href='https://www2.hm.com/el_gr/kids.html' target='_blank' style='color:#667eea;'>Οικονομικά & στυλάτα</a><br>";
+                    response += "🏪 <strong>Mango Kids:</strong> <a href='https://shop.mango.com/gr/kids' target='_blank' style='color:#667eea;'>Δες Συλλογή</a><br>";
+                    response += "🏪 <strong>Next:</strong> <a href='https://www.next.gr/el/kids' target='_blank' style='color:#667eea;'>UK Style</a>";
+                }
+                // ΑΘΛΗΤΙΚΑ - UPDATED
+                else if (q.includes('αθλητικ') || q.includes('φόρμα') || q.includes('sport') || q.includes('gym')) {
+                    response += "⚽ <strong>Αθλητικά Καταστήματα:</strong><br><br>";
+                    response += "🏪 <strong>Adidas:</strong> <a href='https://www.adidas.gr/kids' target='_blank' style='color:#667eea;'>Παιδικά Adidas</a><br>";
+                    response += "🏪 <strong>Nike:</strong> <a href='https://www.nike.com/gr/kids' target='_blank' style='color:#667eea;'>Παιδικά Nike</a><br>";
+                    response += "🏪 <strong>Puma:</strong> <a href='https://gr.puma.com/kids.html' target='_blank' style='color:#667eea;'>Παιδικά Puma</a><br>";
+                    response += "🏪 <strong>Intersport:</strong> <a href='https://www.intersport.gr/' target='_blank' style='color:#667eea;'>Αθλητικά Είδη</a><br>";
+                    response += "🏪 <strong>Zakcret:</strong> <a href='https://www.zakcret.gr/' target='_blank' style='color:#667eea;'>Sport & Fashion</a><br>";
+                    response += "🏪 <strong>Decathlon:</strong> <a href='https://www.decathlon.gr/C-619231-paidika' target='_blank' style='color:#667eea;'>Οικονομικά Αθλητικά</a>";
+                }
                 // FALLBACK - ΜΟΝΟ ΚΟΥΤΑΚΙΑ
                 else {
                     response = "🤔 Δεν κατάλαβα ακριβώς... Επίλεξε κατηγορία:<br><br>";
@@ -747,6 +810,15 @@
             const quickCategories = [
                 { emoji: '🧥', label: 'Μπουφάν', query: 'μπουφάν' },
                 { emoji: '👟', label: 'Παπούτσια', query: 'παπούτσια' },
+                { emoji: '👗', label: 'Φορέματα', query: 'φόρεμα' },
+                { emoji: '🌙', label: 'Πιτζάμες', query: 'πιτζάμα' },
+                { emoji: '🩱', label: 'Μαγιό', query: 'μαγιό' },
+                { emoji: '👕', label: 'Ρούχα', query: 'ρούχα' },
+                { emoji: '⚽', label: 'Αθλητικά', query: 'αθλητικά' },
+                { emoji: '🎒', label: 'Τσάντες', query: 'τσάντα σχολική' },
+                { emoji: '🎓', label: 'Ποδιές', query: 'ποδιά' },
+                { emoji: '🧢', label: 'Καπέλα', query: 'καπέλο' },
+                { emoji: '🧣', label: 'Αξεσουάρ', query: 'γάντια κασκόλ' },
                 { emoji: '👶', label: 'Πάνες', query: 'πάνες' },
                 { emoji: '🍼', label: 'Γάλα', query: 'γάλα' },
                 { emoji: '🧱', label: 'Lego', query: 'lego' },
@@ -755,9 +827,7 @@
                 { emoji: '🚗', label: 'Παιχνίδια', query: 'παιχνίδι δράσης' },
                 { emoji: '🧩', label: 'Puzzle', query: 'παζλ' },
                 { emoji: '📚', label: 'Βιβλία', query: 'βιβλία' },
-                { emoji: '🎒', label: 'Τσάντες', query: 'τσάντα σχολική' },
                 { emoji: '💧', label: 'Παγούρια', query: 'παγούρι' },
-                { emoji: '⚽', label: 'Αθλητικά', query: 'αθλητικά ρούχα' },
                 { emoji: '🎁', label: 'Δώρα', query: 'δώρο γενεθλίων' }
             ];
 
