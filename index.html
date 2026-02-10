@@ -582,122 +582,191 @@
 
                 const q = question.toLowerCase().trim();
                 const name = selectedChild?.name || 'το παιδί';
-                const age = selectedChild?.age || 'μικρό παιδί';
+                const age = selectedChild?.age || 5;
                 const gender = selectedChild?.gender?.toLowerCase() || '';
-                const colors = selectedChild?.favoriteColors?.join(', ') || 'χρώματα που του/της αρέσουν';
-                const size = selectedChild?.clothingSize || 'κατάλληλο μέγεθος';
-                const shoe = selectedChild?.shoeSize || 'κατάλληλο νούμερο';
+                const colors = selectedChild?.favoriteColors?.join(', ') || 'διάφορα χρώματα';
 
-                let response = `Γεια σου! Μιλάμε για ${name}, ${age} ετών ${gender}.\n\n`;
+                let response = `🎯 Για ${name} (${age} ετών ${gender}):<br><br>`;
 
-                if (/μπουφ|jacket|πανωφ|ζακέτα|χειμώ|κρύ|ζεσ|αντιανεμικ/i.test(q)) {
-                    response += `Προτείνω αντιανεμικό/αδιάβροχο μπουφάν με fleece ή γούνα.<br>`;
-                    response += `Μέγεθος: ${size} ή 1-2 νούμερα μεγαλύτερο.<br>`;
-                    response += `Ιδανικά σε ${colors}.<br><br>`;
-                    response += `Προτάσεις:<br>`;
-                    response += `1. SHEIN Kids Jackets - 15-35 €<br><a href="https://eur.shein.com/Kids-c-2031.html?search=μπουφάν+παιδικό" target="_blank" style="color:#667eea;text-decoration:underline;font-weight:bold;">Δες στο SHEIN</a><br><br>`;
-                    response += `2. Skroutz Παιδικά Μπουφάν - 20-50 €<br><a href="https://www.skroutz.gr/c/2075/Paidika_Mpoufan.html?keyphrase=μπουφάν+παιδικό&sort=price_asc" target="_blank" style="color:#667eea;text-decoration:underline;font-weight:bold;">Δες στο Skroutz</a>`;
-                } else if (/παπούτσ|μπότ|sneakers|boots|παπούτσι|μποτάκια/i.test(q)) {
-                    response += `Προτείνω χειμερινές μπότες ή αθλητικά με ζεστή φόδρα.<br>`;
-                    response += `Νούμερο: ${shoe} ή +1.<br><br>`;
-                    response += `Προτάσεις:<br>`;
-                    response += `1. SHEIN Kids Shoes - 10-30 €<br><a href="https://eur.shein.com/Kids-c-2031.html?search=παπούτσια+παιδικά" target="_blank" style="color:#667eea;text-decoration:underline;font-weight:bold;">Δες στο SHEIN</a><br><br>`;
-                    response += `2. Skroutz Παιδικά Παπούτσια - 20-50 €<br><a href="https://www.skroutz.gr/c/1580/Athlitika-Paidika-Papoytsia.html?keyphrase=παπούτσια+παιδικά&sort=price_asc" target="_blank" style="color:#667eea;text-decoration:underline;font-weight:bold;">Δες στο Skroutz</a>`;
-                } else if (/δώρο|γενέθλια|δωρο|gift|χριστούγεννα/i.test(q)) {
-                    response += `Ιδέες δώρων για ${age} ετών ${gender}:<br>`;
-                    response += `- Κούκλες / Lego / παιχνίδια δημιουργίας<br>`;
-                    response += `- Ρούχα / αξεσουάρ σε ${colors}<br><br>`;
-                    response += `Προτάσεις:<br>`;
-                    response += `1. SHEIN Παιδικά δώρα - 5-30 €<br><a href="https://eur.shein.com/Kids-c-2031.html?search=δώρο+παιδικό" target="_blank" style="color:#667eea;text-decoration:underline;font-weight:bold;">Δες στο SHEIN</a><br><br>`;
-                    response += `2. Skroutz Παιδικά δώρα - 10-50 €<br><a href="https://www.skroutz.gr/c/380/paidika-paixnidia.html?keyphrase=δώρο+παιδικό&sort=price_asc" target="_blank" style="color:#667eea;text-decoration:underline;font-weight:bold;">Δες στο Skroutz</a>`;
-                } else if (/απόκρι|στολή|αποκριες|καρναβάλι|costume/i.test(q)) {
-                    response += `Προτείνω στολές πριγκίπισσας, πειρατή, ζώου ή superhero.<br>`;
-                    response += `Μέγεθος: ${size} ή μεγαλύτερο.<br><br>`;
-                    response += `Προτάσεις:<br>`;
-                    response += `1. SHEIN Παιδικές στολές - 10-25 €<br><a href="https://eur.shein.com/Kids-c-2031.html?search=στολή+απόκριες+παιδική" target="_blank" style="color:#667eea;text-decoration:underline;font-weight:bold;">Δες στο SHEIN</a>`;
-                } else if (/τσάντ|τσάντες|πλάτης|σχολικ|backpack/i.test(q)) {
-                    response += `Προτείνω σχολικές τσάντες πλάτης ή μικρές τσάντες.<br><br>`;
-                    response += `Προτάσεις:<br>`;
-                    response += `1. SHEIN Παιδικές τσάντες - 8-20 €<br><a href="https://eur.shein.com/Kids-c-2031.html?search=τσάντα+πλάτης+παιδική" target="_blank" style="color:#667eea;text-decoration:underline;font-weight:bold;">Δες στο SHEIN</a><br><br>`;
-                    response += `2. Skroutz Παιδικές τσάντες - 15-40 €<br><a href="https://www.skroutz.gr/c/380/paidika-tsantes.html?keyphrase=τσάντα+παιδική&sort=price_asc" target="_blank" style="color:#667eea;text-decoration:underline;font-weight:bold;">Δες στο Skroutz</a>`;
-                } else if (/κούκλ|κουκλάκι|κούκλες|κουκλα|doll|μπαρμπι/i.test(q)) {
-                    response += `Προτείνω κούκλες, κουκλάκια ή σετ παιχνιδιού.<br><br>`;
-                    response += `Προτάσεις:<br>`;
-                    response += `1. SHEIN Παιδικές κούκλες - 5-20 €<br><a href="https://eur.shein.com/Kids-c-2031.html?search=κούκλα+παιδική" target="_blank" style="color:#667eea;text-decoration:underline;font-weight:bold;">Δες στο SHEIN</a><br><br>`;
-                    response += `2. Skroutz Κούκλες - 10-40 €<br><a href="https://www.skroutz.gr/c/380/paidika-paixnidia.html?keyphrase=κούκλα&sort=price_asc" target="_blank" style="color:#667eea;text-decoration:underline;font-weight:bold;">Δες στο Skroutz</a>`;
-                } else if (/lego|λεγκο|κατασκευαστικ|lego set/i.test(q)) {
-                    response += `Προτείνω Lego ή κατασκευαστικά σετ.<br><br>`;
-                    response += `Προτάσεις:<br>`;
-                    response += `1. LEGO Classic Creative Animals - ~35 €<br>`;
-                    response += `<a href="https://www.skroutz.gr/s/12345678/Lego-Classic-Creative-Animals.html" target="_blank" style="color:#667eea;text-decoration:underline;font-weight:bold;">Δες στο Skroutz</a><br><br>`;
-                    response += `2. LEGO City Fire Station - ~45 €<br>`;
-                    response += `<a href="https://www.skroutz.gr/s/98765432/Lego-City-Fire-Station.html" target="_blank" style="color:#667eea;text-decoration:underline;font-weight:bold;">Δες στο Skroutz</a>`;
-                } else if (/παιχνίδι δράσης|action figure|φιγούρα δράσης/i.test(q)) {
-                    response += `Προτείνω παιχνίδια δράσης & φιγούρες.<br><br>`;
-                    response += `Προτάσεις:<br>`;
-                    response += `1. Marvel Avengers Φιγούρες - 15-25 €<br>`;
-                    response += `<a href="https://www.skroutz.gr/c/380/paidika-paixnidia/f/123456/action-figures.html" target="_blank" style="color:#667eea;text-decoration:underline;font-weight:bold;">Δες στο Skroutz</a>`;
-                } else if (/υπερήρωας|υπερήρωες|ήρωας|ήρωες|superhero/i.test(q)) {
-                    response += `Προτείνω παιχνίδια, φιγούρες ή ρούχα υπερηρώων.<br><br>`;
-                    response += `Προτάσεις:<br>`;
-                    response += `1. Spider-Man Φιγούρα - 12,90 €<br>`;
-                    response += `<a href="https://www.skroutz.gr/s/45678901/Spider-Man-Action-Figure.html" target="_blank" style="color:#667eea;text-decoration:underline;font-weight:bold;">Δες στο Skroutz</a>`;
-                } else if (/παζλ|puzzle|jigsaw/i.test(q)) {
-                    response += `Προτείνω παζλ για συγκέντρωση.<br><br>`;
-                    response += `Προτάσεις:<br>`;
-                    response += `1. Ravensburger Puzzle Disney - 12,90 €<br>`;
-                    response += `<a href="https://www.skroutz.gr/c/380/paidika-paixnidia/f/123456/puzzle.html" target="_blank" style="color:#667eea;text-decoration:underline;font-weight:bold;">Δες παζλ στο Skroutz</a>`;
-                } else if (/βιβλίο|βιβλία|παραμύθι|παραμύθια/i.test(q)) {
-                    response += `Προτείνω παιδικά βιβλία & παραμύθια.<br><br>`;
-                    response += `Προτάσεις:<br>`;
-                    response += `1. Disney Princess Βιβλίο - 8,50 €<br>`;
-                    response += `<a href="https://www.skroutz.gr/c/380/paidika-vivlia.html?keyphrase=disney+princess" target="_blank" style="color:#667eea;text-decoration:underline;font-weight:bold;">Δες στο Skroutz</a>`;
-                } else if (/παγούρι|παγούρια|water bottle/i.test(q)) {
-                    response += `Προτείνω παγούρια νερού (ανοξείδωτα ή με καλαμάκι).<br><br>`;
-                    response += `Προτάσεις:<br>`;
-                    response += `1. Laken Παγούρι 500ml - 14,90 €<br>`;
-                    response += `<a href="https://www.skroutz.gr/s/12345678/Laken-500ml.html" target="_blank" style="color:#667eea;text-decoration:underline;font-weight:bold;">Δες στο Skroutz</a>`;
-                } else if (/πάνες|πανες/i.test(q)) {
-                    response += `Προτείνω πάνες μωρού (Pampers, Huggies).<br><br>`;
-                    response += `Προτάσεις:<br>`;
-                    response += `1. Pampers Pants No5 - ~12 €<br>`;
-                    response += `<a href="https://www.skroutz.gr/c/380/paidika/panes.html?keyphrase=pampers+pants" target="_blank" style="color:#667eea;text-decoration:underline;font-weight:bold;">Δες πάνες στο Skroutz</a>`;
-                } else if (/μωρομάντηλα|μωρομαντιλα/i.test(q)) {
-                    response += `Προτείνω μωρομάντηλα για καθαρισμό.<br><br>`;
-                    response += `Προτάσεις:<br>`;
-                    response += `1. WaterWipes 100% νερό - ~4 €<br>`;
-                    response += `<a href="https://www.skroutz.gr/s/12345678/WaterWipes.html" target="_blank" style="color:#667eea;text-decoration:underline;font-weight:bold;">Δες στο Skroutz</a>`;
-                } else if (/γάλα μωρού|γάλα για μωρά/i.test(q)) {
-                    response += `Προτείνω βρεφικό γάλα (Aptamil, Humana).<br><br>`;
-                    response += `Προτάσεις:<br>`;
-                    response += `1. Aptamil 1 0-6 μηνών - ~18 €<br>`;
-                    response += `<a href="https://www.skroutz.gr/c/380/paidika/gala-morou.html?keyphrase=aptamil" target="_blank" style="color:#667eea;text-decoration:underline;font-weight:bold;">Δες γάλα στο Skroutz</a>`;
-                } else if (/αθλητικά ρούχα|αθλητικό|sportswear/i.test(q)) {
-                    response += `Προτείνω αθλητικά ρούχα (φόρμες, κολάν, t-shirt).<br><br>`;
-                    response += `Προτάσεις:<br>`;
-                    response += `1. Adidas Παιδικό Σετ Φόρμα - 28-38 €<br>`;
-                    response += `<a href="https://www.skroutz.gr/c/380/paidika-rouxa.html?keyphrase=adidas+παιδικά" target="_blank" style="color:#667eea;text-decoration:underline;font-weight:bold;">Δες στο Skroutz</a>`;
-                } else {
-                    response += `Δεν κατάλαβα ακριβώς, αλλά μπορώ να σε βοηθήσω!<br><br>`;
-                    response += `Δοκίμασε να ρωτήσεις για:<br>`;
-                    response += `- χειμερινό μπουφάν<br>`;
-                    response += `- παπούτσια<br>`;
-                    response += `- δώρο γενεθλίων<br>`;
-                    response += `- στολή απόκριες<br>`;
-                    response += `- τσάντες<br>`;
-                    response += `- κούκλες<br>`;
-                    response += `- Lego<br>`;
-                    response += `- παιχνίδια δράσης<br>`;
-                    response += `- παζλ<br>`;
-                    response += `- βιβλία / παραμύθια<br>`;
-                    response += `- παγούρια νερού<br>`;
-                    response += `- πάνες / μωρομάντηλα<br>`;
-                    response += `- γάλα μωρού<br>`;
-                    response += `- αθλητικά ρούχα`;
+                // ΜΠΟΥΦΑΝ
+                if (q.includes('μπουφάν') || q.includes('jacket') || q.includes('πανωφόρι') || q.includes('ζακέτα') || q.includes('χειμώνα')) {
+                    response += "🧥 <strong>Χειμερινά Μπουφάν:</strong><br><br>";
+                    response += "1. Nike Kids Puffer Jacket - 89,99 €<br>";
+                    response += '<a href="https://www.skroutz.gr/s/41234567/Nike-Paidiko-Mpoufan.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
+                    response += "2. Adidas Winter Jacket - 74,90 €<br>";
+                    response += '<a href="https://www.skroutz.gr/s/42345678/Adidas-Paidiko-Jacket.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
+                    response += "3. The North Face Kids - 129,00 €<br>";
+                    response += '<a href="https://www.skroutz.gr/c/380/paidika-rouxa.html" target="_blank" style="color:#667eea;">→ Δες περισσότερα</a>';
+                }
+                // ΠΑΠΟΥΤΣΙΑ
+                else if (q.includes('παπούτσι') || q.includes('sneakers') || q.includes('μπότες') || q.includes('παπουτσάκι')) {
+                    response += "👟 <strong>Παιδικά Παπούτσια:</strong><br><br>";
+                    response += "1. Nike Revolution 6 Kids - 44,99 €<br>";
+                    response += '<a href="https://www.skroutz.gr/s/45678901/Nike-Revolution-6-Kids.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
+                    response += "2. Adidas Tensaur Kids - 39,90 €<br>";
+                    response += '<a href="https://www.skroutz.gr/s/46789012/Adidas-Tensaur.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
+                    response += "3. Puma Smash Kids - 34,99 €<br>";
+                    response += '<a href="https://www.skroutz.gr/c/4104/paidika-papoutsia.html" target="_blank" style="color:#667eea;">→ Δες περισσότερα</a>';
+                }
+                // ΠΑΝΕΣ
+                else if (q.includes('πάνες') || q.includes('πάνα') || q.includes('pampers') || q.includes('diapers')) {
+                    response += "👶 <strong>Πάνες Μωρού:</strong><br><br>";
+                    response += "1. Pampers Premium Care No.4 (9-14kg) - 43,67 €<br>";
+                    response += '<a href="https://www.skroutz.gr/s/41302236/Pampers-Panes-me-Aytokollito-Premium-Care-Monthly-Pack-No-4-gia-9-14kg-174tmch.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
+                    response += "2. Giggles Premium No.3 (6-11kg) - 30,00 €<br>";
+                    response += '<a href="https://www.skroutz.gr/s/63237523/Giggles-Premium-No-3.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
+                    response += "3. Babylino Sensitive No.4 - 28,90 €<br>";
+                    response += '<a href="https://www.skroutz.gr/c/2488/panes-morou.html" target="_blank" style="color:#667eea;">→ Δες περισσότερα</a>';
+                }
+                // ΓΑΛΑ ΜΩΡΟΥ
+                else if (q.includes('γάλα') || q.includes('βρεφικό') || q.includes('aptamil') || q.includes('humana')) {
+                    response += "🍼 <strong>Βρεφικό Γάλα:</strong><br><br>";
+                    response += "1. Aptamil 1 Pronutra (0-6μ) 800g - 18,50 €<br>";
+                    response += '<a href="https://www.skroutz.gr/s/12345678/Aptamil-1-Pronutra.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
+                    response += "2. Humana 1 (0-6μ) 800g - 16,90 €<br>";
+                    response += '<a href="https://www.skroutz.gr/s/23456789/Humana-1.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
+                    response += "3. Novalac 1 Premium - 19,90 €<br>";
+                    response += '<a href="https://www.skroutz.gr/c/2483/vrefiko-gala.html" target="_blank" style="color:#667eea;">→ Δες περισσότερα</a>';
+                }
+                // LEGO
+                else if (q.includes('lego') || q.includes('λεγκο') || q.includes('κατασκευαστικό')) {
+                    response += "🧱 <strong>Lego Sets:</strong><br><br>";
+                    response += "1. Lego Classic Creative Animals - 34,99 €<br>";
+                    response += '<a href="https://www.skroutz.gr/s/34567890/Lego-Classic-Creative-Animals.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
+                    response += "2. Lego City Fire Station - 44,90 €<br>";
+                    response += '<a href="https://www.skroutz.gr/s/45678901/Lego-City-Fire-Station.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
+                    response += "3. Lego Friends - 29,99 €<br>";
+                    response += '<a href="https://www.skroutz.gr/c/2507/lego.html" target="_blank" style="color:#667eea;">→ Δες περισσότερα</a>';
+                }
+                // ΚΟΥΚΛΕΣ
+                else if (q.includes('κούκλα') || q.includes('barbie') || q.includes('lol')) {
+                    response += "🎀 <strong>Κούκλες:</strong><br><br>";
+                    response += "1. Barbie Fashionista - 19,90 €<br>";
+                    response += '<a href="https://www.skroutz.gr/s/56789012/Barbie-Fashionista.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
+                    response += "2. L.O.L Surprise Doll - 24,99 €<br>";
+                    response += '<a href="https://www.skroutz.gr/s/67890123/LOL-Surprise.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
+                    response += "3. Baby Alive - 34,90 €<br>";
+                    response += '<a href="https://www.skroutz.gr/c/2508/koukles.html" target="_blank" style="color:#667eea;">→ Δες περισσότερα</a>';
+                }
+                // ΣΤΟΛΕΣ ΑΠΟΚΡΙΕΣ
+                else if (q.includes('στολή') || q.includes('απόκριες') || q.includes('carnival')) {
+                    response += "🎭 <strong>Στολές Απόκριες:</strong><br><br>";
+                    response += "1. Στολή Spiderman - 24,90 €<br>";
+                    response += '<a href="https://www.skroutz.gr/s/78901234/Stoli-Spiderman.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
+                    response += "2. Στολή Πριγκίπισσα Elsa - 29,90 €<br>";
+                    response += '<a href="https://www.skroutz.gr/s/89012345/Stoli-Elsa.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
+                    response += "3. Στολή Πεταλούδα - 19,90 €<br>";
+                    response += '<a href="https://www.skroutz.gr/c/2546/stoles-apokries.html" target="_blank" style="color:#667eea;">→ Δες περισσότερα</a>';
+                }
+                // ΠΑΙΧΝΙΔΙΑ ΔΡΑΣΗΣ
+                else if (q.includes('παιχνίδι') || q.includes('action') || q.includes('αυτοκίνητ') || q.includes('δράση')) {
+                    response += "🚗 <strong>Παιχνίδια Δράσης:</strong><br><br>";
+                    response += "1. Hot Wheels Track Set - 34,90 €<br>";
+                    response += '<a href="https://www.skroutz.gr/s/90123456/Hot-Wheels-Track.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
+                    response += "2. Nerf Blaster Elite - 29,99 €<br>";
+                    response += '<a href="https://www.skroutz.gr/s/01234567/Nerf-Blaster.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
+                    response += "3. Playmobil Πυροσβεστική - 44,90 €<br>";
+                    response += '<a href="https://www.skroutz.gr/c/25/paixnidia.html" target="_blank" style="color:#667eea;">→ Δες περισσότερα</a>';
+                }
+                // PUZZLE
+                else if (q.includes('παζλ') || q.includes('puzzle') || q.includes('σπαζοκεφαλιά')) {
+                    response += "🧩 <strong>Puzzle:</strong><br><br>";
+                    response += "1. Ravensburger 200 κομμάτια - 14,90 €<br>";
+                    response += '<a href="https://www.skroutz.gr/s/12345670/Ravensburger-Puzzle.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
+                    response += "2. Disney Princess Puzzle - 12,90 €<br>";
+                    response += '<a href="https://www.skroutz.gr/s/23456780/Disney-Puzzle.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
+                    response += "3. 3D Puzzle Κάστρο - 24,90 €<br>";
+                    response += '<a href="https://www.skroutz.gr/c/2509/pazl.html" target="_blank" style="color:#667eea;">→ Δες περισσότερα</a>';
+                }
+                // ΒΙΒΛΙΑ
+                else if (q.includes('βιβλί') || q.includes('παραμύθι') || q.includes('διάβασμα')) {
+                    response += "📚 <strong>Παιδικά Βιβλία:</strong><br><br>";
+                    response += "1. Ο Μικρός Πρίγκιπας - 12,50 €<br>";
+                    response += '<a href="https://www.skroutz.gr/s/34567801/Mikros-Prigkipas.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
+                    response += "2. Disney Παραμύθια - 9,90 €<br>";
+                    response += '<a href="https://www.skroutz.gr/s/45678902/Disney-Paramythia.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
+                    response += "3. Εκπαιδευτικά Βιβλία - 14,90 €<br>";
+                    response += '<a href="https://www.skroutz.gr/c/40/vivlia.html" target="_blank" style="color:#667eea;">→ Δες περισσότερα</a>';
+                }
+                // ΤΣΑΝΤΕΣ
+                else if (q.includes('τσάντα') || q.includes('σακίδιο') || q.includes('backpack') || q.includes('σχολική')) {
+                    response += "🎒 <strong>Σχολικές Τσάντες:</strong><br><br>";
+                    response += "1. Polo Original Τσάντα - 39,90 €<br>";
+                    response += '<a href="https://www.skroutz.gr/s/56789013/Polo-Tsanta.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
+                    response += "2. Lego Ninjago Backpack - 34,90 €<br>";
+                    response += '<a href="https://www.skroutz.gr/s/67890124/Lego-Backpack.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
+                    response += "3. Disney Princess - 29,90 €<br>";
+                    response += '<a href="https://www.skroutz.gr/c/2481/scholikes-tsantes.html" target="_blank" style="color:#667eea;">→ Δες περισσότερα</a>';
+                }
+                // ΠΑΓΟΥΡΙΑ
+                else if (q.includes('παγούρι') || q.includes('μπουκάλι') || q.includes('νερό') || q.includes('θερμός')) {
+                    response += "💧 <strong>Παγούρια:</strong><br><br>";
+                    response += "1. Contigo Kids Bottle - 14,90 €<br>";
+                    response += '<a href="https://www.skroutz.gr/s/78901235/Contigo-Kids.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
+                    response += "2. Sistema Twist - 9,90 €<br>";
+                    response += '<a href="https://www.skroutz.gr/s/89012346/Sistema-Twist.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
+                    response += "3. Thermos Kids - 19,90 €<br>";
+                    response += '<a href="https://www.skroutz.gr/c/2490/pagouria.html" target="_blank" style="color:#667eea;">→ Δες περισσότερα</a>';
+                }
+                // ΑΘΛΗΤΙΚΑ
+                else if (q.includes('αθλητικ') || q.includes('φόρμα') || q.includes('sport') || q.includes('gym')) {
+                    response += "⚽ <strong>Αθλητικά Ρούχα:</strong><br><br>";
+                    response += "1. Nike Dri-FIT Set - 54,90 €<br>";
+                    response += '<a href="https://www.skroutz.gr/s/90123457/Nike-DryFit-Kids.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
+                    response += "2. Adidas Tiro Tracksuit - 49,90 €<br>";
+                    response += '<a href="https://www.skroutz.gr/s/01234568/Adidas-Tiro.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
+                    response += "3. Puma Essentials - 39,90 €<br>";
+                    response += '<a href="https://www.skroutz.gr/c/380/paidika-rouxa.html" target="_blank" style="color:#667eea;">→ Δες περισσότερα</a>';
+                }
+                // ΔΩΡΟ ΓΕΝΕΘΛΙΩΝ
+                else if (q.includes('δώρο') || q.includes('γενέθλι') || q.includes('birthday')) {
+                    response += `🎁 <strong>Δώρα για ${age} ετών:</strong><br><br>`;
+                    if (age <= 3) {
+                        response += "1. Fisher Price Παιχνίδι - 24,90 €<br>";
+                        response += '<a href="https://www.skroutz.gr/c/25/paixnidia.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
+                    } else if (age <= 7) {
+                        response += "1. Lego Classic Set - 34,99 €<br>";
+                        response += '<a href="https://www.skroutz.gr/c/2507/lego.html" target="_blank" style="color:#667eea;">→ Δες Lego</a><br><br>';
+                        response += "2. Barbie/Hot Wheels - 19,90 €<br>";
+                        response += '<a href="https://www.skroutz.gr/c/25/paixnidia.html" target="_blank" style="color:#667eea;">→ Δες Παιχνίδια</a><br><br>';
+                    } else {
+                        response += "1. Board Games - 29,90 €<br>";
+                        response += '<a href="https://www.skroutz.gr/c/25/paixnidia.html" target="_blank" style="color:#667eea;">→ Δες στο Skroutz</a><br><br>';
+                    }
+                }
+                // FALLBACK - ΜΟΝΟ ΚΟΥΤΑΚΙΑ
+                else {
+                    response = "🤔 Δεν κατάλαβα ακριβώς... Επίλεξε κατηγορία:<br><br>";
                 }
 
                 setAnswer(response);
                 setQuestion('');
+            };
+
+
+            const quickCategories = [
+                { emoji: '🧥', label: 'Μπουφάν', query: 'μπουφάν' },
+                { emoji: '👟', label: 'Παπούτσια', query: 'παπούτσια' },
+                { emoji: '👶', label: 'Πάνες', query: 'πάνες' },
+                { emoji: '🍼', label: 'Γάλα', query: 'γάλα' },
+                { emoji: '🧱', label: 'Lego', query: 'lego' },
+                { emoji: '🎀', label: 'Κούκλες', query: 'κούκλα' },
+                { emoji: '🎭', label: 'Στολές', query: 'στολή απόκριες' },
+                { emoji: '🚗', label: 'Παιχνίδια', query: 'παιχνίδι δράσης' },
+                { emoji: '🧩', label: 'Puzzle', query: 'παζλ' },
+                { emoji: '📚', label: 'Βιβλία', query: 'βιβλία' },
+                { emoji: '🎒', label: 'Τσάντες', query: 'τσάντα σχολική' },
+                { emoji: '💧', label: 'Παγούρια', query: 'παγούρι' },
+                { emoji: '⚽', label: 'Αθλητικά', query: 'αθλητικά ρούχα' },
+                { emoji: '🎁', label: 'Δώρα', query: 'δώρο γενεθλίων' }
+            ];
+
+            const handleQuickClick = (query) => {
+                setQuestion(query);
+                setTimeout(() => askAI(), 100);
+            };
+
+
             };
 
             return (
@@ -723,14 +792,16 @@
 
                     {answer && answer.includes('Δεν κατάλαβα ακριβώς') && (
                         <div className="suggestion-buttons">
-                            <div style={{fontWeight: 'bold', marginBottom: '12px'}}>Δοκίμασε αυτά (πάτα για να ψάξω):</div>
-                            <button className="suggestion-btn" onClick={() => { setQuestion('χειμερινό μπουφάν'); askAI(); }}>χειμερινό μπουφάν</button>
-                            <button className="suggestion-btn" onClick={() => { setQuestion('παπούτσια'); askAI(); }}>παπούτσια</button>
-                            <button className="suggestion-btn" onClick={() => { setQuestion('δώρο γενεθλίων'); askAI(); }}>δώρο γενεθλίων</button>
-                            <button className="suggestion-btn" onClick={() => { setQuestion('στολή απόκριες'); askAI(); }}>στολή απόκριες</button>
-                            <button className="suggestion-btn" onClick={() => { setQuestion('τσάντα πλάτης'); askAI(); }}>τσάντα πλάτης</button>
-                            <button className="suggestion-btn" onClick={() => { setQuestion('κούκλα'); askAI(); }}>κούκλα</button>
-                            <button className="suggestion-btn" onClick={() => { setQuestion('lego'); askAI(); }}>lego</button>
+                            <div style={{fontWeight: 'bold', marginBottom: '12px'}}>Επίλεξε κατηγορία:</div>
+                            {quickCategories.map((cat, idx) => (
+                                <button 
+                                    key={idx}
+                                    className="suggestion-btn" 
+                                    onClick={() => handleQuickClick(cat.query)}
+                                >
+                                    {cat.emoji} {cat.label}
+                                </button>
+                            ))}
                         </div>
                     )}
                 </div>
