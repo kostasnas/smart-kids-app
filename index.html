@@ -527,8 +527,7 @@
                 </div>
             );
         }
-
-        function NeedsTab({ selectedChild, savedNeeds, setSavedNeeds }) {
+function NeedsTab({ selectedChild, savedNeeds, setSavedNeeds }) {
     const [search, setSearch] = useState('');
 
     if (!selectedChild) {
@@ -558,7 +557,9 @@
     const deleteNeed = (index) => {
         setSavedNeeds(prev => {
             const newNeeds = { ...prev };
-            newNeeds[selectedChild.id] = newNeeds[selectedChild.id].filter((_, i) => i !== index);
+            if (newNeeds[selectedChild.id]) {
+                newNeeds[selectedChild.id] = newNeeds[selectedChild.id].filter((_, i) => i !== index);
+            }
             return newNeeds;
         });
     };
